@@ -1,5 +1,39 @@
 # Applied technologies
 
+## Table Of Content
+
+- [C++](#c--)
+- [Package manager](#package-manager)
+  * [Overview](#overview)
+  * [Selection Criteria](#selection-criteria)
+    + [Key factors for decision-making:](#key-factors-for-decision-making-)
+  * [Comparative Table of Popular Solutions](#comparative-table-of-popular-solutions)
+  * [Rationale for Selection](#rationale-for-selection)
+    + [Why Conan? (Chosen solution)](#why-conan-chosen-solution)
+    + [Why not vcpkg?](#why-not-vcpkg)
+  * [Practical Considerations](#practical-considerations)
+- [Compiler](#compiler)
+  * [Overview](#overview-1)
+  * [Selection Criteria](#selection-criteria-1)
+    + [Key factors for decision-making:](#key-factors-for-decision-making-1)
+  * [Comparative Table of Popular Solutions](#comparative-table-of-popular-solutions-1)
+  * [Rationale for Selection](#rationale-for-selection-1)
+    + [Why Clang? (Chosen solution)](#why-clang-chosen-solution)
+    + [Why not GCC?](#why-not-gcc)
+  * [Practical Considerations](#practical-considerations-1)
+- [Build system](#build-system)
+  * [Overview](#overview-2)
+  * [Selection Criteria](#selection-criteria-2)
+    + [Key factors for decision-making:](#key-factors-for-decision-making-2)
+  * [Comparative Table of Popular Solutions](#comparative-table-of-popular-solutions-2)
+  * [Rationale for Selection](#rationale-for-selection-2)
+    + [Why CMake + Ninja? (Chosen solution)](#why-cmake-ninja-chosen-solution)
+    + [Why not Meson?](#why-not-meson)
+  * [Practical Considerations](#practical-considerations-2)
+- [Web Framework](#web-framework)
+- [ORM](#orm)
+- [E2E Tests](#e2e-tests)
+
 ## C++
 
 ## Package manager
