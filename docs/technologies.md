@@ -31,7 +31,6 @@
 
 **Performance**
 - Time for dependency download and installation (speed matters for container rebuilds)
-- 
 
 ### Comparative Table of Popular Solutions
 
