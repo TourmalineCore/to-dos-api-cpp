@@ -10,3 +10,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install conan
+
+COPY to-dos-conan-profile.conf /root/.conan2/profiles/default
