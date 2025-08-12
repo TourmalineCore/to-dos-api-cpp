@@ -2,14 +2,14 @@
 
 ## Table Of Content
 
-- [C++](#c--)
+- [C++](#c)
 - [Package manager](#package-manager)
   * [Overview](#overview)
   * [Selection Criteria](#selection-criteria)
-    + [Key factors for decision-making:](#key-factors-for-decision-making-)
+    + [Key factors for decision-making:](#key-factors-for-decision-making)
   * [Comparative Table of Popular Solutions](#comparative-table-of-popular-solutions)
   * [Rationale for Selection](#rationale-for-selection)
-    + [Why Conan? (Chosen solution)](#why-conan-chosen-solution)
+    + [Why Conan – Chosen solution](#why-conan–chosen-solution)
     + [Why not vcpkg?](#why-not-vcpkg)
   * [Practical Considerations](#practical-considerations)
 - [Compiler](#compiler)
@@ -18,7 +18,7 @@
     + [Key factors for decision-making:](#key-factors-for-decision-making-1)
   * [Comparative Table of Popular Solutions](#comparative-table-of-popular-solutions-1)
   * [Rationale for Selection](#rationale-for-selection-1)
-    + [Why Clang? (Chosen solution)](#why-clang-chosen-solution)
+    + [Why Clang – Chosen solution](#why-clang-chosen-solution)
     + [Why not GCC?](#why-not-gcc)
   * [Practical Considerations](#practical-considerations-1)
 - [Build system](#build-system)
@@ -27,7 +27,7 @@
     + [Key factors for decision-making:](#key-factors-for-decision-making-2)
   * [Comparative Table of Popular Solutions](#comparative-table-of-popular-solutions-2)
   * [Rationale for Selection](#rationale-for-selection-2)
-    + [Why CMake + Ninja? (Chosen solution)](#why-cmake-ninja-chosen-solution)
+    + [Why CMake + Ninja – Chosen solution](#why-cmake-ninja-chosen-solution)
     + [Why not Meson?](#why-not-meson)
   * [Practical Considerations](#practical-considerations-2)
 - [Web Framework](#web-framework)
@@ -150,6 +150,7 @@ For this boilerplate C++ backend template that is:
 - Less readable and informative error and warning messages.
 - Slower to implement new C++ standards.
 - Less modularity and extensibility compared to Clang.
+- GCC is not supporting popular developers tools like linters and autoformatters.
 
 ### Practical Considerations
 
@@ -157,6 +158,7 @@ For this boilerplate C++ backend template that is:
 - **Clang** is often preferred in modern C++ projects because of its more readable and informative error messages, which speeds up debugging and easier for developers.
 - **Clang** provides better compliance with modern C++ standards and faster support for new language features.
 - **Clang** modular architecture and extensibility make it easy to fit into modern tools for static analysis, automatic formatting, and other integrations.
+- **Clang** uses the most popular developer tools for automatic formatting and linting to be used in the project. **GCC** does not have such close integration with them.
 - **GCC** remains the most reliable and productive solution with proven stability and is widely used. Therefore, it can be kept as a fallback compiler for extended compatibility.
 
 ## Build system
@@ -204,6 +206,8 @@ For this boilerplate C++ backend template that is:
 
 - It has a less mature ecosystem and less integration with IDEs than **CMake**.
 - More suitable for experiments or PET projects.
+- Integration with package managers is less common.
+- **Meson** has less configuration flexibility, and the larger the project gets, the more the meson project loses flexibility.
 
 ### Practical Considerations
 
