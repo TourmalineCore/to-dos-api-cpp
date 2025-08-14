@@ -18,5 +18,7 @@ jobs:
       with:
         runCmd: |
           conan install .
+          cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=Debug/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G "Ninja"
+          ninja
         # we don't need to push docker image that was built using our Dev Container
         push: never
