@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - feature/*
+
+jobs:
+  run-build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: Install Deps and Build
+      uses: devcontainers/ci@v0.3
+      with:
+        runCmd: |
+          conan install .
+        # we don't need to push docker image that was built using our Dev Container
+        push: never
