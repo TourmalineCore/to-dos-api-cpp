@@ -3,8 +3,10 @@ project(to-dos-api CXX)
 
 
 
-add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp)
 
+
+find_package(oatpp REQUIRED)
+target_link_libraries(to-dos-api oatpp::oatpp)
 
 
 install(TARGETS to-dos-api DESTINATION "."
