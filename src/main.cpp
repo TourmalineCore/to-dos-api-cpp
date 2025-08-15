@@ -3,16 +3,21 @@
 
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+
 #include "oatpp/network/Server.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
 void run() {
 
+  /* Create json object mapper */
+  auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared();
+
   /* Create Router for HTTP requests routing */
   auto router = oatpp::web::server::HttpRouter::createShared();
 
-  /* Route GET - "/hello" requests to Handler */
-  router->route("GET", "/hello", std::make_shared<Handler>());
+  /* Route GET - "/task" requests to Handler */
+  router->route("GET", "/task", std::make_shared<Handler>(objectMapper));
 
   /* Create HTTP connection handler with router */
   auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
