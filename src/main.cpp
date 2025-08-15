@@ -1,4 +1,5 @@
 #include "to-dos-api.h"
+#include "Handler.h"
 
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 
@@ -9,6 +10,9 @@ void run() {
 
   /* Create Router for HTTP requests routing */
   auto router = oatpp::web::server::HttpRouter::createShared();
+
+  /* Route GET - "/hello" requests to Handler */
+  router->route("GET", "/hello", std::make_shared<Handler>());
 
   /* Create HTTP connection handler with router */
   auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
