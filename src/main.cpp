@@ -1,6 +1,6 @@
 #include "to-dos-api.h"
-#include "controller/Handler/Handler.h"
 #include "AppComponent.hpp"
+#include "controller/ExampleController/ExampleController.h"
 
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 
@@ -8,6 +8,8 @@
 
 #include "oatpp/network/Server.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
+
+using namespace std;
 
 void run() {
 
@@ -17,8 +19,9 @@ void run() {
   /* Get router component */
   OATPP_COMPONENT(shared_ptr<oatpp::web::server::HttpRouter>, router);
 
-  /* Route GET - "/task" requests to Handler */
-  router->route("GET", "/task", std::make_shared<Handler>());
+  /* Create ExampleController and add all of its endpoints to router */
+  auto exampleController = make_shared<ExampleController>();
+  router->addController(exampleController);
 
   /* Get connection handler component */
   OATPP_COMPONENT(shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);

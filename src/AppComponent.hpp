@@ -17,6 +17,8 @@ public:
   /**
    *  Create ConnectionProvider component which listens on the port
    */
+  // Link to documentation where you can read about creating components
+  // https://oatpp.io/api/latest/oatpp/core/macro/component/
   OATPP_CREATE_COMPONENT(shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
     return oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", 8000, oatpp::network::Address::IP_4});
   }());
