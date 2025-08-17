@@ -33,7 +33,9 @@ void run() {
   oatpp::network::Server server(connectionProvider, connectionHandler);
 
   /* Print info about server port */
-  OATPP_LOGI("to-dos-cpp-oat-exp", "Server running on port %s", connectionProvider->getProperty("port").getData());
+  OATPP_LOGI("to-dos-cpp-oat-exp",
+           "Server running on port %s",
+           connectionProvider->getProperty("port").toString()->c_str());
 
   /* Run server */
   server.run();
