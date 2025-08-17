@@ -3,7 +3,7 @@ project(to-dos-api CXX)
 
 
 
-add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp src/Handler.cpp)
+add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp src/controller/Handler/Handler.cpp)
 
 
 find_package(oatpp REQUIRED)

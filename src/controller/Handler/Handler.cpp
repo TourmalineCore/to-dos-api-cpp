@@ -1,10 +1,7 @@
 #include "Handler.h"
 
-using ObjectMapper = Handler::ObjectMapper;
 using OutgoingResponse = Handler::OutgoingResponse;
 using IncomingRequest  = Handler::IncomingRequest;
-
-Handler::Handler(const shared_ptr<ObjectMapper>& objectMapper): m_objectMapper(objectMapper) {};
 
 shared_ptr<OutgoingResponse> 
 Handler::handle(const shared_ptr<IncomingRequest>& request) {

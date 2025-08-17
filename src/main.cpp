@@ -1,5 +1,6 @@
 #include "to-dos-api.h"
-#include "Handler.h"
+#include "controller/Handler/Handler.h"
+#include "AppComponent.hpp"
 
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 
@@ -10,20 +11,20 @@
 
 void run() {
 
-  /* Create json object mapper */
-  auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared();
+  /* Register Components in scope of run() method */
+  AppComponent components;
 
-  /* Create Router for HTTP requests routing */
-  auto router = oatpp::web::server::HttpRouter::createShared();
+  /* Get router component */
+  OATPP_COMPONENT(shared_ptr<oatpp::web::server::HttpRouter>, router);
 
   /* Route GET - "/task" requests to Handler */
-  router->route("GET", "/task", std::make_shared<Handler>(objectMapper));
+  router->route("GET", "/task", std::make_shared<Handler>());
 
-  /* Create HTTP connection handler with router */
-  auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
+  /* Get connection handler component */
+  OATPP_COMPONENT(shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);
 
-  /* Create TCP connection provider */
-  auto connectionProvider = oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", 8000, oatpp::network::Address::IP_4});
+  /* Get connection provider component */
+  OATPP_COMPONENT(shared_ptr<oatpp::network::ServerConnectionProvider>, connectionProvider);
 
   /* Create server which takes provided TCP connections and passes them to HTTP connection handler */
   oatpp::network::Server server(connectionProvider, connectionHandler);
