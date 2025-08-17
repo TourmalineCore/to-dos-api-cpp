@@ -32,6 +32,35 @@ public:
     task->status = false;
     return createDtoResponse(Status::CODE_200, task);
   }
+
+  ENDPOINT("POST", "/task", createTask, BODY_DTO(oatpp::Object<Task>, taskDto)) {
+    if (!taskDto) {
+      return createResponse(Status::CODE_400, "Empty body");
+    }
+
+    taskDto->status = true;
+
+    return createDtoResponse(Status::CODE_200, taskDto);
+  }
+
+  ENDPOINT("GET", "/query", getTasks,
+         QUERY(String, name),
+         QUERY(Int32, count)) {
+
+    auto result = "Query: name = " + name + ", count = " + to_string(count);
+    
+    return createResponse(Status::CODE_200, result);
+  }
+
+  ENDPOINT("GET", "/headers", headers, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
+    auto userAgent = request->getHeader("User-Agent");
+    auto custom = request->getHeader("X-Custom-Header");
+
+    oatpp::String result = "User-Agent: " + (userAgent ? userAgent : "none") +
+                            "\nX-Custom-Header: " + (custom ? custom : "none");
+
+    return createResponse(Status::CODE_200, result);
+  }
 };
 
 #include OATPP_CODEGEN_END(ApiController) ///< End Codegen
