@@ -1,18 +1,22 @@
 #pragma once
 
 #include "../../dto/DTOs.hpp"
+#include "../../auth/Authorization/Authorization.h"
 
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
 using namespace std;
+using namespace oatpp::web::server::handler;
 
 #include OATPP_CODEGEN_BEGIN(ApiController) ///< Begin Codegen
 
 /**
  * Sample Api Controller.
  */
+// Link to documentation where you can read about authorization
+// https://oatpp.io/docs/components/api-controller/#authorization-basic
 class ExampleController : public oatpp::web::server::api::ApiController {
 public:
   /**
@@ -21,7 +25,10 @@ public:
    */
   ExampleController(OATPP_COMPONENT(shared_ptr<ObjectMapper>, objectMapper))
     : oatpp::web::server::api::ApiController(objectMapper)
-  {}
+  {
+    setDefaultAuthorizationHandler(std::make_shared<Authorization>("MyRealm"));
+  }
+
 public:
   // Link to documentation where you can read about creating ENDPOINT
   // https://oatpp.io/api/latest/oatpp/codegen/api_controller/base_define/#endpoint
@@ -30,6 +37,7 @@ public:
     task->id = 0;
     task->description = "Develop a new website";
     task->status = false;
+
     return createDtoResponse(Status::CODE_200, task);
   }
 
@@ -60,6 +68,17 @@ public:
                             "\nX-Custom-Header: " + (custom ? custom : "none");
 
     return createResponse(Status::CODE_200, result);
+  }
+
+  ENDPOINT("GET", "/secret", secret, 
+    AUTHORIZATION(std::shared_ptr<MyAuthorizationObject>, authObject)
+  ) {    
+    if (authObject) {
+      return createResponse(Status::CODE_200, "Hello " + authObject->userId + 
+        "! Your internal ID is " + std::to_string(authObject->id));
+    }
+
+    return createResponse(Status::CODE_401, "Unauthorized");
   }
 };
 

@@ -9,8 +9,6 @@
 #include "oatpp/network/Server.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
-using namespace std;
-
 void run() {
 
   /* Register Components in scope of run() method */
@@ -20,7 +18,7 @@ void run() {
   OATPP_COMPONENT(shared_ptr<oatpp::web::server::HttpRouter>, router);
 
   /* Create ExampleController and add all of its endpoints to router */
-  auto exampleController = make_shared<ExampleController>();
+  auto exampleController = std::make_shared<ExampleController>();
   router->addController(exampleController);
 
   /* Get connection handler component */

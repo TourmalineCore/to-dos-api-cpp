@@ -13,7 +13,6 @@ using namespace std;
  */
 class AppComponent {
 public:
-
   /**
    *  Create ConnectionProvider component which listens on the port
    */
@@ -44,5 +43,4 @@ public:
   OATPP_CREATE_COMPONENT(shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
     return oatpp::parser::json::mapping::ObjectMapper::createShared();
   }());
-
 };
