@@ -1,13 +1,16 @@
 #pragma once
 
 #include <drogon/HttpController.h>
+#include "filters/auth-filter.h"
 
 using namespace drogon;
 
 class SimpleController : public drogon::HttpController<SimpleController> {
 public:
+    // METHOD_ADD - namespace and the controller class name are added to the route
+    // ADD_METHOD_TO - absolute path from the parameters are added to the route
     METHOD_LIST_BEGIN
-    ADD_METHOD_TO(SimpleController::simpleGet, "/test", Get);
+    ADD_METHOD_TO(SimpleController::simpleGet, "/test", Get, "AuthFilter", "HeaderMiddleware");
     // ADD_METHOD_TO(SimpleController::simpleGetQuery, "/test", Get);
     ADD_METHOD_TO(SimpleController::simplePost, "/test", Post);
     ADD_METHOD_TO(SimpleController::simpleGetRoute, "/test/{1}", Get);
@@ -25,6 +28,4 @@ public:
 
     void simpleGetRoute(const HttpRequestPtr& req,
                std::function<void(const HttpResponsePtr&)>&& callback, uint32_t id);
-
-    
 };
