@@ -33,12 +33,21 @@ public:
   // Link to documentation where you can read about creating ENDPOINT
   // https://oatpp.io/api/latest/oatpp/codegen/api_controller/base_define/#endpoint
   ENDPOINT("GET", "/task", root) {
+    OATPP_LOGI("ENDPOINT", " Controller Action");
     auto task = Task::createShared();
     task->id = 0;
     task->description = "Develop a new website";
     task->status = false;
 
     return createDtoResponse(Status::CODE_200, task);
+  }
+
+  // Example of ENDPOINT_INTERCEPT in action
+  // https://github.com/oatpp/oatpp/blob/06ce4516c47dcd856406a5af3fdb31e30d614ec0/test/oatpp/web/app/ControllerWithInterceptors.hpp#L55
+  ENDPOINT_INTERCEPTOR(root, exampleInterceptor) {
+    OATPP_LOGI("ExampleInterceptor", " Interceptor Action");
+    
+    return (this->*intercepted)(request);
   }
 
   ENDPOINT("POST", "/task", createTask, BODY_DTO(oatpp::Object<Task>, taskDto)) {
