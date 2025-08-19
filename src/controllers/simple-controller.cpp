@@ -7,7 +7,7 @@ void SimpleController::simpleGet(const HttpRequestPtr& req,
     auto userId = req->getParameter("userId");
     auto name = req->getParameter("name");
 
-    auto resp = drogon::HttpResponse::newHttpResponse();
+    auto resp = HttpResponse::newHttpResponse();
 
     if (!userId.empty() || !name.empty()) {
         resp->setBody("Query params: userId=" + userId + ", name=" + name);
@@ -43,4 +43,13 @@ void SimpleController::simpleGetRoute(const HttpRequestPtr& req,
     callback(resp);
 }
 
+void SimpleController::concurrencyTest(const HttpRequestPtr& req,
+               std::function<void(const HttpResponsePtr&)>&& callback) {
+    
+    auto threadId = std::this_thread::get_id();
+    std::cout << "Handling request in thread ID: " << threadId << std::endl;
 
+    auto resp = HttpResponse::newHttpResponse();
+    resp->setBody("Thread ID: " + std::to_string(std::hash<std::thread::id>{}(threadId)));
+    callback(resp);
+}
