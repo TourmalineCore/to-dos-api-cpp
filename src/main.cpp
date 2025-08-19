@@ -3,10 +3,10 @@
 #include <string>
 
 #include <drogon/HttpAppFramework.h>
-#include "controller/simple-controller.h"
+#include "controllers/simple-controller.h"
 
 int main() {
-    static SimpleController simpleController;
+    drogon::app().setLogLevel(trantor::Logger::kDebug);
     drogon::app().addListener("127.0.0.1",8080);
 
     drogon::app().run();
