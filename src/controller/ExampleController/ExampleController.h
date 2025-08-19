@@ -46,7 +46,7 @@ public:
   // https://github.com/oatpp/oatpp/blob/06ce4516c47dcd856406a5af3fdb31e30d614ec0/test/oatpp/web/app/ControllerWithInterceptors.hpp#L55
   ENDPOINT_INTERCEPTOR(root, exampleInterceptor) {
     OATPP_LOGI("ExampleInterceptor", " Interceptor Action");
-    
+
     return (this->*intercepted)(request);
   }
 

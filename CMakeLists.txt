@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(to-dos-api CXX)
 
 
-
-add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp src/auth/Authorization/Authorization.cpp)
+add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp src/auth/Authorization/Authorization.cpp src/lib/RouterInterceptor/RouterInterceptor.cpp)
 
 
 find_package(oatpp REQUIRED)

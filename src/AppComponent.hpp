@@ -1,3 +1,5 @@
+#include "lib/RouterInterceptor/RouterInterceptor.h"
+
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
@@ -34,7 +36,12 @@ public:
    */
   OATPP_CREATE_COMPONENT(shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
     OATPP_COMPONENT(shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
-    return oatpp::web::server::HttpConnectionHandler::createShared(router);
+    // Link to documentation where you can read about addRequestInterceptor
+    // https://oatpp.io/api/latest/oatpp/web/server/HttpConnectionHandler/#httpconnectionhandler-addrequestinterceptor
+    auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
+    connectionHandler->addRequestInterceptor(std::make_shared<RouterInterceptor>());
+
+    return connectionHandler;
   }());
 
   /**
