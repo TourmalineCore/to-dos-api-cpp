@@ -10,7 +10,6 @@
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
-using namespace std;
 using namespace oatpp::web::server::handler;
 
 #include OATPP_CODEGEN_BEGIN(ApiController) ///< Begin Codegen
@@ -18,8 +17,6 @@ using namespace oatpp::web::server::handler;
 /**
  * Sample Api Controller.
  */
-// Link to documentation where you can read about authorization
-// https://oatpp.io/docs/components/api-controller/#authorization-basic
 class ExampleController : public oatpp::web::server::api::ApiController {
 public:
   /**
@@ -35,8 +32,8 @@ public:
 public:
   // Link to documentation where you can read about creating ENDPOINT
   // https://oatpp.io/api/latest/oatpp/codegen/api_controller/base_define/#endpoint
-  ENDPOINT("GET", "/task", root) {
-    OATPP_LOGI("ENDPOINT", " Controller Action");
+  ENDPOINT("GET", "/task", getTask) 
+  {  
     auto task = Task::createShared();
     task->id = 0;
     task->description = "Develop a new website";
@@ -45,15 +42,20 @@ public:
     return createDtoResponse(Status::CODE_200, task);
   }
 
-  // Example of ENDPOINT_INTERCEPT in action
-  // https://github.com/oatpp/oatpp/blob/06ce4516c47dcd856406a5af3fdb31e30d614ec0/test/oatpp/web/app/ControllerWithInterceptors.hpp#L55
-  ENDPOINT_INTERCEPTOR(root, exampleInterceptor) {
-    OATPP_LOGI("ExampleInterceptor", " Interceptor Action");
+  // Link to documentation where you can read about creating ENDPOINT_INTERCEPTOR
+  // https://oatpp.io/api/latest/oatpp/codegen/api_controller/base_define/#endpoint-interceptor
+  ENDPOINT_INTERCEPTOR(getTask, exampleInterceptor) 
+  {
+    OATPP_LOGD("ExampleInterceptor", " Interceptor Action");
 
     return (this->*intercepted)(request);
   }
 
-  ENDPOINT("POST", "/task", createTask, BODY_DTO(oatpp::Object<Task>, taskDto)) {
+  // Link to documentation where you can read about creating BODY_DTO
+  // https://oatpp.io/docs/components/api-controller/#request-body-mapping
+  ENDPOINT("POST", "/task", postTask, 
+    BODY_DTO(oatpp::Object<Task>, taskDto)) 
+  {
     if (!taskDto) {
       return createResponse(Status::CODE_400, "Empty body");
     }
@@ -63,31 +65,36 @@ public:
     return createDtoResponse(Status::CODE_200, taskDto);
   }
 
-  ENDPOINT("GET", "/query", getTasks,
-         QUERY(String, name),
-         QUERY(Int32, count)) {
-
-    auto result = "Query: name = " + name + ", count = " + to_string(count);
+  // Link to documentation where you can read about creating QUERY
+  // https://oatpp.io/docs/components/api-controller/#query-parameters-mapping
+  ENDPOINT("GET", "/query", getQuery,
+    QUERY(String, username),
+    QUERY(Int32, age)) 
+  {
+    oatpp::String result = "Query-params: name = " + username + ", age = " + std::to_string(age);
     
     return createResponse(Status::CODE_200, result);
   }
 
-  ENDPOINT("GET", "/headers", headers, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
-    auto userAgent = request->getHeader("User-Agent");
-    auto custom = request->getHeader("X-Custom-Header");
-
-    oatpp::String result = "User-Agent: " + (userAgent ? userAgent : "none") +
-                            "\nX-Custom-Header: " + (custom ? custom : "none");
+  // Link to documentation where you can read about creating HEADER
+  // https://oatpp.io/docs/components/api-controller/#headers-mapping
+  ENDPOINT("GET", "/headers", getHeaders, 
+    HEADER(String, userAgent, "User-Agent")) 
+  {
+    oatpp::String result = "User-Agent: " + userAgent;
 
     return createResponse(Status::CODE_200, result);
   }
 
+  // Link to documentation where you can read about authorization
+  // https://oatpp.io/docs/components/api-controller/#authorization-basic
   ENDPOINT("GET", "/secret", secret, 
-    AUTHORIZATION(std::shared_ptr<MyAuthorizationObject>, authObject)
-  ) {    
+    AUTHORIZATION(std::shared_ptr<MyAuthorizationObject>, authObject)) 
+  {    
     if (authObject) {
-      return createResponse(Status::CODE_200, "Hello " + authObject->userId + 
-        "! Your internal ID is " + std::to_string(authObject->id));
+      oatpp::String result = "Hello " + authObject->userId + "! Your internal ID is " + std::to_string(authObject->id);
+
+      return createResponse(Status::CODE_200, result);
     }
 
     return createResponse(Status::CODE_401, "Unauthorized");

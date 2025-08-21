@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
+set(PROJECT_NAME "to-dos-api")
 project(to-dos-api CXX)
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS src/*.c src/*.cc src/*.cpp src/*.hpp src/*.h)
 
-add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp src/auth/Authorization/Authorization.cpp src/lib/RouterInterceptor/RouterInterceptor.cpp)
+
+add_executable(${PROJECT_NAME} ${sources})
 
 
 find_package(oatpp REQUIRED)
