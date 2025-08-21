@@ -77,4 +77,19 @@ void SimpleController::asyncTest(const HttpRequestPtr& req,
     callback(resp);
 }
 
+/*
+  Coroutines in C++20 allow writing asynchronous or lazy computations. 
+  Instead of returning a final result, a coroutine can suspend 
+  execution (co_await, co_yield, co_return), transfer control back to the caller, 
+  and later resume where it left off.
 
+  Key operators:
+    - co_return : completes the coroutine with a value.
+    - co_yield  : produces a sequence of values, suspending between them.
+    - co_await  : suspends until the awaited operation is ready.
+
+  A coroutine must return a coroutine-aware type (like generator, task,
+  or a custom promise type). These types manage suspension/resumption.
+
+  Full explanation of them and example of usage here https://en.cppreference.com/w/cpp/language/coroutines.html
+*/
