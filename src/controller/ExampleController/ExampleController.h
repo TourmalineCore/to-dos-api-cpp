@@ -1,5 +1,8 @@
 #pragma once
 
+#include <thread>
+#include <chrono>
+
 #include "../../dto/DTOs.hpp"
 #include "../../auth/Authorization/Authorization.h"
 
@@ -88,6 +91,14 @@ public:
     }
 
     return createResponse(Status::CODE_401, "Unauthorized");
+  }
+
+  ENDPOINT("GET", "/threads", getThreads) 
+  {
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    OATPP_LOGD("ENDPOINT", " Controller Action");
+
+    return createResponse(Status::CODE_200, "OK");
   }
 };
 
