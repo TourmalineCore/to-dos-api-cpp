@@ -2,10 +2,12 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/cpp
 {
 	"name": "developing",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-
+	"dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"mounts": [
+    "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind"
+  ],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

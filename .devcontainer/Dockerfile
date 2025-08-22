@@ -12,3 +12,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN pip install conan
 
 COPY to-dos-conan-profile.conf /root/.conan2/profiles/default
+
+# This is necessary to keep the container "alive" and not terminate immediately after launch. 
+# Otherwise, DevContainer will not have time to connect.
+CMD ["tail", "-f", "/dev/null"]
