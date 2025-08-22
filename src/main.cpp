@@ -7,7 +7,7 @@
 
 int main() {
     drogon::app().setLogLevel(trantor::Logger::kDebug);
-    drogon::app().addListener("127.0.0.1",8080);
+    drogon::app().addListener("0.0.0.0", 8080);
     drogon::app().setThreadNum(std::thread::hardware_concurrency());
 
     drogon::app().run();
