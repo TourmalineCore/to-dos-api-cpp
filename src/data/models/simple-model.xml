@@ -1,0 +1,31 @@
+<changelog xmlns="http://www.codesynthesis.com/xmlns/odb/changelog" database="pgsql" version="1">
+  <changeset version="2">
+    <add-table name="public.person" kind="object">
+      <column name="id" type="BIGINT" null="false"/>
+      <column name="first" type="TEXT" null="false"/>
+      <column name="last" type="TEXT" null="false"/>
+      <column name="gender" type="TEXT" null="false"/>
+      <column name="simple_bool1" type="BOOLEAN" null="false"/>
+      <column name="simple_string1" type="TEXT" null="false"/>
+      <column name="age" type="SMALLINT" null="false"/>
+      <primary-key auto="true">
+        <column name="id"/>
+      </primary-key>
+    </add-table>
+    <drop-table name="person"/>
+  </changeset>
+
+  <model version="1">
+    <table name="person" kind="object">
+      <column name="id" type="BIGINT" null="false"/>
+      <column name="first" type="TEXT" null="false"/>
+      <column name="last" type="TEXT" null="false"/>
+      <column name="gender" type="TEXT" null="false"/>
+      <column name="simple_bool1" type="BOOLEAN" null="false"/>
+      <column name="age" type="SMALLINT" null="false"/>
+      <primary-key auto="true">
+        <column name="id"/>
+      </primary-key>
+    </table>
+  </model>
+</changelog>
