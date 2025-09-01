@@ -77,6 +77,13 @@ void SimpleController::asyncTest(const HttpRequestPtr& req,
     callback(resp);
 }
 
+void SimpleController::getTasks(const HttpRequestPtr& req,
+                             std::function<void(const HttpResponsePtr&)>&& callback) {
+    auto resp = HttpResponse::newHttpResponse();
+
+    callback(resp);
+}
+
 /*
   Coroutines in C++20 allow writing asynchronous or lazy computations. 
   Instead of returning a final result, a coroutine can suspend 
