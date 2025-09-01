@@ -34,9 +34,10 @@ int main() {
     // });
 
     drogon::app().setLogLevel(trantor::Logger::kDebug);
-    drogon::app().addListener("127.0.0.1",8080);
-    drogon::app().setThreadNum(std::thread::hardware_concurrency());
-
+    // drogon::app().addListener("127.0.0.1",8080);
+    // drogon::app().setThreadNum(std::thread::hardware_concurrency());
+    
+    drogon::app().loadConfigFile("/workspaces/to-dos-api-cpp/config.json");
     drogon::app().run();
     return 0;
 }
