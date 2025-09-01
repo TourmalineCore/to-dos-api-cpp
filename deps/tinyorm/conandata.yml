@@ -1,0 +1,10 @@
+sources:
+  "0.38.1":
+    url: "https://github.com/silverqx/TinyORM/archive/v0.38.1.tar.gz"
+    sha256: "1203998bd3ecfca431ea2f30464aade53dc4391a6b32fc2515cf069a34fae2c8"
+    strip_root: true
+
+patches:
+  "0.38.1":
+    - patch_file: "patches/fix-typos-and-ctors.patch"
+      base_path: "source_folder"

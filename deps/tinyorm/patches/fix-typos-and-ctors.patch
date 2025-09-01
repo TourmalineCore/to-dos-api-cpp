@@ -1,0 +1,51 @@
+diff --git a/include/orm/tiny/concerns/hasattributes.hpp b/include/orm/tiny/concerns/hasattributes.hpp
+index 7e61fe502..7c01d1b58 100644
+--- a/include/orm/tiny/concerns/hasattributes.hpp
++++ b/include/orm/tiny/concerns/hasattributes.hpp
+@@ -611,7 +611,7 @@ namespace Orm::Tiny::Concerns
+ 
+         // Build attributes hash
+         m_attributesHash.clear();
+-        m_attributesHash.reserve(static_cast<decltype (m_attributesHash)::size_type>(
++        m_attributesHash.reserve(static_cast<typename decltype (m_attributesHash)::size_type>(
+                                      m_attributes.size()));
+ 
+         rehashAttributePositions(m_attributes, m_attributesHash);
+diff --git a/tom/include/tom/commands/make/support/preparebtmoptionvalues.hpp b/tom/include/tom/commands/make/support/preparebtmoptionvalues.hpp
+index 43f822bda..919774693 100644
+--- a/tom/include/tom/commands/make/support/preparebtmoptionvalues.hpp
++++ b/tom/include/tom/commands/make/support/preparebtmoptionvalues.hpp
+@@ -99,7 +99,7 @@ namespace Tom::Commands::Make::Support
+ 
+         auto optionsNames = modelCommand().optionNames();
+ 
+-        m_preparedValues.reserve(static_cast<P::size_type>(optionsNames.size()) - 1);
++        m_preparedValues.reserve(static_cast<typename P::size_type>(optionsNames.size()) - 1);
+ 
+         for (auto &&option : optionsNames) {
+             // Try to start a new btm relation during the given option values search
+diff --git a/tom/include/tom/tomtypes.hpp b/tom/include/tom/tomtypes.hpp
+index f8e1b3c81..21b711689 100644
+--- a/tom/include/tom/tomtypes.hpp
++++ b/tom/include/tom/tomtypes.hpp
+@@ -16,6 +16,20 @@ TINYORM_BEGIN_COMMON_NAMESPACE
+ namespace Tom
+ {
+ 
++    /// Sub-section item
++     struct SubSectionItem
++     {
+++        // Constructor needed for QList::emplaceFront
+++        SubSectionItem(std::optional<QString> title_,
+++                       std::map<QString, QString> data_) noexcept
+++            : title(std::move(title_))
+++            , data(std::move(data_))
+++        {}
+++
++         std::optional<QString> title;
++         std::map<QString, QString> data;
++     };
++     
+     /*! Hydrated migration item from the database. */
+     struct MigrationItem
+     {
