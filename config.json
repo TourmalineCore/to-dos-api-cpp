@@ -8,6 +8,7 @@
   ],
   "db_clients":[
     {
+      "name": "default",
       "rdbms": "postgresql",
       "host": "host.docker.internal",
       "port": 5433,
