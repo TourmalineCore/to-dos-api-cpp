@@ -79,9 +79,70 @@ void SimpleController::asyncTest(const HttpRequestPtr& req,
 
 void SimpleController::getTasks(const HttpRequestPtr& req,
                              std::function<void(const HttpResponsePtr&)>&& callback) {
+    auto client = drogon::app().getDbClient("default");
+
+    client->execSqlAsync(
+        "SELECT id, description, is_done, created_at FROM tasks ORDER BY id",
+        [callback](const drogon::orm::Result &r) {
+            Json::Value tasks(Json::arrayValue);
+            for (auto const &row : r) {
+                Json::Value task;
+                task["id"] = row["id"].as<int>();
+                task["description"] = row["description"].as<std::string>();
+                task["is_done"] = row["is_done"].as<bool>();
+                task["created_at"] = row["created_at"].as<std::string>();
+                tasks.append(task);
+            }
+            auto resp = HttpResponse::newHttpJsonResponse(tasks);
+            callback(resp);
+        },
+        [callback](const drogon::orm::DrogonDbException &e) {
+            auto resp = HttpResponse::newHttpResponse();
+            resp->setStatusCode(k500InternalServerError);
+            resp->setBody(std::string("DB Error: ") + e.base().what());
+            callback(resp);
+        }
+    );
+
     auto resp = HttpResponse::newHttpResponse();
 
     callback(resp);
+}
+
+void SimpleController::createTask(const HttpRequestPtr &req,
+                           std::function<void (const HttpResponsePtr &)> &&callback)
+{
+    auto json = req->getJsonObject();
+    if (!json || !json->isMember("description")) {
+        auto resp = HttpResponse::newHttpResponse();
+        resp->setStatusCode(k400BadRequest);
+        resp->setBody("Missing 'description'");
+        callback(resp);
+        return;
+    }
+
+    std::string description = (*json)["description"].asString();
+
+    auto client = drogon::app().getDbClient("default");
+
+    client->execSqlAsync(
+        "INSERT INTO tasks(description, is_done, created_at) VALUES($1, $2, NOW()) RETURNING id",
+        [callback, description](const drogon::orm::Result &r) {
+            Json::Value res;
+            res["id"] = r[0]["id"].as<int>();
+            res["description"] = description;
+            res["is_done"] = false;
+            auto resp = HttpResponse::newHttpJsonResponse(res);
+            callback(resp);
+        },
+        [callback](const drogon::orm::DrogonDbException &e) {
+            auto resp = HttpResponse::newHttpResponse();
+            resp->setStatusCode(k500InternalServerError);
+            resp->setBody(std::string("DB Error: ") + e.base().what());
+            callback(resp);
+        },
+        description, false
+    );
 }
 
 /*
