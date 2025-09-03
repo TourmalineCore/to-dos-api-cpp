@@ -1,8 +1,12 @@
 #include "simple-controller.h"
+// #include "../models/Customers/Customers.h"
 
 #include <thread>
 #include <chrono>
 #include <coroutine>
+
+// using namespace drogon;
+// using namespace drogon_model::postgres;
 
 // Due to the way routes are processed in Drogon, there is no difference between Get and Get with query, so an additional handler is not used!
 void SimpleController::simpleGet(const HttpRequestPtr& req,
@@ -112,37 +116,20 @@ void SimpleController::getTasks(const HttpRequestPtr& req,
 void SimpleController::createTask(const HttpRequestPtr &req,
                            std::function<void (const HttpResponsePtr &)> &&callback)
 {
-    auto json = req->getJsonObject();
-    if (!json || !json->isMember("description")) {
-        auto resp = HttpResponse::newHttpResponse();
-        resp->setStatusCode(k400BadRequest);
-        resp->setBody("Missing 'description'");
-        callback(resp);
-        return;
-    }
+    // auto dbClientPtr = drogon::app().getDbClient();
 
-    std::string description = (*json)["description"].asString();
+    // Customers newCustomer;
+    // newCustomer.setFirstName("Alex");
+    // newCustomer.setAge(10);
 
-    auto client = drogon::app().getDbClient("default");
-
-    client->execSqlAsync(
-        "INSERT INTO tasks(description, is_done, created_at) VALUES($1, $2, NOW()) RETURNING id",
-        [callback, description](const drogon::orm::Result &r) {
-            Json::Value res;
-            res["id"] = r[0]["id"].as<int>();
-            res["description"] = description;
-            res["is_done"] = false;
-            auto resp = HttpResponse::newHttpJsonResponse(res);
-            callback(resp);
-        },
-        [callback](const drogon::orm::DrogonDbException &e) {
-            auto resp = HttpResponse::newHttpResponse();
-            resp->setStatusCode(k500InternalServerError);
-            resp->setBody(std::string("DB Error: ") + e.base().what());
-            callback(resp);
-        },
-        description, false
-    );
+    // Mapper<Customers> mp(dbClientPtr);
+    // mp.insert(newCustomer,
+    //     [](Customers customer) {
+    //         LOG_INFO << "Пользователь создан.";
+    //     },
+    //     [](const DrogonDbException &e) {
+    //         LOG_ERROR << "Ошибка при создании пользователя: " << e.base().what();
+    //     });
 }
 
 /*

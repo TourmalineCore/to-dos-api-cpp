@@ -18,8 +18,8 @@ public:
     ADD_METHOD_TO(SimpleController::concurrencyTest, "/concurrency-test", Get);
     ADD_METHOD_TO(SimpleController::asyncTest, "/async-test", Get);
     
-    ADD_METHOD_TO(SimpleController::getTasks, "/tasks", Get);
-    ADD_METHOD_TO(SimpleController::createTask, "/tasks", Post);
+    ADD_METHOD_TO(SimpleController::getTasks, "/get-tasks", Get);
+    ADD_METHOD_TO(SimpleController::createTask, "/create-task", Post);
     METHOD_LIST_END
 
     // Due to the way routes are processed in Drogon, there is no difference between Get and Get with query, so an additional handler is not used!
