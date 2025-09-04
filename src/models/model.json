@@ -1,0 +1,13 @@
+{
+  "rdbms": "postgresql",
+  "host": "host.docker.internal",
+  "port": 5433,
+  "dbname": "postgres",
+  "user": "postgres",
+  "passwd": "postgres",
+  "tables": [],
+  "relationships": {
+      "enabled": false,
+      "items": []
+  }
+}
