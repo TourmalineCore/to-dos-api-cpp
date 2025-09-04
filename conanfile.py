@@ -42,3 +42,4 @@ class to_dos_apiRecipe(ConanFile):
     
     def configure(self):
         self.options["drogon"].with_postgres = True
+        self.options["drogon"].with_ctl = True
