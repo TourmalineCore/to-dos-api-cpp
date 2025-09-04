@@ -1,12 +1,17 @@
 #include "simple-controller.h"
-// #include "../models/Customers/Customers.h"
+
+#include "models/Tasks.h"
+
+#include <drogon/orm/Mapper.h>
 
 #include <thread>
 #include <chrono>
 #include <coroutine>
+#include <string>
 
-// using namespace drogon;
-// using namespace drogon_model::postgres;
+using namespace drogon;
+using namespace drogon::orm;
+using namespace drogon_model::postgres;
 
 // Due to the way routes are processed in Drogon, there is no difference between Get and Get with query, so an additional handler is not used!
 void SimpleController::simpleGet(const HttpRequestPtr& req,
@@ -81,55 +86,130 @@ void SimpleController::asyncTest(const HttpRequestPtr& req,
     callback(resp);
 }
 
-void SimpleController::getTasks(const HttpRequestPtr& req,
-                             std::function<void(const HttpResponsePtr&)>&& callback) {
-    auto client = drogon::app().getDbClient("default");
+void SimpleController::getTasks(const HttpRequestPtr &req,
+                            std::function<void (const HttpResponsePtr &)> &&callback)
+{
+    auto dbClient = drogon::app().getDbClient();
+    Mapper<Tasks> tasksMapper(dbClient);
 
-    client->execSqlAsync(
-        "SELECT id, description, is_done, created_at FROM tasks ORDER BY id",
-        [callback](const drogon::orm::Result &r) {
-            Json::Value tasks(Json::arrayValue);
-            for (auto const &row : r) {
-                Json::Value task;
-                task["id"] = row["id"].as<int>();
-                task["description"] = row["description"].as<std::string>();
-                task["is_done"] = row["is_done"].as<bool>();
-                task["created_at"] = row["created_at"].as<std::string>();
-                tasks.append(task);
-            }
-            auto resp = HttpResponse::newHttpJsonResponse(tasks);
-            callback(resp);
-        },
-        [callback](const drogon::orm::DrogonDbException &e) {
-            auto resp = HttpResponse::newHttpResponse();
-            resp->setStatusCode(k500InternalServerError);
-            resp->setBody(std::string("DB Error: ") + e.base().what());
-            callback(resp);
+    tasksMapper.findAll(
+    [callback](const std::vector<Tasks> &tasks) {
+        Json::Value jsonTasksArray;
+
+        for (const auto &task : tasks) {
+            Json::Value jsonTask;
+            jsonTask["id"] = task.getValueOfId();
+            jsonTask["description"] = task.getValueOfDescription();
+            jsonTask["status"] = task.getValueOfStatus();
+            jsonTask["created_at"] = task.getValueOfCreatedAt().toFormattedString(false);
+
+            jsonTasksArray.append(jsonTask);
         }
-    );
 
-    auto resp = HttpResponse::newHttpResponse();
+        auto resp = HttpResponse::newHttpJsonResponse(jsonTasksArray);
+        callback(resp);
+    },
+    [callback](const DrogonDbException &e) {
+        Json::Value error;
+        error["status"] = "error";
+        error["message"] = e.base().what();
 
-    callback(resp);
+        auto resp = HttpResponse::newHttpJsonResponse(error);
+        callback(resp);
+    });
 }
+
+void SimpleController::getTaskById(const HttpRequestPtr &req,
+                                   std::function<void(const HttpResponsePtr &)> &&callback,
+                                   uint32_t id)
+{
+    auto dbClient = drogon::app().getDbClient();
+    Mapper<Tasks> tasksMapper(dbClient);
+
+    tasksMapper.findByPrimaryKey(id,
+    [callback](const Tasks &task) {
+        Json::Value jsonTask;
+        jsonTask["id"] = task.getValueOfId();
+        jsonTask["description"] = task.getValueOfDescription();
+        jsonTask["status"] = task.getValueOfStatus();
+        jsonTask["created_at"] = task.getValueOfCreatedAt().toFormattedString(false);
+
+        auto resp = HttpResponse::newHttpJsonResponse(jsonTask);
+        callback(resp);
+    },
+    [callback](const DrogonDbException &e) {
+        Json::Value error;
+        error["status"] = "error";
+        error["message"] = e.base().what();
+
+        auto resp = HttpResponse::newHttpJsonResponse(error);
+        callback(resp);
+    });
+}
+
 
 void SimpleController::createTask(const HttpRequestPtr &req,
                            std::function<void (const HttpResponsePtr &)> &&callback)
 {
-    // auto dbClientPtr = drogon::app().getDbClient();
+    auto json = req->getJsonObject();
+    Json::Value result;
 
-    // Customers newCustomer;
-    // newCustomer.setFirstName("Alex");
-    // newCustomer.setAge(10);
+    std::vector<std::string> requiredFields = {"description"};
+    std::vector<std::string> missingFields;
 
-    // Mapper<Customers> mp(dbClientPtr);
-    // mp.insert(newCustomer,
-    //     [](Customers customer) {
-    //         LOG_INFO << "Пользователь создан.";
-    //     },
-    //     [](const DrogonDbException &e) {
-    //         LOG_ERROR << "Ошибка при создании пользователя: " << e.base().what();
-    //     });
+    if (!json) {
+        result["status"] = "error";
+        result["message"] = "Invalid JSON";
+        auto resp = HttpResponse::newHttpJsonResponse(result);
+        callback(resp);
+
+        return;
+    }
+
+    for (const auto &field : requiredFields) {
+        if (!json->isMember(field) || (*json)[field].isNull()) {
+            missingFields.push_back(field);
+        }
+    }
+
+    if (!missingFields.empty()) {
+        result["status"] = "error";
+        result["message"] = "Required fields are missing";
+        result["missing"] = Json::arrayValue;
+
+        for (const auto &field : missingFields) {
+            result["missing"].append(field);
+        }
+
+        auto resp = HttpResponse::newHttpJsonResponse(result);
+        callback(resp);
+
+        return;
+    }
+
+    auto dbClient = drogon::app().getDbClient();
+    Mapper<Tasks> tasksMapper(dbClient);
+
+    Tasks newTask;
+    newTask.setDescription(json->get("description", "").asString());
+
+    tasksMapper.insert(newTask, 
+    [callback](const Tasks &insertedTask) {
+      Json::Value result;
+      result["status"] = "OK";
+      result["id"] = insertedTask.getValueOfId();
+
+      auto resp = HttpResponse::newHttpJsonResponse(result);
+
+      callback(resp);
+    }, [callback](const DrogonDbException &e) {
+      Json::Value error;
+      error["status"] = "error";
+      error["message"] = e.base().what();
+
+      auto resp = HttpResponse::newHttpJsonResponse(error);
+      callback(resp);
+    });
 }
 
 /*

@@ -18,7 +18,9 @@ public:
     ADD_METHOD_TO(SimpleController::concurrencyTest, "/concurrency-test", Get);
     ADD_METHOD_TO(SimpleController::asyncTest, "/async-test", Get);
     
+    // Database interaction endpoints
     ADD_METHOD_TO(SimpleController::getTasks, "/get-tasks", Get);
+    ADD_METHOD_TO(SimpleController::getTaskById, "/get-task/{id}", Get);
     ADD_METHOD_TO(SimpleController::createTask, "/create-task", Post);
     METHOD_LIST_END
 
@@ -41,10 +43,13 @@ public:
     void asyncTest(const HttpRequestPtr& req,
                std::function<void(const HttpResponsePtr&)>&& callback);
     
-
+    // Database interaction endpoints
     void getTasks(const HttpRequestPtr& req,
-               std::function<void(const HttpResponsePtr&)>&& callback);
-    
-    void createTask(const HttpRequestPtr &req,
-                    std::function<void (const HttpResponsePtr &)> &&callback);
+                std::function<void(const HttpResponsePtr&)>&& callback);
+
+    void getTaskById(const HttpRequestPtr& req,
+                std::function<void(const HttpResponsePtr&)>&& callback, uint32_t id);
+                
+    void createTask(const HttpRequestPtr& req,
+                std::function<void(const HttpResponsePtr&)>&& callback);
 };
