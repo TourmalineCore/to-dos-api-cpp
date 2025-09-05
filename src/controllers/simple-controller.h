@@ -22,6 +22,10 @@ public:
     ADD_METHOD_TO(SimpleController::getTasks, "/get-tasks", Get);
     ADD_METHOD_TO(SimpleController::getTaskById, "/get-task/{id}", Get);
     ADD_METHOD_TO(SimpleController::createTask, "/create-task", Post);
+
+    ADD_METHOD_TO(SimpleController::getUsers, "/get-users", Get);
+    ADD_METHOD_TO(SimpleController::getUserById, "/get-user/{id}", Get);
+    ADD_METHOD_TO(SimpleController::createUser, "/create-user", Post);
     METHOD_LIST_END
 
     // Due to the way routes are processed in Drogon, there is no difference between Get and Get with query, so an additional handler is not used!
@@ -51,5 +55,14 @@ public:
                 std::function<void(const HttpResponsePtr&)>&& callback, uint32_t id);
                 
     void createTask(const HttpRequestPtr& req,
+                std::function<void(const HttpResponsePtr&)>&& callback);
+
+    void getUsers(const HttpRequestPtr& req,
+                std::function<void(const HttpResponsePtr&)>&& callback);
+
+    void getUserById(const HttpRequestPtr& req,
+                std::function<void(const HttpResponsePtr&)>&& callback, uint32_t id);
+                
+    void createUser(const HttpRequestPtr& req,
                 std::function<void(const HttpResponsePtr&)>&& callback);
 };

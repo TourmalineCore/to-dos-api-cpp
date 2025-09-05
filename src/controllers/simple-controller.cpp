@@ -1,6 +1,7 @@
 #include "simple-controller.h"
 
 #include "models/Tasks.h"
+#include "models/Users.h"
 
 #include <drogon/orm/Mapper.h>
 
@@ -91,6 +92,7 @@ void SimpleController::getTasks(const HttpRequestPtr &req,
 {
     auto dbClient = drogon::app().getDbClient();
     Mapper<Tasks> tasksMapper(dbClient);
+    Mapper<Users> usersMapper(dbClient);
 
     tasksMapper.findAll(
     [callback](const std::vector<Tasks> &tasks) {
@@ -101,6 +103,7 @@ void SimpleController::getTasks(const HttpRequestPtr &req,
             jsonTask["id"] = task.getValueOfId();
             jsonTask["description"] = task.getValueOfDescription();
             jsonTask["status"] = task.getValueOfStatus();
+            jsonTask["user_id"] = task.getValueOfUserId();
             jsonTask["created_at"] = task.getValueOfCreatedAt().toFormattedString(false);
 
             jsonTasksArray.append(jsonTask);
@@ -132,6 +135,7 @@ void SimpleController::getTaskById(const HttpRequestPtr &req,
         jsonTask["id"] = task.getValueOfId();
         jsonTask["description"] = task.getValueOfDescription();
         jsonTask["status"] = task.getValueOfStatus();
+        jsonTask["user_id"] = task.getValueOfUserId();
         jsonTask["created_at"] = task.getValueOfCreatedAt().toFormattedString(false);
 
         auto resp = HttpResponse::newHttpJsonResponse(jsonTask);
@@ -154,7 +158,7 @@ void SimpleController::createTask(const HttpRequestPtr &req,
     auto json = req->getJsonObject();
     Json::Value result;
 
-    std::vector<std::string> requiredFields = {"description"};
+    std::vector<std::string> requiredFields = {"description", "user_id"};
     std::vector<std::string> missingFields;
 
     if (!json) {
@@ -192,12 +196,145 @@ void SimpleController::createTask(const HttpRequestPtr &req,
 
     Tasks newTask;
     newTask.setDescription(json->get("description", "").asString());
+    newTask.setUserId(static_cast<int32_t>(json->get("user_id", 0).asInt()));
 
     tasksMapper.insert(newTask, 
     [callback](const Tasks &insertedTask) {
       Json::Value result;
       result["status"] = "OK";
       result["id"] = insertedTask.getValueOfId();
+
+      auto resp = HttpResponse::newHttpJsonResponse(result);
+
+      callback(resp);
+    }, [callback](const DrogonDbException &e) {
+      Json::Value error;
+      error["status"] = "error";
+      error["message"] = e.base().what();
+
+      auto resp = HttpResponse::newHttpJsonResponse(error);
+      callback(resp);
+    });
+}
+
+void SimpleController::getUsers(const HttpRequestPtr &req,
+                            std::function<void (const HttpResponsePtr &)> &&callback)
+{
+    auto dbClient = drogon::app().getDbClient();
+    Mapper<Users> usersMapper(dbClient);
+
+    usersMapper.findAll(
+    [callback](const std::vector<Users> &users) {
+        Json::Value jsonUsersArray;
+
+        for (const auto &user : users) {
+            Json::Value jsonUser;
+            jsonUser["id"] = user.getValueOfId();
+            jsonUser["name"] = user.getValueOfName();
+            jsonUser["surname"] = user.getValueOfSurname();
+            jsonUser["email"] = user.getValueOfEmail();
+            jsonUser["created_at"] = user.getValueOfCreatedAt().toFormattedString(false);
+
+            jsonUsersArray.append(jsonUser);
+        }
+
+        auto resp = HttpResponse::newHttpJsonResponse(jsonUsersArray);
+        callback(resp);
+    },
+    [callback](const DrogonDbException &e) {
+        Json::Value error;
+        error["status"] = "error";
+        error["message"] = e.base().what();
+
+        auto resp = HttpResponse::newHttpJsonResponse(error);
+        callback(resp);
+    });
+}
+
+void SimpleController::getUserById(const HttpRequestPtr &req,
+                            std::function<void (const HttpResponsePtr &)> &&callback,
+                            uint32_t id)
+{
+    auto dbClient = drogon::app().getDbClient();
+    Mapper<Users> usersMapper(dbClient);
+
+    usersMapper.findByPrimaryKey(id,
+    [callback](const Users &user) {
+        Json::Value jsonUser;
+        jsonUser["id"] = user.getValueOfId();
+        jsonUser["name"] = user.getValueOfName();
+        jsonUser["surname"] = user.getValueOfSurname();
+        jsonUser["email"] = user.getValueOfEmail();
+        jsonUser["created_at"] = user.getValueOfCreatedAt().toFormattedString(false);
+
+        auto resp = HttpResponse::newHttpJsonResponse(jsonUser);
+        callback(resp);
+    },
+    [callback](const DrogonDbException &e) {
+        Json::Value error;
+        error["status"] = "error";
+        error["message"] = e.base().what();
+
+        auto resp = HttpResponse::newHttpJsonResponse(error);
+        callback(resp);
+    });
+}
+
+void SimpleController::createUser(const HttpRequestPtr &req,
+                            std::function<void (const HttpResponsePtr &)> &&callback)
+{
+    auto json = req->getJsonObject();
+    Json::Value result;
+
+    std::vector<std::string> requiredFields = {"name", "surname"};
+    std::vector<std::string> missingFields;
+
+    if (!json) {
+        result["status"] = "error";
+        result["message"] = "Invalid JSON";
+        auto resp = HttpResponse::newHttpJsonResponse(result);
+        callback(resp);
+
+        return;
+    }
+
+    for (const auto &field : requiredFields) {
+        if (!json->isMember(field) || (*json)[field].isNull()) {
+            missingFields.push_back(field);
+        }
+    }
+
+    if (!missingFields.empty()) {
+        result["status"] = "error";
+        result["message"] = "Required fields are missing";
+        result["missing"] = Json::arrayValue;
+
+        for (const auto &field : missingFields) {
+            result["missing"].append(field);
+        }
+
+        auto resp = HttpResponse::newHttpJsonResponse(result);
+        callback(resp);
+
+        return;
+    }
+
+    auto dbClient = drogon::app().getDbClient();
+    Mapper<Users> usersMapper(dbClient);
+
+    Users newUser;
+    newUser.setName(json->get("name", "").asString());
+    newUser.setSurname(json->get("surname", "").asString());
+
+    if (!(*json)["email"].isNull()) {
+        newUser.setEmail(json->get("email", "").asString());
+    }
+
+    usersMapper.insert(newUser, 
+    [callback](const Users &insertedUser) {
+      Json::Value result;
+      result["status"] = "OK";
+      result["id"] = insertedUser.getValueOfId();
 
       auto resp = HttpResponse::newHttpJsonResponse(result);
 
