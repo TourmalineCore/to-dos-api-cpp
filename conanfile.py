@@ -1,6 +1,7 @@
+import subprocess
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
-
+from conan.tools.system import package_manager
 
 class to_dos_apiRecipe(ConanFile):
     name = "to-dos-api"
@@ -33,6 +34,14 @@ class to_dos_apiRecipe(ConanFile):
         cmake.configure()
         cmake.build()
 
+    def system_requirements(self):
+        apt = package_manager.Apt(self)
+        # apt.install(["libodb-dev", "libodb-pgsql-dev", "libpq-dev"], update=True)
+        subprocess.check_call(["pip", "install", "alembic", "psycopg2-binary"])
+
     def package(self):
         cmake = CMake(self)
         cmake.install()
+
+    # def package_info(self):
+    #     self.cpp_info.libs = ["odb", "odb-pgsql"]
