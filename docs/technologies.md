@@ -79,6 +79,36 @@ For this boilerplate C++ backend template that is:
 
 ## Web Framework
 
+At the time of research, the following versions were used:
+- **Drogon:** 1.9.10
+- **userver:** 2.12
+- **Oat++:** 1.3.0
+
+#### Why Drogon - Chosen solution
+
+**Advantages:**
+- **Ease of use:** Drogon has a simple, readable syntax, which significantly reduces the entry barrier and improves the understandability and readability of the code.
+- **Support by build systems:** Drogon package is available in conan-center and is easy to install and configure the parameters, there is also support for CMake, Make.
+- **Configuration file:** all of Drogon's main settings can be defined through a configuration file, which adds convenience to use and allows you to store all of your settings in one place.
+- **Support for multithreaded work:** Drogon supports multi-threaded operation.
+
+**Disadvantages:**
+- The official Drogon documentation often refers to sections of documentation that do not exist, and often lacks explanations of how certain constructs work.
+- Drogon has a very limited range of capabilities of the built-in ORM system; for full-fledged work it is necessary to write your own SQL queries.
+
+#### Why not userver?
+
+- **Difficulty of installation:** at the time of research, the userver package is missing from conan-center, which forces the installation to bypass Conan.The official userver documentation suggests building your application from a cloned repository containing the userver application template.
+- **Difficult to use:** userver has a complex syntax that is not immediately clear, which makes it difficult to understand at the initial stages of development. It will take a lot of time to explore the capabilities of the framework.
+- **Third party dependencies:** at the time of research it was noticed that when installing userver, it pulls in many third-party dependencies that may not be needed during operation.
+- **Installing your own dependencies:** difficulty installing your own dependencies.
+
+#### Why not Oat++?
+
+- **More complex syntax:** Oat++ has a more difficult to understand syntax compared to Drogon.
+- **Missing configuration file:** Oat++ does not provide the ability to use a single configuration file, which complicates the application configuration.
+- **Lack of a full-fledged ORM:** Oat++ does not have full-fledged methods for working with databases; you need to write your own SQL queries.
+
 ## ORM
 
 ## E2E Tests
