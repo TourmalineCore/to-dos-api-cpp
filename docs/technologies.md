@@ -84,11 +84,41 @@ At the time of research, the following versions were used:
 - **userver:** 2.12
 - **Oat++:** 1.3.0
 
+#### Key factors for decision-making:
+
+**Ease of use**
+- Simplicity of setup and initial configuration (especially in a dev container)
+- Clear and simple syntax
+- Easy to work with query parameters, headers and body
+- Quality of documentation and examples
+
+**Availability of opportunities**
+- Possibility of implementing middleware for authentication (manual checking of headers or standard filters)
+- Ability to work in multithreading mode, competitive processing of requests
+
+**Availability of ORM**
+- Having your own ORM system that eliminates working with SQL
+- Availability of functionality for implementing database migrations
+
+#### Comparative Table of Popular Solutions
+
+| Criterion                      | Drogon                     | userver                        | Oat++                              |
+| ------------------------------ | -------------------------- | ------------------------------ | ---------------------------------- |
+| Ease of setup                  | +                          | -                              | +                                  |
+| Readable syntax                | +                          | -                              | + (but more difficult than Drogon) |
+| Easy work with request parts   | +                          | (not studied due to exclusion) | +                                  |
+| Quality documentation          | + (but with disadvantages) | (not studied due to exclusion) | +                                  |
+| Availability of middleware     | +                          | (not studied due to exclusion) | +                                  |
+| Multithreaded work             | +                          | (not studied due to exclusion) | + (but with disadvantages)         |
+| Availability of a suitable ORM | -                          | (not studied due to exclusion) | -                                  |
+| Presence of migrations         | -                          | (not studied due to exclusion) | -                                  |
+
+
 #### Why Drogon - Chosen solution
 
 **Advantages:**
 - **Ease of use:** Drogon has a simple, readable syntax, which significantly reduces the entry barrier and improves the understandability and readability of the code.
-- **Support by build systems:** Drogon package is available in conan-center and is easy to install and configure the parameters, there is also support for CMake, Make.
+- **Support by build systems:** Drogon package is available in conan-center and is easy to install and configure the parameters.
 - **Configuration file:** all of Drogon's main settings can be defined through a configuration file, which adds convenience to use and allows you to store all of your settings in one place.
 - **Support for multithreaded work:** Drogon supports multi-threaded operation.
 
