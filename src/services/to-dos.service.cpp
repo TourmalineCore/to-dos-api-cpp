@@ -1,14 +1,6 @@
 #include "to-dos.service.h"
 
-Json::Value ToDo::toJson() const {
-    Json::Value json;
-    json["id"] = id;
-    json["description"] = description;
-
-    return json;
-}
-
-void ToDos::addToDo(const std::string description) {
+void ToDoService::addToDo(const std::string description) {
     _toDos.push_back({
       _nextToDoId, 
       description
@@ -17,11 +9,11 @@ void ToDos::addToDo(const std::string description) {
     _nextToDoId++;
 }
 
-const std::vector<ToDo>& ToDos::getToDos() const {
+const std::vector<ToDoDTO>& ToDoService::getToDos() const {
     return _toDos;
 }
 
-Json::Value ToDos::toJson() const {
+Json::Value ToDoService::toJson() const {
     Json::Value json;
     Json::Value toDosArray(Json::arrayValue);
     
@@ -34,7 +26,7 @@ Json::Value ToDos::toJson() const {
     return json;
 }
 
-bool ToDos::completeToDo(int id) {
+bool ToDoService::completeToDo(int id) {
     for (auto it = _toDos.begin(); it != _toDos.end(); ++it) {
         if (it->id == id) {
             _toDos.erase(it);

@@ -1,34 +1,29 @@
 #pragma once
 
-#include <string>
+#include "dtos/to-dos-dto.h"
+
 #include <vector>
 #include <json/json.h>
 
-struct ToDo {
-    int id;
-    std::string description;
+class ToDoService
+{
+private:
+  std::vector<ToDoDTO> _toDos{
+      {0, "Read TDD book"},
+      {1, "Read Mobx & React basic docs"},
+      {2, "Explore Cypress"},
+  };
 
-    Json::Value toJson() const;
-};
+  int _nextToDoId = 3;
 
-class ToDos {
-  private:
-    std::vector<ToDo> _toDos{
-      { 0, "Read TDD book" },
-      { 1, "Read Mobx & React basic docs" },
-      { 2, "Explore Cypress" },
-    };
+public:
+  ToDoService() = default;
 
-    int _nextToDoId = 3;
+  void addToDo(const std::string description);
 
-  public:
-    ToDos() = default;
+  bool completeToDo(int id);
 
-    void addToDo(const std::string description);
+  const std::vector<ToDoDTO> &getToDos() const;
 
-    bool completeToDo(int id);
-
-    const std::vector<ToDo>& getToDos() const;
-
-    Json::Value toJson() const;
+  Json::Value toJson() const;
 };

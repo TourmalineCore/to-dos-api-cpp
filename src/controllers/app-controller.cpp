@@ -6,7 +6,7 @@ void AppController::getToDos(const HttpRequestPtr& req,
     Json::Value jsonResponse;
 
     try {
-        ToDos toDos;
+        ToDoService toDos;
 
         auto resp = HttpResponse::newHttpJsonResponse(toDos.toJson());
         resp->setStatusCode(k200OK);
@@ -42,7 +42,7 @@ void AppController::addToDo(const HttpRequestPtr& req,
             return;
         }
 
-        ToDos toDos;
+        ToDoService toDos;
         toDos.addToDo(json->get("description", "").asString());
 
         auto resp = HttpResponse::newHttpResponse();
@@ -79,7 +79,7 @@ void AppController::completeToDos(const HttpRequestPtr& req,
             return;
         }
 
-        ToDos toDos;
+        ToDoService toDos;
         auto toDosIds = json->get("toDosIds", Json::Value(Json::arrayValue));
 
         for (const auto& id : toDosIds) {
@@ -109,7 +109,7 @@ void AppController::deleteToDo(const HttpRequestPtr& req,
         auto toDoIdStr = req->getParameter("toDoId");
         int toDoId = std::stoi(toDoIdStr);
         
-        ToDos toDos;
+        ToDoService toDos;
         toDos.completeToDo(toDoId);
 
         auto resp = HttpResponse::newHttpResponse();
