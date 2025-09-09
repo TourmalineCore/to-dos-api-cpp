@@ -39,6 +39,4 @@ class to_dos_apiRecipe(ConanFile):
     
     def requirements(self):
         self.requires("drogon/1.9.10")
-    
-    def configure(self):
-        self.options["drogon"].with_postgres = True
+        self.requires("jsoncpp/1.9.5")

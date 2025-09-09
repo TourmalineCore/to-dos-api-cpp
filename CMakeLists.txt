@@ -12,3 +12,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 find_package(Drogon REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
+
+find_package(jsoncpp REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE JsonCpp::JsonCpp)
