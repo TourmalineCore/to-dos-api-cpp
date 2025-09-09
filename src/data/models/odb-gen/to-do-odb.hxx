@@ -124,8 +124,8 @@ namespace odb
     pgsql::query_column<
       pgsql::value_traits<
         ::time_t,
-        pgsql::id_timestamp >::query_type,
-      pgsql::id_timestamp >
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
     createdAtUtc_type_;
 
     static const createdAtUtc_type_ createdAtUtc;
@@ -135,9 +135,9 @@ namespace odb
     typedef
     pgsql::query_column<
       pgsql::value_traits<
-        ::time_t,
-        pgsql::id_timestamp >::query_type,
-      pgsql::id_timestamp >
+        long int,
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
     deletedAtUtc_type_;
 
     static const deletedAtUtc_type_ deletedAtUtc;
