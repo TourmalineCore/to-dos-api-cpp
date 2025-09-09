@@ -8,6 +8,6 @@ class ToDo(Base):
 
     id = Column(BigInteger, primary_key=True)
     name = Column(String(255), nullable=False)
-    createdAtUtc = Column(DateTime, nullable=False)
-    deletedAtUtc = Column(DateTime, nullable=True)
+    createdAtUtc = Column(BigInteger, nullable=False)
+    deletedAtUtc = Column(BigInteger, nullable=True)
 
