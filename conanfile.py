@@ -36,12 +36,8 @@ class to_dos_apiRecipe(ConanFile):
 
     def system_requirements(self):
         apt = package_manager.Apt(self)
-        # apt.install(["libodb-dev", "libodb-pgsql-dev", "libpq-dev"], update=True)
         subprocess.check_call(["pip", "install", "alembic", "psycopg2-binary"])
 
     def package(self):
         cmake = CMake(self)
         cmake.install()
-
-    # def package_info(self):
-    #     self.cpp_info.libs = ["odb", "odb-pgsql"]
