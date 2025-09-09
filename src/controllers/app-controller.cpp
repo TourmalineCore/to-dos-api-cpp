@@ -1,6 +1,18 @@
 #include "app-controller.h"
 #include "../services/to-dos.service.h"
 
+HttpResponsePtr AppController::createInternalServerErrorResponse(const std::string& error) const 
+{    
+    Json::Value jsonResponse;
+    jsonResponse["status"] = "Error";
+    jsonResponse["message"] = "Internal server error";
+    jsonResponse["error"] = error;
+    
+    auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
+    resp->setStatusCode(k500InternalServerError);
+    return resp;
+}
+
 void AppController::getToDos(const HttpRequestPtr& req,
     std::function<void(const HttpResponsePtr&)>&& callback) {
     Json::Value jsonResponse;
@@ -13,13 +25,7 @@ void AppController::getToDos(const HttpRequestPtr& req,
         callback(resp);
 
     } catch (const std::exception& e) {
-        jsonResponse["status"] = "error";
-        jsonResponse["message"] = "Internal server error";
-        jsonResponse["error"] = e.what();
-        
-        auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
-        resp->setStatusCode(k500InternalServerError);
-        callback(resp);
+        callback(createInternalServerErrorResponse(e.what()));
     }
 }
 
@@ -50,13 +56,7 @@ void AppController::addToDo(const HttpRequestPtr& req,
         callback(resp);
         
     } catch (const std::exception& e) {
-        jsonResponse["status"] = "error";
-        jsonResponse["message"] = "Internal server error";
-        jsonResponse["error"] = e.what();
-        
-        auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
-        resp->setStatusCode(k500InternalServerError);
-        callback(resp);
+        callback(createInternalServerErrorResponse(e.what()));
     }
 }
 
@@ -91,13 +91,7 @@ void AppController::completeToDos(const HttpRequestPtr& req,
         callback(resp);
 
     } catch (const std::exception& e) {
-        jsonResponse["status"] = "error";
-        jsonResponse["message"] = "Internal server error";
-        jsonResponse["error"] = e.what();
-        
-        auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
-        resp->setStatusCode(k500InternalServerError);
-        callback(resp);
+        callback(createInternalServerErrorResponse(e.what()));
     }
 }
 
@@ -117,12 +111,6 @@ void AppController::deleteToDo(const HttpRequestPtr& req,
         callback(resp);
         
     } catch (const std::exception& e) {
-        jsonResponse["status"] = "error";
-        jsonResponse["message"] = "Internal server error";
-        jsonResponse["error"] = e.what();
-        
-        auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
-        resp->setStatusCode(k500InternalServerError);
-        callback(resp);
+        callback(createInternalServerErrorResponse(e.what()));
     }
 }

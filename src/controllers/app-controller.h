@@ -13,6 +13,8 @@ public:
     ADD_METHOD_TO(AppController::deleteToDo, "/to-dos", Delete); // Deleting a specific task
     METHOD_LIST_END
 
+    HttpResponsePtr createInternalServerErrorResponse(const std::string& error) const;
+
     void getToDos(const HttpRequestPtr& req, 
         std::function<void(const HttpResponsePtr&)>&& callback);
     
