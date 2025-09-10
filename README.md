@@ -33,3 +33,10 @@ When the project configuration is finished, click Build to build the project.
 
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
+
+## How to run clang-tidy static code analyzer
+
+To run clang-tidy, run the following command:
+```
+find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
+```

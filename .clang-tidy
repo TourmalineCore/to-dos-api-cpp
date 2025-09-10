@@ -1,0 +1,38 @@
+---
+# option reference: https://clang.llvm.org/extra/clang-tidy/checks/list.html
+
+Checks: >-
+    *,
+    -fuchsia-*,
+    -google-*,
+    -zircon-*,
+    -abseil-*,
+    -llvm*,
+    -altera*,
+    -readability-identifier-length,
+    -modernize-use-trailing-return-type,
+    -cppcoreguidelines-avoid-const-or-ref-data-members,
+    -cppcoreguidelines-avoid-non-const-global-variables,
+    -bugprone-unchecked-optional-access,
+    -misc-non-private-member-variables-in-classes,
+    -cppcoreguidelines-non-private-member-variables-in-classes,
+    -cert-dcl21-cpp,
+    -misc-no-recursion,
+    -cppcoreguidelines-pro-type-reinterpret-cast,
+    -bugprone-exception-escape,
+    -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+    -cppcoreguidelines-pro-bounds-constant-array-index,
+    -misc-include-cleaner,
+    -performance-enum-size,
+    -readability-redundant-member-init,
+    -readability-static-accessed-through-instance,
+    -cppcoreguidelines-special-member-functions,
+    -hicpp-special-member-functions,
+    -cppcoreguidelines-owning-memory,
+    -cppcoreguidelines-avoid-c-arrays,
+    -hicpp-avoid-c-arrays,
+    -modernize-avoid-c-arrays,
+    -bugprone-easily-swappable-parameters,
+    -misc-const-correctness
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'

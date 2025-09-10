@@ -5,6 +5,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         build-essential clang lld make gdb cmake ninja-build \
         git curl wget unzip pkg-config sudo \
         pip \
+        clang-format clang-tidy \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
