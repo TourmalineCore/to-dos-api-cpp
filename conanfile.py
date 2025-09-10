@@ -36,3 +36,7 @@ class to_dos_apiRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
+    
+    def requirements(self):
+        self.requires("drogon/1.9.10")
+        self.requires("jsoncpp/1.9.5")
