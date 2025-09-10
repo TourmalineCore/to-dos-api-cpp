@@ -141,4 +141,54 @@ At the time of research, the following versions were used:
 
 ## ORM
 
+### Overview
+
+The goal is to choose an ORM stack for PostgreSQL with versioned migrations, LINQ-style query abstraction, and relations support for a C++ project.
+Three solutions were evaluated: Drogon ORM (part of the Drogon framework), ODB (a compile-time, strongly typed ORM/code generator), and TinyORM (modern C++20 ORM with a migrations tool and Qt/TinyDrivers support).
+
+### Selection Criteria
+
+- Migrations: availability of up/down history and/or schema evolution; suitability for an existing database.
+- PostgreSQL: official support and tooling (model/schema generation).
+- High-level queries: an API to compose conditions and joins similar to LINQ.
+- Relations: convenient handling of join/relationship APIs.
+- Integration/packaging: presence in Conan and ease of integrating into builds and CI.
+
+### Comparative Table of Popular Solutions
+
+| Criterion         | Drogon ORM                          | ODB                             | TinyORM                  |
+|-------------------|-------------------------------------|---------------------------------|--------------------------|
+| Migrations        | -                                   | - (not optimized realization)   | +                        |
+| PostgreSQL        | +                                   | +                               | +                        |
+| LINQ-like queries | +                                   | +                               | +                        |
+| Relations         | - (manual linking on support model) | +                               | +                        |
+| Packaging (Conan) | +                                   | -                               | - (vcpackage recomended) |
+| Model/schema      | + (model generated from schema)     | + (class describe a table)      | +                        |
+
+### Rationale for Selection
+
+- Combined approach: the Python stack SQLAlchemy + Alembic provides full up/down migration history and robust schema evolution control, while ODB ensures strong typing and efficient C++ data access.
+- Migrations runs in a specialized toolchain unrelated from the C++ build; the C++ data layer remains statically via ODB.
+
+#### Why not the others?
+
+- Drogon ORM: no native migrations; model generation is schema-first; lacks a dedicated abstraction for relations, often pushing toward manual JOINs or raw SQL.
+- TinyORM: powerful migrations and CLI, but the default QtSql dependency increases integration weight; packaging ecosystem recommended with vcpkg, complicating Conan-centric pipelines.
+
+### Practical Considerations
+
+- CI/CD and containers: Drogon can be consumed from ConanCenter, but ODB and TinyORM typically require custom recipes/artifacts or alternative managers, affecting caching and build times.
+- Existing database schemas: with an already deployed DB, schema-first model generation (Drogon) or an external migrator is convenient; for domain-first design, class-first with ODB and its schema evolution fits better.
+
+### Conclusion
+
+Final decision: manage migrations with SQLAlchemy/Alembic and use ODB for C++ data access.
+
+### Chosen Approach
+
+- Define models in SQLAlchemy; manage revisions and rollbacks with Alembic.
+- Implement and maintain C++ data access with ODB on PostgreSQL.
+- Coordination workflow: apply Alembic migrations first, then synchronize ODB mappings/models and the C++ data access code to reflect schema updates.
+
+
 ## E2E Tests
