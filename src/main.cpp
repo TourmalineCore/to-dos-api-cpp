@@ -1,12 +1,8 @@
-#include "to-dos-api.h"
-#include <vector>
-#include <string>
+#include <drogon/HttpAppFramework.h>
 
 int main() {
-    to_dos_api();
+    drogon::app().addListener("127.0.0.1", 8080);
+    drogon::app().run();
 
-    std::vector<std::string> vec;
-    vec.push_back("test_package");
-
-    to_dos_api_print_vector(vec);
+    return 0;
 }
