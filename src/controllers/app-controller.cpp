@@ -1,6 +1,7 @@
 #include "app-controller.h"
-#include "../services/to-dos.service.h"
+#include "services/to-dos.service.h"
 
+// TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/25): Create http exception handler or generic class for handling that type of errors
 HttpResponsePtr AppController::createInternalServerErrorResponse(const std::string& error) const 
 {    
     Json::Value jsonResponse;
