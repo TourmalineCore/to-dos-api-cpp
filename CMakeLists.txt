@@ -3,7 +3,7 @@ project(to-dos-api CXX)
 
 
 
-add_executable(to-dos-api src/to-dos-api.cpp src/main.cpp)
+add_executable(to-dos-api src/main.cpp)
 
 
 
