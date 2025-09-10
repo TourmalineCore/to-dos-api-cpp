@@ -5,6 +5,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         build-essential clang lld make gdb cmake ninja-build \
         git curl wget unzip sudo \
         pip \
+        clang-format clang-tidy \
         libpq-dev \
     && apt-get autoremove -y \
     && apt-get clean -y \

@@ -21,7 +21,7 @@ For development purposes use a devcontainer named `developing`.
 
 ### Project building
 
-To build this project, open the VS Code terminal (`Ctrl + Shift + ~`) and run `conan install .`.
+To build this project, open the VS Code terminal (`Ctrl + Shift + ~`) and run `conan install . --build=missing`.
 After the Conan install process, open the CMake extension and click Configure. 
 <p style="text-align: center;"><img src="docs/images/cmakeConfigure.png" alt="cmakeConfigure" width="400"/></p>
 In the configuration options, select the `'conan-debug' config`.
@@ -29,5 +29,14 @@ In the configuration options, select the `'conan-debug' config`.
 When the project configuration is finished, click Build to build the project.
 <p style="text-align: center;"><img src="docs/images/cmakeBuild.png" alt="cmakeBuild" width="400"/></p>
 
+### Project run
+
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
+
+## How to run clang-tidy static code analyzer
+
+To run clang-tidy, run the following command:
+```
+find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
+```

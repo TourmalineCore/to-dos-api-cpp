@@ -15,3 +15,8 @@ src/data/models/
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE odb odb-pgsql)
+
+find_package(Drogon REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
+find_package(jsoncpp REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE JsonCpp::JsonCpp)

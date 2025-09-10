@@ -1,5 +1,6 @@
 #include "data/queries/todo-queries.h"
 #include "data/commands/todo-commands.h"
+#include <drogon/HttpAppFramework.h>
 #include <vector>
 #include <string>
 #include <odb/pgsql/database.hxx>
@@ -65,6 +66,9 @@ int main() {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
+
+    drogon::app().addListener("127.0.0.1", 8080);
+    drogon::app().run();
 
     return 0;
 }
