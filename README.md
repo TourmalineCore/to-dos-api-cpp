@@ -31,6 +31,9 @@ When the project configuration is finished, click Build to build the project.
 
 ### Project run
 
+#### Before launching web server:
+- Run the database container via docker compose command `docker compose -f docker-compose.dev.yaml up -d` from workspace.
+
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
 
@@ -40,3 +43,20 @@ To run clang-tidy, run the following command:
 ```
 find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
 ```
+
+## Working with ORM+Migration.
+
+### ORM:
+
+After creating the database or model, it is necessary to generate the auxiliary ODB files with the command `odb --std c++20 -d pgsql --generate-query -o odb-gen <model header file>` from the folder `src/data/models`.
+
+After executing the command, files will be created or updated in the folder `src/data/models/odb-gen'. Please do not modify or transfer these files for the correct operation of the application.
+
+### Migrations:
+
+The alembic tool is used to work with migrations. To work with it, you need to modify or create a python model according to the cpp version of the model.
+
+- Create/change python model according declared cpp model.
+- Change terminal workspace to `src/data`.
+- Use the alembic command `alembic revision --autogenerate -m '<name of migration>'` for create new migration to database.
+- If its needed upgrade local database with latest migration with commnd `alembic upgrade head`.
