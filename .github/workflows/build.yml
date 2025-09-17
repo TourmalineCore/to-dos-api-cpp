@@ -10,14 +10,38 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-    - name: Checkout Repo
+    - name: Checkout repository
       uses: actions/checkout@v4
-
-    - name: Install Deps and Build
+    
+    - name: Cache Conan packages
+      id: cache-conan-packages
+      uses: actions/cache@v4
+      env:
+          cache-name: cache-conan-packages
+      with:
+        path: |
+          .conan2
+          build/Debug/generators
+        key: ${{ env.cache-name }}-${{ hashFiles('conanfile.py') }}
+  
+    
+    - name: Install and build Conan dependencies
+      if: steps.cache-conan-packages.outputs.cache-hit != 'true'
       uses: devcontainers/ci@v0.3
       with:
         runCmd: |
+          mkdir -p .conan2/profiles
+          cp .devcontainer/to-dos-conan-profile.conf .conan2/profiles/default
+
+          export CONAN_HOME=/workspaces/to-dos-api-cpp/.conan2
           conan install . --build=missing
+        # we don't need to push docker image that was built using our Dev Container
+        push: never
+
+    - name: Run CMake build
+      uses: devcontainers/ci@v0.3
+      with:
+        runCmd: |
           cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=Debug/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -G "Ninja"
           ninja
         # we don't need to push docker image that was built using our Dev Container
