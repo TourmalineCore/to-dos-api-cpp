@@ -1,6 +1,7 @@
+import subprocess
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
-
+from conan.tools.system import package_manager
 
 class to_dos_apiRecipe(ConanFile):
     name = "to-dos-api"
@@ -32,6 +33,10 @@ class to_dos_apiRecipe(ConanFile):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
+
+    def system_requirements(self):
+        apt = package_manager.Apt(self)
+        subprocess.check_call(["pip", "install", "alembic", "psycopg2-binary"])
 
     def package(self):
         cmake = CMake(self)
