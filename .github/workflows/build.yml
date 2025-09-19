@@ -25,7 +25,7 @@ jobs:
         key: ${{ env.cache-name }}-${{ hashFiles('conanfile.py') }}
   
     
-    - name: Install and build Conan dependencies
+    - name: Install and build Conan dependencies and run CMake build
       if: steps.cache-conan-packages.outputs.cache-hit != 'true'
       uses: devcontainers/ci@v0.3
       with:
