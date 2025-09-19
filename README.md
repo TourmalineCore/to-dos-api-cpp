@@ -44,6 +44,12 @@ To run clang-tidy, run the following command:
 find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
 ```
 
+## How to run an application build without tests
+
+To skip the test file build process, you need to run the application build with the SKIPTESTS environment variable set to TRUE, this can be done by running the following command:
+```
+SKIPTESTS=TRUE conan build . --build=missing
+```
 ## Working with ORM+Migration.
 
 ### ORM:
