@@ -32,7 +32,7 @@ jobs:
           mkdir -p .conan2/profiles
           cp .devcontainer/to-dos-conan-profile.conf .conan2/profiles/default
 
-          export CONAN_HOME=/workspaces/to-dos-api-cpp/.conan2
+          export CONAN_HOME="$(pwd)/.conan2"
           conan install . --build=missing
         # we don't need to push docker image that was built using our Dev Container
         push: never
