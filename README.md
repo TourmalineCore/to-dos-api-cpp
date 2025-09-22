@@ -33,6 +33,7 @@ When the project configuration is finished, click Build to build the project.
 
 #### Before launching web server:
 - Run the database container via docker compose command `docker compose -f docker-compose.dev.yaml up -d` from workspace.
+- Import environment variables declared in the `.env.dev` file while in the dev container and using the command `export $(grep -v '^#' .env.dev | xargs)`. If the file containing the environment variables is named something other than .env.dev, you should modify the command to specify the correct name.
 
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
