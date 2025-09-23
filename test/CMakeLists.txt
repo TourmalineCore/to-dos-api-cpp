@@ -9,7 +9,7 @@ add_executable(${TEST_TARGET} ${test_sources})
 find_package(GTest REQUIRED)
 
 target_link_libraries(${TEST_TARGET} PRIVATE 
-  ${LIB_TARGET}
+  ${PROJECT_OBJECTS}
   gtest::gtest
 )
 

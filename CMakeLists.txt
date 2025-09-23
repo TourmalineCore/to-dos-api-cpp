@@ -3,16 +3,14 @@ set(PROJECT_NAME "to-dos-api")
 project(${PROJECT_NAME} CXX)
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS 
-  ${CMAKE_SOURCE_DIR}/src/*.cpp
   ${CMAKE_SOURCE_DIR}/src/data/models/odb-gen/*.cxx
 )
-list(REMOVE_ITEM sources ${CMAKE_SOURCE_DIR}/src/main.cpp)
 
-set(LIB_TARGET ${PROJECT_NAME}_lib)
+set(PROJECT_OBJECTS ${PROJECT_NAME}_lib)
 
-add_library(${LIB_TARGET} OBJECT ${sources})
+add_library(${PROJECT_OBJECTS} OBJECT ${sources})
 
-target_include_directories(${LIB_TARGET} PUBLIC
+target_include_directories(${PROJECT_OBJECTS} PUBLIC
   ${CMAKE_SOURCE_DIR}/src
   /usr/include
   src/data/models/
@@ -21,7 +19,7 @@ target_include_directories(${LIB_TARGET} PUBLIC
 find_package(Drogon REQUIRED)
 find_package(jsoncpp REQUIRED)
 
-target_link_libraries(${LIB_TARGET} PUBLIC 
+target_link_libraries(${PROJECT_OBJECTS} PUBLIC 
   Drogon::Drogon
   JsonCpp::JsonCpp
   odb odb-pgsql
@@ -29,11 +27,11 @@ target_link_libraries(${LIB_TARGET} PUBLIC
 
 add_executable(${PROJECT_NAME} 
   ${CMAKE_SOURCE_DIR}/src/main.cpp
-  $<TARGET_OBJECTS:${LIB_TARGET}>
+  $<TARGET_OBJECTS:${PROJECT_OBJECTS}>
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC 
-  ${LIB_TARGET}
+  ${PROJECT_OBJECTS}
 )
 
 if("$ENV{SKIPTESTS}" STREQUAL "TRUE")
