@@ -44,12 +44,21 @@ To run clang-tidy, run the following command:
 find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
 ```
 
-## How to run an application build without tests
+## Tests run
 
-To skip the test file build process, you need to run the application build with the SKIPTESTS environment variable set to TRUE, this can be done by running the following command:
-```
-SKIPTESTS=TRUE conan build . --build=missing
-```
+The project presents an example of test implementation using GTest tools. Test files are located in the `test` directory at the root of the project. Inside the `test` directory there is a `CMakeLists.txt` file created specifically for building a separate executable file for tests.
+
+### How to run tests
+
+To run tests, go to the `build/Debug` directory, and then run the `ctest` command in the terminal (`Ctrl + Shift + ~`).
+
+Alternatively, use the CMake Tools Extension in VS Code. To do this, open the CMake Tools Extension and click `Test`, after configuring and building the project.
+<p style="text-align: center;"><img src="docs/images/cmakeTests.png" alt="cmakeTests" width="400"/></p>
+
+### How to run an application build without tests
+
+To build the project without building the tests, run the command `SKIPTESTS=TRUE conan build . --build=missing`. During the build process, you will see the line `UNIT TESTS DISABLED` in the logs.
+
 ## Working with ORM+Migration.
 
 ### ORM:
