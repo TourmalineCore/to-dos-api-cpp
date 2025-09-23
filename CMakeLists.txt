@@ -3,6 +3,7 @@ set(PROJECT_NAME "to-dos-api")
 project(${PROJECT_NAME} CXX)
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS 
+  ${CMAKE_SOURCE_DIR}/src/*/*.cpp
   ${CMAKE_SOURCE_DIR}/src/data/models/odb-gen/*.cxx
 )
 
