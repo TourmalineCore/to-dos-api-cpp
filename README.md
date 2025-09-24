@@ -55,10 +55,6 @@ To run tests, go to the `build/Debug` directory, and then run the `ctest` comman
 Alternatively, use the CMake Tools Extension in VS Code. To do this, open the CMake Tools Extension and click `Test`, after configuring and building the project.
 <p style="text-align: center;"><img src="docs/images/cmakeTests.png" alt="cmakeTests" width="400"/></p>
 
-### How to run an application build without tests
-
-To build the project without building the tests, run the command `SKIPTESTS=TRUE conan build . --build=missing`. During the build process, you will see the line `UNIT TESTS DISABLED` in the logs.
-
 ## Working with ORM+Migration.
 
 ### ORM:
