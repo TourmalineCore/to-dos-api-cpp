@@ -35,10 +35,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   ${PROJECT_OBJECTS}
 )
 
-if("$ENV{SKIPTESTS}" STREQUAL "TRUE")
-    message(STATUS "UNIT TESTS DISABLED")
-else()
-    message(STATUS "UNIT TESTS ENABLED")
-    enable_testing()
-    add_subdirectory(test)
-endif()
+add_subdirectory(test)

@@ -1,20 +1,23 @@
+enable_testing()
+
 include(GoogleTest)
 
-set(TEST_TARGET ${PROJECT_NAME}_unit_tests)
+set(TEST_PROJECT ${PROJECT_NAME}_unit_tests)
 
 file(GLOB_RECURSE test_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-add_executable(${TEST_TARGET} ${test_sources})
+add_executable(${TEST_PROJECT} ${test_sources})
 
 find_package(GTest REQUIRED)
 
-target_link_libraries(${TEST_TARGET} PRIVATE 
+target_link_libraries(${TEST_PROJECT} PRIVATE 
   ${PROJECT_OBJECTS}
-  gtest::gtest
+  GTest::gtest
+  GTest::gtest_main
 )
 
-target_include_directories(${TEST_TARGET} PRIVATE
+target_include_directories(${TEST_PROJECT} PRIVATE
   ${CMAKE_SOURCE_DIR}/src
 )
 
-gtest_discover_tests(${TEST_TARGET})
+gtest_discover_tests(${TEST_PROJECT})
