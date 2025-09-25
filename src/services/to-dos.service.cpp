@@ -35,17 +35,18 @@ bool ToDoService::completeToDo(int id)
     return true;
 }
 
-const vector<ToDoDTO> ToDoService::getToDos() const
 // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todos
+bool ToDoService::deleteToDo(int id)
 {
-    auto todos = _queries.get_all_todos();
-    return mapToDTOs(todos);
+    (void) _commands.delete_todo(id);
+    return true;
 }
 
-Json::Value ToDoService::toJson() const
+const Json::Value ToDoService::getToDos() const
 {
     Json::Value json;
     Json::Value toDosArray(Json::arrayValue);
+
     auto todos = _queries.get_all_todos();
     auto dtos = mapToDTOs(todos);
     for (const auto& dto : dtos)

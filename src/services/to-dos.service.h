@@ -22,6 +22,6 @@ public:
 
     void addToDo(const std::string description);
     bool completeToDo(int id);
-    const std::vector<ToDoDTO> getToDos() const;
-    Json::Value toJson() const;
+    bool deleteToDo(int id);
+    const Json::Value getToDos() const;
 };

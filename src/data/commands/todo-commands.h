@@ -7,8 +7,9 @@
 class ToDoCommands
 {
 public:
-    ToDoCommands
-(odb::database& db) : db_(db) {}
+    ToDoCommands(odb::database& db)
+    : db_(db)
+    {}
 
     uint64_t create_todo(const std::string& name, std::time_t createdAtUtc);
     uint64_t delete_todo(int id);
