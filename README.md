@@ -45,6 +45,17 @@ To run clang-tidy, run the following command:
 find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
 ```
 
+## Tests run
+
+The project presents an example of test implementation using GTest tools. Test files are located in the `test` directory at the root of the project. Inside the `test` directory there is a `CMakeLists.txt` file created specifically for building a separate executable file for tests.
+
+### How to run tests
+
+To run tests, go to the `build/Debug` directory, and then run the `ctest` command in the terminal (`Ctrl + Shift + ~`).
+
+Alternatively, use the CMake Tools Extension in VS Code. To do this, open the CMake Tools Extension and click `Test`, after configuring and building the project.
+<p style="text-align: center;"><img src="docs/images/cmakeTests.png" alt="cmakeTests" width="400"/></p>
+
 ## Working with ORM+Migration.
 
 ### ORM:
