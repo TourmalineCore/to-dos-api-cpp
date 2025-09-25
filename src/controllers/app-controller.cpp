@@ -28,7 +28,7 @@ void AppController::getToDos(const HttpRequestPtr& req, std::function<void(const
 
     try
     {
-        auto resp = HttpResponse::newHttpJsonResponse(todo_service_->toJson());
+        auto resp = HttpResponse::newHttpJsonResponse(todo_service_->getToDos());
         resp->setStatusCode(k200OK);
         callback(resp);
     }
@@ -118,7 +118,7 @@ void AppController::deleteToDo(const HttpRequestPtr& req, std::function<void(con
         auto toDoIdStr = req->getParameter("toDoId");
         int toDoId = std::stoi(toDoIdStr);
 
-        todo_service_->completeToDo(toDoId);
+        todo_service_->deleteToDo(toDoId);
 
         auto resp = HttpResponse::newHttpResponse();
         resp->setStatusCode(k200OK);
