@@ -44,4 +44,4 @@ class to_dos_apiRecipe(ConanFile):
     
     def requirements(self):
         self.requires("drogon/1.9.10")
-        self.requires("jsoncpp/1.9.5")
+        self.requires("gtest/1.14.0")
