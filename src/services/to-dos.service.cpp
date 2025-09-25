@@ -28,6 +28,7 @@ void ToDoService::addToDo(const string name)
     (void) _commands.create_todo(name, now_utc);
 }
 
+// TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todos
 bool ToDoService::completeToDo(int id)
 {
     (void) _commands.soft_delete_todo(id);
@@ -35,6 +36,7 @@ bool ToDoService::completeToDo(int id)
 }
 
 const vector<ToDoDTO> ToDoService::getToDos() const
+// TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todos
 {
     auto todos = _queries.get_all_todos();
     return mapToDTOs(todos);
