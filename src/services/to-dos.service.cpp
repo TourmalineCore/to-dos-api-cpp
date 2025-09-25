@@ -15,17 +15,17 @@ static vector<ToDoDTO> mapToDTOs(const std::shared_ptr<std::vector<ToDo>>& todos
         {
             ToDoDTO dto;
             dto.id = static_cast<int>(t.id());
-            dto.description = t.name();
+            dto.name = t.name();
             out.push_back(std::move(dto));
         }
     }
     return out;
 }
 
-void ToDoService::addToDo(const string description)
+void ToDoService::addToDo(const string name)
 {
     const std::time_t now_utc = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    (void) _commands.create_todo(description, now_utc);
+    (void) _commands.create_todo(name, now_utc);
 }
 
 bool ToDoService::completeToDo(int id)

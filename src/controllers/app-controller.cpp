@@ -46,7 +46,7 @@ void AppController::addToDo(const HttpRequestPtr& req, std::function<void(const 
     {
         auto json = req->getJsonObject();
 
-        if (!json || !json->isMember("description"))
+        if (!json || !json->isMember("name"))
         {
             Json::Value result;
             result["status"] = "error";
@@ -59,7 +59,7 @@ void AppController::addToDo(const HttpRequestPtr& req, std::function<void(const 
             return;
         }
 
-        todo_service_->addToDo(json->get("description", "").asString());
+        todo_service_->addToDo(json->get("name", "").asString());
 
         auto resp = HttpResponse::newHttpResponse();
         resp->setStatusCode(k201Created);
