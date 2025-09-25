@@ -14,14 +14,13 @@ int main()
     {
         // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/27): add migration update on startup
 
-        // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/22): parse that variables from .env or .env.dev
-        const std::string user = "postgres";
-        const std::string password = "admin";
-        const std::string db_name = "to-dos-api-cpp_db";
-        const std::string host = "localhost";
-        const unsigned port = 5432;
+        const std::string user = std::getenv("POSTGRES_USER");
+        const std::string password = std::getenv("POSTGRES_PASSWORD");
+        const std::string db_name = std::getenv("POSTGRES_DB");
+        const std::string host = std::getenv("POSTGRES_HOST");
+        const std::string port = std::getenv("POSTGRES_PORT");
 
-        std::string conninfo = "host=" + host + " port=" + std::to_string(port) + " dbname=" + db_name + " user=" + user + " password=" + password;
+        std::string conninfo = "host=" + host + " port=" + port + " dbname=" + db_name + " user=" + user + " password=" + password;
 
         std::unique_ptr<odb::database> db(new odb::pgsql::database(conninfo));
 
