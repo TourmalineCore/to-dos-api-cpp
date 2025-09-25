@@ -13,7 +13,6 @@ find_package(GTest REQUIRED)
 target_link_libraries(${TEST_PROJECT} PRIVATE 
   ${PROJECT_OBJECTS}
   GTest::gtest
-  GTest::gtest_main
 )
 
 target_include_directories(${TEST_PROJECT} PRIVATE
