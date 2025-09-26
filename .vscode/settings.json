@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "C_Cpp.formatting": "clangFormat",
+  "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+  "C_Cpp.codeAnalysis.exclude": {
+    "build/**": true,
+    "**/odb-gen/*.cxx": true,
+    "**/odb-gen/*.hxx": true,
+    "**/odb-gen/*.ixx": true,
+    "**/.conan2/**": true,
+  },
+  "C_Cpp.autoAddFileAssociations": false
+}

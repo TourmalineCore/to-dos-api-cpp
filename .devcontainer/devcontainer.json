@@ -20,12 +20,7 @@
 			"extensions": [
 				"ms-vscode.cmake-tools",
 				"ms-vscode.cpptools"
-			],
-			"settings": {
-				"C_Cpp.formatting": "clangFormat",
-				"C_Cpp.codeAnalysis.clangTidy.enabled": true,
-				"editor.formatOnSave": true
-			}
+			]
 		}
 	},
 	"features": {
