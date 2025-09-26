@@ -1,0 +1,9 @@
+{
+  "NOLINTNEXTLINE": {
+    "prefix": "nolint",
+    "body": [
+      "// NOLINTNEXTLINE"
+    ],
+    "description": "Add NOLINTNEXTLINE comment"
+  }
+}
