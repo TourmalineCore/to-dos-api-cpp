@@ -8,8 +8,9 @@
 class ToDoQueries
 {
 public:
-    ToDoQueries
-(odb::database& db) : db_(db) {}
+    ToDoQueries(odb::database& db)
+    : db_(db)
+    {}
     std::shared_ptr<std::vector<ToDo>> get_all_todos();
     std::shared_ptr<ToDo> get_todo_by_id(int id);
 
