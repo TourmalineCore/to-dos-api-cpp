@@ -1,7 +1,7 @@
 #include "todo-commands.h"
 #include "data/models/odb-gen/to-do-odb.hxx"
-#include <odb/transaction.hxx>
 #include <memory>
+#include <odb/transaction.hxx>
 
 uint64_t ToDoCommands::create_todo(const std::string& name, std::time_t createdAtUtc)
 {

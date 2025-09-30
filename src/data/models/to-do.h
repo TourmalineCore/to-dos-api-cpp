@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
 #include <ctime>
 #include <odb/core.hxx>
 #include <odb/nullable.hxx>
+#include <string>
 
 #pragma db object table("todo")
 class ToDo
@@ -11,7 +11,10 @@ class ToDo
 public:
     ToDo() = default;
     ToDo(const std::string& name, std::time_t createdAtUtc)
-        : name_(name), createdAtUtc_(createdAtUtc), deletedAtUtc_() {}
+    : name_(name),
+      createdAtUtc_(createdAtUtc),
+      deletedAtUtc_()
+    {}
 
     std::uint64_t id() const { return id_; }
     const std::string& name() const { return name_; }
@@ -25,14 +28,14 @@ public:
 private:
     friend class odb::access;
 
-    #pragma db id auto
+#pragma db id auto
     std::uint64_t id_;
 
     std::string name_;
-    #pragma db type("BIGINT")
+#pragma db type("BIGINT")
     std::time_t createdAtUtc_;
 
-    #pragma db null
-    #pragma db type("BIGINT")
+#pragma db null
+#pragma db type("BIGINT")
     odb::nullable<std::time_t> deletedAtUtc_;
 };
