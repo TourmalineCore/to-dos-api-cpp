@@ -1,7 +1,7 @@
 # ODB (Object-Relational Mapping) license
 
 ODB has a dual licensing scheme:
-1. GNU General Public License (GPL) version 2
+1. [GNU General Public License (GPL) version 2](https://www.codesynthesis.com/licenses/gpl-2.txt)
 2. Commercial Proprietary License (CPL) (+ Free Proprietary License (FPL))
 
 ## GNU General Public License (GPL) version 2
@@ -62,6 +62,8 @@ In the case of commercial use requiring closed source code, a license will be re
 
 ## References
 
+[Reference to GNU General Public License (GPL) version 2.](https://www.codesynthesis.com/licenses/gpl-2.txt)
+[Reference to the ODB Non-Commercial Use and Evaluation License (NCUEL).](https://www.codesynthesis.com/licenses/ncuel.txt)
 [Licensing section on the Code Synthesis website.](https://www.codesynthesis.com/products/odb/license.xhtml#1)  
 [Answers to questions about the GNU GPL v2 license, including an answer to a question about a closed-source project and the GNU GPL v2 license.](https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.en.html#GPLRequireSourcePostedPublic)  
 [Report from the C++ Russia conference “Software licenses: theory that saves you from financial disaster”.](https://cppconf.ru/archive/2025/talks/06ea4864b2244143baefe7a725f12177/)
