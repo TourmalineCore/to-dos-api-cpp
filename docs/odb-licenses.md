@@ -1,12 +1,29 @@
 # ODB (Object-Relational Mapping) license
 
-ODB has a dual licensing scheme:
-1. [GNU General Public License (GPL) version 2](https://www.codesynthesis.com/licenses/gpl-2.txt)
-2. Commercial Proprietary License (CPL) (+ Free Proprietary License (FPL))
+We use several packages in the project:
+| Package          | License* (which we are now experiencing)                                                       |
+| ---------------- | -------------------------------------------------------------- |
+| odb              | [GNU GPL v3](https://www.codesynthesis.com/licenses/gpl-3.txt) |
+| libodb           | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| libodb-dev       | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| libodb-pgsql     | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| libodb-pgsql-dev | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
 
-## GNU General Public License (GPL) version 2
+We comply with the specified licenses because:
+1. The repository is public (open source)
+2. We do not use this project for commercial purposes.
 
-There are two cases:
+In addition to the licenses listed in the table, ODB offers other project licensing alternatives:
+1. Commercial Proprietary License (CPL)
+2. Free Proprietary License (FPL)
+
+*License information is taken from the official [ODB repository](https://github.com/codesynthesis-com/odb/blob/master/LICENSE). 
+
+## GNU General Public License (GPL) version 2 and GNU General Public License (GPL) version 3
+
+The GNU General Public License (GPL) version 2 and the GNU General Public License (GPL) version 3 have the same licensing rules.
+
+ODB has a license in the following cases:
 1. If the application is used only within the organization, for example, running it on company servers, then publication of the source code is not required. As ODB itself says, such an application is unlikely to become a source of significant earnings, so ODB can be used free of charge under the GPL license.
 
 Quote:
@@ -31,13 +48,24 @@ If ODB has this license, then the project must also be licensed under the GNU Ge
 ODB can also be used free of charge non-commercially or for evaluation with non-free editions of commercial databases (Oracle, SQL Server) under the terms of the ODB Non-Commercial Use and Evaluation License (NCUEL) (a source-available license).
 ```
 
-## Commercial Proprietary License (CPL) (+ Free Proprietary License (FPL))
-
-### Commercial Proprietary License (CPL)
+## Commercial Proprietary License (CPL)
 
 If you do not want to be bound by the terms of the GPL, you can purchase a Commercial Proprietary License (CPL).
 
-### Free Proprietary License (FPL)
+This type of license allows the project to be used for commercial purposes, even in cases where the source code is closed.
+
+Quote:
+```
+Additional benefits of the CPL include:
+-Royalty-free runtime (no runtime licenses)
+- Application source code stays private
+- Legal assurances, warranties, and indemnification
+- Commercial-grade technical support
+- Full-time, dedicated development team provides ongoing maintenance, development, testing, and documentation
+- Single vendor to hold accountable
+```
+
+## Free Proprietary License (FPL)
 
 This is a free version of the Commercial Proprietary License (CPL). It allows you to use ODB in a closed application free of charge and without any GPL restrictions, provided that the amount of generated database support code in any individual release of the application does not exceed 10,000 lines.
 
@@ -62,7 +90,8 @@ In the case of commercial use requiring closed source code, a license will be re
 
 ## References
 
-[Reference to GNU General Public License (GPL) version 2.](https://www.codesynthesis.com/licenses/gpl-2.txt)
+[Reference to GNU General Public License (GPL) version 2.](https://www.codesynthesis.com/licenses/gpl-2.txt)  
+[Reference to GNU General Public License (GPL) version 3.](https://www.codesynthesis.com/licenses/gpl-3.txt)  
 [Reference to the ODB Non-Commercial Use and Evaluation License (NCUEL).](https://www.codesynthesis.com/licenses/ncuel.txt)
 [Licensing section on the Code Synthesis website.](https://www.codesynthesis.com/products/odb/license.xhtml#1)  
 [Answers to questions about the GNU GPL v2 license, including an answer to a question about a closed-source project and the GNU GPL v2 license.](https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.en.html#GPLRequireSourcePostedPublic)  
