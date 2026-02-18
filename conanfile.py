@@ -45,3 +45,5 @@ class to_dos_apiRecipe(ConanFile):
     def requirements(self):
         self.requires("drogon/1.9.10")
         self.requires("gtest/1.14.0")
+        self.requires("libodb/2.5.0@cppget/stable")
+        self.requires("libodb-pgsql/2.5.0@cppget/stable")
