@@ -13,6 +13,7 @@ add_library(${PROJECT_OBJECTS} OBJECT ${sources})
 
 file(GLOB_RECURSE database_models
     ${CMAKE_CURRENT_SOURCE_DIR}/src/data/models/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/data/models/*.hxx
 )
 
 set(database_model_dirs "")
