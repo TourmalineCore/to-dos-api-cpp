@@ -1,13 +1,13 @@
 # ODB (Object-Relational Mapping) license
 
-We use several packages in the project:
-| Package          | License* (which we are now experiencing)                                                       |
+We use several libraries in the project:
+| Library          | License* (which we are now experiencing)                                                       |
 | ---------------- | -------------------------------------------------------------- |
-| odb              | [GNU GPL v3](https://www.codesynthesis.com/licenses/gpl-3.txt) |
-| libodb           | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
-| libodb-dev       | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
-| libodb-pgsql     | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
-| libodb-pgsql-dev | [GNU GPL v2](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| odb              | [GNU GPLv3 only**](https://www.codesynthesis.com/licenses/gpl-3.txt) |
+| libodb           | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| libodb-dev       | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| libodb-pgsql     | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
+| libodb-pgsql-dev | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
 
 We comply with the specified licenses because:
 1. The repository is public (open source)
@@ -19,12 +19,12 @@ In addition to the licenses listed in the table, ODB offers other project licens
 
 *License information is taken from the official [ODB repository](https://github.com/codesynthesis-com/odb/blob/master/LICENSE). 
 
+**The `only` suffix imposes specific restrictions on the use of later versions of licenses. For example, in the case of `GNU GPLv2 only`, licensing a project that uses a library with a license of this type with the `GNU GPLv3` license is not allowed ([See the compatibility matrix below](#gnu-general-public-license-gpl-compatibility-matrix)).
+
 ## GNU General Public License (GPL) version 2 and GNU General Public License (GPL) version 3
 
-The GNU General Public License (GPL) version 2 and the GNU General Public License (GPL) version 3 have the same licensing rules.
-
 ODB has a license in the following cases:
-1. If the application is used only within the organization, for example, running it on company servers, then publication of the source code is not required. As ODB itself says, such an application is unlikely to become a source of significant earnings, so ODB can be used free of charge under the GPL license.
+1. If the application is used only within the organization, for example, running it on company servers, then publication of the source code is not required. As ODB itself says, such an application is unlikely to become a source of significant earnings, so ODB can be used free of charge under the `GPL` license.
 
 Quote:
 ```
@@ -33,31 +33,63 @@ If the application that is based on ODB is only used internally within the organ
 On the other hand, if you only use your application within your organization, such as running it on your company's servers, then you do not need to make your source code public.
 ```
 
-2. If the application is used outside the organization, ODB can be used free of charge in accordance with the GPL license, but the source code of the application must be open.
+2. If the application is used outside the organization, ODB can be used free of charge in accordance with the `GPL` license, but the source code of the application must be open.
 
 Quote:
 ```
 If the application that is based on ODB is distributed to third parties, then it is likely to be a source of revenue and/or to have broad utility. In this case the organization has two choices: It can use ODB free of charge under the GPL but has to make the source code for the entire application publicly available also free of charge (making the application essentially free).
 ```
 
-If ODB has this license, then the project must also be licensed under the GNU General Public License (GPL) version 2, and the source code must be open, except for private internal use within the company.
+If ODB has this license, then the project must also be licensed under the `GNU General Public License (GPL) version 2`, and the source code must be open, except for private internal use within the company.
+
+### GNU General Public License (GPL) compatibility matrix
+
+Below is a compatibility matrix for various GNU GPL licenses, which is available on the official website [gnu.org](https://www.gnu.org/licenses/gpl-faq.en.html#AllCompatibility).
+
+![gpl-licenses-compatibility-matrix](./images/gplLicensesCompatibilityMatrix.png)
+
+Quote:
+```
+1: You must follow the terms of GPLv2 when incorporating the code in this case. You cannot take advantage of terms in later versions of the GPL.
+
+2: While you may release under GPLv2-or-later both your original work, and/or modified versions of work you received under GPLv2-or-later, the GPLv2-only code that you're using must remain under GPLv2 only. As long as your project depends on that code, you won't be able to upgrade the license of your own code to GPLv3-or-later, and the work as a whole (any combination of both your project and the other code) can only be conveyed under the terms of GPLv2.
+
+3: If you have the ability to release the project under GPLv2 or any later version, you can choose to release it under GPLv3 or any later version—and once you do that, you'll be able to incorporate the code released under GPLv3.
+
+4: If you have the ability to release the project under LGPLv2.1 or any later version, you can choose to release it under LGPLv3 or any later version—and once you do that, you'll be able to incorporate the code released under LGPLv3.
+
+5: You must follow the terms of LGPLv2.1 when incorporating the code in this case. You cannot take advantage of terms in later versions of the LGPL.
+
+6: If you do this, as long as the project contains the code released under LGPLv2.1 only, you will not be able to upgrade the project's license to LGPLv3 or later.
+
+7: LGPLv2.1 gives you permission to relicense the code under any version of the GPL since GPLv2. If you can switch the LGPLed code in this case to using an appropriate version of the GPL instead (as noted in the table), you can make this combination.
+
+8: LGPLv3 is GPLv3 plus extra permissions that you can ignore in this case.
+
+9: Because GPLv2 does not permit combinations with LGPLv3, you must convey the project under GPLv3's terms in this case, since it will allow that combination.
+```
+
+An important point is that the compiler license requirements do not apply to code generated by compilers. This means that even though we use the odb (ODB Compiler) library to generate database support code (*.cxx, *.hxx, and *.ixx.), which is licensed under `GPLv3 only`, the project is not subject to the requirements of the `GPLv3 only` license, on the condition that the source code of the library/library is not included in the project.
+
+According to the information presented in the matrix, our project can have a `GPLv2 only` or `GPLv2 or later` license, since we use the `libodb` and `libodb-pgsql` libraries, both of which have `GPLv2 only` licenses.
 
 ## Special case: ODB Non-Commercial Use and Evaluation License (NCUEL)
 
+Quote:
 ```
 ODB can also be used free of charge non-commercially or for evaluation with non-free editions of commercial databases (Oracle, SQL Server) under the terms of the ODB Non-Commercial Use and Evaluation License (NCUEL) (a source-available license).
 ```
 
 ## Commercial Proprietary License (CPL)
 
-If you do not want to be bound by the terms of the GPL, you can purchase a Commercial Proprietary License (CPL).
+If you do not want to be bound by the terms of the `GPL`, you can purchase a `Commercial Proprietary License (CPL)`.
 
 This type of license allows the project to be used for commercial purposes, even in cases where the source code is closed.
 
 Quote:
 ```
 Additional benefits of the CPL include:
--Royalty-free runtime (no runtime licenses)
+- Royalty-free runtime (no runtime licenses)
 - Application source code stays private
 - Legal assurances, warranties, and indemnification
 - Commercial-grade technical support
@@ -74,19 +106,21 @@ Quote:
 In addition to the Commercial Proprietary License we offer a free version for handling small object models. This license allows you to use ODB in a proprietary (closed-source) application free of charge and without any of the GPL restrictions provided that the amount of the generated database support code in any single release of your application does not exceed 10,000 lines.
 ```
 
+To start using ODB under `FPL`, you must obtain a copy of the license agreement.
+
 ### What is <u>generated database support code</u>??
 
-The ODB compiler analyzes classes and generates the necessary code for working with the database. Such files have the following extensions: *.cxx, *.hxx, and *.ixx.
+The ODB Compiler analyzes classes and generates the necessary code for working with the database. Such files have the following extensions: *.cxx, *.hxx, and *.ixx.
 
-To start using ODB under FPL, you must obtain a copy of the license agreement.
+Below is a table from the official website [codesynthesis.com](https://www.codesynthesis.com/products/odb/license.xhtml) that describes the project licensing rules when using ODB libraries.
 
 ![odb-license-table](./images/odbLicenseTable.png)
 
 ## Conclusion
 
-The repository cannot have an MIT license while continuing to use ODB, as ODB has a GNU GPL v2 license, which is not backward compatible with MIT.
+The project cannot be distributed under the `MIT` license while continuing to use ODB libraries because the `libodb` and `libodb-pgsql` libraries that we include in the project are distributed under the `GPLv2` license, which is not backward compatible with `MIT` license. In this case, the project must have a `GPLv2` license.
 
-In the case of commercial use requiring closed source code, a license will be required, unless the <u>generated database support code</u> is less than 10,000 lines in size.
+If it is necessary to close the source code of the project, we can do so while continuing to use the `GPLv2` license, provided that the project will be used within the company. Otherwise, we can use the `FPL` license, provided that the database support code does not exceed 10,000 lines for each individual project release, or we can purchase a `CPL` license.
 
 ## References
 
