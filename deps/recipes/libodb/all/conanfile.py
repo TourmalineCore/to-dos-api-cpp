@@ -41,8 +41,8 @@ class LibOdbConan(ConanFile):
             cmake_minimum_required(VERSION 3.15)
             project(libodb VERSION {self.version} LANGUAGES CXX)
 
-            file(GLOB ODB_SOURCES         "odb/*.cxx")
-            file(GLOB ODB_DETAILS_SOURCES "odb/details/*.cxx")
+            file(GLOB          ODB_SOURCES         "odb/*.cxx")
+            file(GLOB_RECURSE  ODB_DETAILS_SOURCES "odb/details/*.cxx")
 
             add_library(odb
                 ${{ODB_SOURCES}}
