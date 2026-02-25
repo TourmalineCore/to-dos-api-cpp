@@ -5,7 +5,6 @@ from conan.errors import ConanInvalidConfiguration
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import get, save, rmdir
 
-
 class LibOdbPgsqlConan(ConanFile):
     name = "libodb-pgsql"
     version = "2.5.0"
@@ -18,8 +17,7 @@ class LibOdbPgsqlConan(ConanFile):
     default_options = {"shared": False, "fPIC": True}
 
     def config_options(self):
-        if self.settings.os == "Windows":
-            del self.options.fPIC
+        pass
 
     def configure(self):
         if self.options.shared:
@@ -31,7 +29,24 @@ class LibOdbPgsqlConan(ConanFile):
     def validate(self):
         if self.settings.os != "Linux":
             raise ConanInvalidConfiguration(
-                f"{self.ref} supported only on devcontainers/base:ubuntu-22.04"
+                f"{self.ref} is supported only on Linux"
+            )
+        try:
+            with open("/etc/os-release") as f:
+                info = dict(
+                    line.strip().split("=", 1)
+                    for line in f if "=" in line
+                )
+            distro  = info.get("ID", "").strip('"')
+            version = info.get("VERSION_ID", "").strip('"')
+            if distro != "ubuntu" or version != "22.04":
+                raise ConanInvalidConfiguration(
+                    f"{self.ref} is supported only on Ubuntu 22.04 "
+                    f"(detected: {distro} {version})"
+                )
+        except FileNotFoundError:
+            raise ConanInvalidConfiguration(
+                f"{self.ref} requires Ubuntu 22.04 (/etc/os-release not found)"
             )
 
     def requirements(self):

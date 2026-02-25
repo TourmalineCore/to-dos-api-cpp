@@ -23,7 +23,24 @@ class LibOdbConan(ConanFile):
     def validate(self):
         if self.settings.os != "Linux":
             raise ConanInvalidConfiguration(
-                f"{self.ref} supporting only in devcontainers/base:ubuntu-22.04"
+                f"{self.ref} is supported only on Linux"
+            )
+        try:
+            with open("/etc/os-release") as f:
+                info = dict(
+                    line.strip().split("=", 1)
+                    for line in f if "=" in line
+                )
+            distro  = info.get("ID", "").strip('"')
+            version = info.get("VERSION_ID", "").strip('"')
+            if distro != "ubuntu" or version != "22.04":
+                raise ConanInvalidConfiguration(
+                    f"{self.ref} is supported only on Ubuntu 22.04 "
+                    f"(detected: {distro} {version})"
+                )
+        except FileNotFoundError:
+            raise ConanInvalidConfiguration(
+                f"{self.ref} requires Ubuntu 22.04 (/etc/os-release not found)"
             )
 
     def source(self):
