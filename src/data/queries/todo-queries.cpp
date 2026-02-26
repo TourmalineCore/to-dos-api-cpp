@@ -1,7 +1,7 @@
 #include "todo-queries.h"
 #include "data/models/odb-gen/to-do-odb.hxx"
-#include <odb/transaction.hxx>
 #include <memory>
+#include <odb/transaction.hxx>
 
 std::shared_ptr<std::vector<ToDo>> ToDoQueries::get_all_todos()
 {

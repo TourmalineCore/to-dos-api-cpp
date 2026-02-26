@@ -1,10 +1,10 @@
 #include "addition-operation.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 // Testing reference section in GTest documentation
 // https://google.github.io/googletest/reference/testing.html
 TEST(MathTest, AdditionOperation)
-{   
+{
     // Assertions section in GTest documentation
     // https://google.github.io/googletest/reference/assertions.html#EXPECT_EQ
     EXPECT_EQ(AdditionOperation(2, 3), 5);

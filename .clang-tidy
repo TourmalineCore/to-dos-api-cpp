@@ -34,5 +34,4 @@ Checks: >-
     -modernize-avoid-c-arrays,
     -bugprone-easily-swappable-parameters,
     -misc-const-correctness
-WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'

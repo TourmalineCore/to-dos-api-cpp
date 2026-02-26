@@ -1,5 +1,3 @@
-enable_testing()
-
 include(GoogleTest)
 
 set(TEST_PROJECT ${PROJECT_NAME}_unit_tests)
