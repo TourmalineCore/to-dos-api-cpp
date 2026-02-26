@@ -33,6 +33,7 @@ jobs:
           cp .devcontainer/to-dos-conan-profile.conf .conan2/profiles/default
 
           export CONAN_HOME="$(pwd)/.conan2"
+          conan remote add local-recipes ./deps --type=local-recipes-index
           conan install . --build=missing
         # we don't need to push docker image that was built using our Dev Container
         push: never

@@ -75,9 +75,10 @@ Alternatively, use the CMake Tools Extension in VS Code. To do this, open the CM
 
 ### ORM:
 
-After creating the database or model, it is necessary to generate the auxiliary ODB files with the command `odb --std c++20 -d pgsql --generate-query -o odb-gen <model header file>` from the folder `src/data/models`.
+After creating the database or model, it is necessary to generate the auxiliary ODB files. 
+For generating these files use script `./scripts/generate_odb_files.sh`
 
-After executing the command, files will be created or updated in the folder `src/data/models/odb-gen'. Please do not modify or transfer these files for the correct operation of the application.
+After executing the script, files will be created or updated in the folder `src/data/models/odb-gen'. Please do not modify or transfer these files for the correct operation of the application.
 
 ### Migrations:
 
