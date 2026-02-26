@@ -32,10 +32,10 @@ private:
     std::uint64_t id_;
 
     std::string name_;
-#pragma db type("BIGINT")
+
+#pragma db type("TIMESTAMP")
     std::time_t createdAtUtc_;
 
-#pragma db null
-#pragma db type("BIGINT")
+#pragma db null type("TIMESTAMP")
     odb::nullable<std::time_t> deletedAtUtc_;
 };
