@@ -50,8 +50,8 @@ namespace odb
   persist_statement_types[] =
   {
     pgsql::text_oid,
-    pgsql::int8_oid,
-    pgsql::int8_oid
+    pgsql::timestamp_oid,
+    pgsql::timestamp_oid
   };
 
   const unsigned int access::object_traits_impl< ::ToDo, id_pgsql >::
@@ -64,8 +64,8 @@ namespace odb
   update_statement_types[] =
   {
     pgsql::text_oid,
-    pgsql::int8_oid,
-    pgsql::int8_oid,
+    pgsql::timestamp_oid,
+    pgsql::timestamp_oid,
     pgsql::int8_oid
   };
 
@@ -187,14 +187,14 @@ namespace odb
 
     // createdAtUtc_
     //
-    b[n].type = pgsql::bind::bigint;
+    b[n].type = pgsql::bind::timestamp;
     b[n].buffer = &i.createdAtUtc_value;
     b[n].is_null = &i.createdAtUtc_null;
     n++;
 
     // deletedAtUtc_
     //
-    b[n].type = pgsql::bind::bigint;
+    b[n].type = pgsql::bind::timestamp;
     b[n].buffer = &i.deletedAtUtc_value;
     b[n].is_null = &i.deletedAtUtc_null;
     n++;
@@ -252,7 +252,7 @@ namespace odb
       bool is_null (false);
       pgsql::value_traits<
           ::time_t,
-          pgsql::id_bigint >::set_image (
+          pgsql::id_timestamp >::set_image (
         i.createdAtUtc_value, is_null, v);
       i.createdAtUtc_null = is_null;
     }
@@ -266,7 +266,7 @@ namespace odb
       bool is_null (true);
       pgsql::value_traits<
           ::odb::nullable< long int >,
-          pgsql::id_bigint >::set_image (
+          pgsql::id_timestamp >::set_image (
         i.deletedAtUtc_value, is_null, v);
       i.deletedAtUtc_null = is_null;
     }
@@ -320,7 +320,7 @@ namespace odb
 
       pgsql::value_traits<
           ::time_t,
-          pgsql::id_bigint >::set_value (
+          pgsql::id_timestamp >::set_value (
         v,
         i.createdAtUtc_value,
         i.createdAtUtc_null);
@@ -334,7 +334,7 @@ namespace odb
 
       pgsql::value_traits<
           ::odb::nullable< long int >,
-          pgsql::id_bigint >::set_value (
+          pgsql::id_timestamp >::set_value (
         v,
         i.deletedAtUtc_value,
         i.deletedAtUtc_null);
