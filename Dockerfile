@@ -1,7 +1,8 @@
 FROM ubuntu:22.04 AS base
 
+USER root
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 80
 
 FROM base AS build
 
