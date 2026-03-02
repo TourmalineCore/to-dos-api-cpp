@@ -17,4 +17,10 @@ target_include_directories(${TEST_PROJECT} PRIVATE
   ${CMAKE_SOURCE_DIR}/src
 )
 
-gtest_discover_tests(${TEST_PROJECT})
+if(CMAKE_CROSSCOMPILING)
+    message(STATUS "Cross-compiling for ${CMAKE_SYSTEM_PROCESSOR}, skipping test discovery")
+    add_test(NAME ${TEST_PROJECT} 
+             COMMAND ${TEST_PROJECT})
+else()
+    gtest_discover_tests(${TEST_PROJECT})
+endif()

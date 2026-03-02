@@ -29,6 +29,12 @@ In the configuration options, select the `'conan-debug' config`.
 When the project configuration is finished, click Build to build the project.
 <p style="text-align: center;"><img src="docs/images/cmakeBuild.png" alt="cmakeBuild" width="400"/></p>
 
+#### Build for ARMv8
+
+To compile dependencies this project to run to-dos-api in the **ARMv8** environment, use the command `conan install . -pr:h profiles/to-dos-conan-profile-arm64.conf --build=missing` instead of the one specified in the previous paragraph in the terminal.
+
+When dependencies are built, use the command `conan build . -pr:h profiles/to-dos-conan-profile-arm64.conf` to build to-dos-api for running in an **ARMv8** environment.
+
 ### Project run
 
 #### Before launching web server:
