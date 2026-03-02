@@ -52,7 +52,7 @@ jobs:
         with:
           platforms: linux/amd64
           context: .
-          file: ./.devcontainer/Dockerfile
+          file: ./Dockerfile
           build-args: |
             EXCLUDE_UNIT_TESTS_FROM_BUILD=true
           labels: ${{ steps.meta.outputs.labels }}
@@ -112,7 +112,7 @@ jobs:
         with:
           platforms: linux/arm64
           context: .
-          file: ./.devcontainer/Dockerfile
+          file: ./Dockerfile
           build-args: |
             EXCLUDE_UNIT_TESTS_FROM_BUILD=true
           labels: ${{ steps.meta.outputs.labels }}
