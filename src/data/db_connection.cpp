@@ -15,9 +15,7 @@ std::shared_ptr<odb::database> DbConnection::get()
         flag,
         []()
         {
-            std::string dbConnectionString = "host=" + AppConfig::databaseHost() + " port=" + AppConfig::databasePort() +
-                                             " dbname=" + AppConfig::databaseName() + " user=" + AppConfig::databaseUser() +
-                                             " password=" + AppConfig::databasePassword();
+            std::string dbConnectionString = AppConfig::databaseDefaultConnectionString();
 
             instance_ = std::shared_ptr<odb::database>(new odb::pgsql::database(dbConnectionString));
         }

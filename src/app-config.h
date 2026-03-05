@@ -21,69 +21,43 @@ public:
 
     /**
      * @brief Function to get the host value from the environment
-     * variable `Drogon__Host`. Default is `0.0.0.0`
+     * variable `ApiOptions__Host`. Default is `0.0.0.0`
      * @return std::string
      */
-    static std::string drogonHost() { return getEnv("Drogon__Host", "0.0.0.0"); }
+    static std::string apiOptionHost() { return getEnv("ApiOptions__Host", "0.0.0.0"); }
 
     /**
      * @brief Function to get the port value from the environment
-     * variable `Drogon__Port`. Default is `80`
+     * variable `ApiOptions__Port`. Default is `80`
      * @return int
      */
-    static int drogonPort() { return std::stoi(getEnv("Drogon__Port", "80")); }
+    static int apiOptionPort() { return std::stoi(getEnv("ApiOptions__Port", "80")); }
 
     /**
      * @brief Function to get the log level value from the environment
-     * variable `Drogon__LogLevel`. Default is `INFO`
+     * variable `ApiOptions__LogLevel`. Default is `INFO`
      * @note Possible values: INFO, WARN, TRACE, DEBUG
      * @return std::string
      */
-    static std::string drogonLogLevel() { return getEnv("Drogon__LogLevel", "INFO"); }
+    static std::string apiOptionLogLevel() { return getEnv("ApiOptions__LogLevel", "INFO"); }
 
     /**
      * @brief Function to get the numbers of threads value from the
-     * environment variable `Drogon__NumberOfThreads`. Default is `1`
+     * environment variable `ApiOptions__NumberOfThreads`. Default is `1`
      * @return int
      */
-    static int drogonNumThreads() { return std::stoi(getEnv("Drogon__NumberOfThreads", "1")); }
+    static int apiOptionNumThreads() { return std::stoi(getEnv("ApiOptions__NumberOfThreads", "1")); }
 
     /**
-     * @brief Function to get the database host value from the
-     * environment variable `Database__Host`. Default is `0.0.0.0`
+     * @brief Function to get  the default connection string value from the
+     * environment variable `ConnectionStrings__DefaultConnection`. Default is
+     * `host=postgresql port=5432 dbname=to-dos-api-cpp-db user=postgres password=password`
      * @return std::string
      */
-    static std::string databaseHost() { return getEnv("Database__Host", "0.0.0.0"); }
-
-    /**
-     * @brief Function to get the database port value from the
-     * environment variable `Database__Port`. Default is `5432`
-     * @return std::string
-     */
-    static std::string databasePort() { return getEnv("Database__Port", "5432"); }
-
-    /**
-     * @brief Function to get the database name value from the
-     * environment variable `Database__Name`. Default is
-     * `to-dos-api-cpp_db`
-     * @return std::string
-     */
-    static std::string databaseName() { return getEnv("Database__Name", "to-dos-api-cpp_db"); }
-
-    /**
-     * @brief Function to get the database user value from the
-     * environment variable `Database__User`. Default is `postgres`
-     * @return std::string
-     */
-    static std::string databaseUser() { return getEnv("Database__User", "postgres"); }
-
-    /**
-     * @brief Function to get the database password value from the
-     * environment variable `Database__Password`. Default is
-     * `password`
-     * @return std::string
-     */
-    static std::string databasePassword() { return getEnv("Database__Password", "password"); }
+    static std::string databaseDefaultConnectionString()
+    {
+        return getEnv("ConnectionStrings__DefaultConnection", "host=postgresql port=5432 dbname=to-dos-api-cpp-db user=postgres password=password");
+    }
 };
 
 #endif  // APP_CONFIG_H
