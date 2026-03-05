@@ -11,6 +11,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install conan
+RUN pip install conan alembic psycopg2-binary
 
 COPY to-dos-conan-profile.conf /root/.conan2/profiles/default

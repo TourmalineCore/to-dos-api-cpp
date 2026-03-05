@@ -34,10 +34,6 @@ class to_dos_apiRecipe(ConanFile):
         cmake.configure()
         cmake.build()
 
-    def system_requirements(self):
-        apt = package_manager.Apt(self)
-        subprocess.check_call(["pip", "install", "alembic", "psycopg2-binary"])
-
     def package(self):
         cmake = CMake(self)
         cmake.install()
