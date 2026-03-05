@@ -49,15 +49,41 @@ public:
     static int apiOptionNumThreads() { return std::stoi(getEnv("ApiOptions__NumberOfThreads", "1")); }
 
     /**
-     * @brief Function to get  the default connection string value from the
-     * environment variable `ConnectionStrings__DefaultConnection`. Default is
-     * `host=postgresql port=5432 dbname=to-dos-api-cpp-db user=postgres password=password`
+     * @brief Function to get the database host value from the
+     * environment variable `DatabaseCredentials__Host`. Default is `0.0.0.0`
      * @return std::string
      */
-    static std::string databaseDefaultConnectionString()
-    {
-        return getEnv("ConnectionStrings__DefaultConnection", "host=postgresql port=5432 dbname=to-dos-api-cpp-db user=postgres password=password");
-    }
+    static std::string databaseHost() { return getEnv("DatabaseCredentials__Host", "0.0.0.0"); }
+
+    /**
+     * @brief Function to get the database port value from the
+     * environment variable `DatabaseCredentials__Port`. Default is `5432`
+     * @return std::string
+     */
+    static std::string databasePort() { return getEnv("DatabaseCredentials__Port", "5432"); }
+
+    /**
+     * @brief Function to get the database name value from the
+     * environment variable `DatabaseCredentials__Name`. Default is
+     * `to-dos-api-cpp-db`
+     * @return std::string
+     */
+    static std::string databaseName() { return getEnv("DatabaseCredentials__Name", "to-dos-api-cpp-db"); }
+
+    /**
+     * @brief Function to get the database user value from the
+     * environment variable `DatabaseCredentials__User`. Default is `postgres`
+     * @return std::string
+     */
+    static std::string databaseUser() { return getEnv("DatabaseCredentials__User", "postgres"); }
+
+    /**
+     * @brief Function to get the database password value from the
+     * environment variable `DatabaseCredentials__Password`. Default is
+     * `password`
+     * @return std::string
+     */
+    static std::string databasePassword() { return getEnv("DatabaseCredentials__Password", "password"); }
 };
 
 #endif  // APP_CONFIG_H

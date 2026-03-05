@@ -31,13 +31,13 @@ target_metadata = Base.metadata
 
 def get_database_url():
     """Getting the Database URL from Environment Variables"""
-    user = os.getenv('POSTGRES_USER')
-    password = os.getenv('POSTGRES_PASSWORD')
-    host = os.getenv('POSTGRES_HOST')
-    port = os.getenv('POSTGRES_PORT')
-    name = os.getenv('POSTGRES_DB')
+    host = os.getenv("DatabaseCredentials__Host")
+    port = os.getenv("DatabaseCredentials__Port")
+    user = os.getenv("DatabaseCredentials__User")
+    password = os.getenv("DatabaseCredentials__Password")
+    dbname = os.getenv("DatabaseCredentials__Name")
     
-    return f"postgresql://{user}:{password}@{host}:{port}/{name}"
+    return f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
 
 url = get_database_url()
 

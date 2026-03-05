@@ -2,14 +2,11 @@ import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-connection_string = os.getenv("ConnectionStrings__DefaultConnection", "host=postgresql port=5432 dbname=to-dos-api-cpp-db user=postgres password=password")
-database_credentials = dict(item.split("=", 1) for item in connection_string.split())
-
-host = database_credentials["host"]
-port = database_credentials["port"]
-user = database_credentials["user"]
-password = database_credentials["password"]
-dbname = database_credentials["dbname"]
+host = os.getenv("DatabaseCredentials__Host")
+port = os.getenv("DatabaseCredentials__Port")
+user = os.getenv("DatabaseCredentials__User")
+password = os.getenv("DatabaseCredentials__Password")
+dbname = os.getenv("DatabaseCredentials__Name")
 
 try:
     # We connect to postgres because it contains a table with existing databases
