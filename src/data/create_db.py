@@ -2,11 +2,11 @@ import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-host = os.getenv("DatabaseCredentials__Host")
-port = os.getenv("DatabaseCredentials__Port")
-user = os.getenv("DatabaseCredentials__User")
-password = os.getenv("DatabaseCredentials__Password")
-dbname = os.getenv("DatabaseCredentials__Name")
+host = os.getenv("POSTGRES_HOST")
+port = os.getenv("POSTGRES_PORT")
+user = os.getenv("POSTGRES_USER")
+password = os.getenv("POSTGRES_PASSWORD")
+dbname = os.getenv("POSTGRES_DB")
 
 try:
     # We connect to postgres because it contains a table with existing databases

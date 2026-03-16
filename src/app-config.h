@@ -21,69 +21,69 @@ public:
 
     /**
      * @brief Function to get the host value from the environment
-     * variable `ApiOptions__Host`. Default is `0.0.0.0`
+     * variable `API_HOST`. Default is `0.0.0.0`
      * @return std::string
      */
-    static std::string apiOptionHost() { return getEnv("ApiOptions__Host", "0.0.0.0"); }
+    static std::string apiHost() { return getEnv("API_HOST", "0.0.0.0"); }
 
     /**
      * @brief Function to get the port value from the environment
-     * variable `ApiOptions__Port`. Default is `80`
+     * variable `API_PORT`. Default is `80`
      * @return int
      */
-    static int apiOptionPort() { return std::stoi(getEnv("ApiOptions__Port", "80")); }
+    static int apiPort() { return std::stoi(getEnv("API_PORT", "80")); }
 
     /**
      * @brief Function to get the log level value from the environment
-     * variable `ApiOptions__LogLevel`. Default is `INFO`
+     * variable `API_LOG_LEVEL`. Default is `INFO`
      * @note Possible values: INFO, WARN, TRACE, DEBUG
      * @return std::string
      */
-    static std::string apiOptionLogLevel() { return getEnv("ApiOptions__LogLevel", "INFO"); }
+    static std::string apiLogLevel() { return getEnv("API_LOG_LEVEL", "INFO"); }
 
     /**
      * @brief Function to get the numbers of threads value from the
-     * environment variable `ApiOptions__NumberOfThreads`. Default is `1`
+     * environment variable `API_NUMBER_OF_THREADS`. Default is `1`
      * @return int
      */
-    static int apiOptionNumThreads() { return std::stoi(getEnv("ApiOptions__NumberOfThreads", "1")); }
+    static int apiNumThreads() { return std::stoi(getEnv("API_NUMBER_OF_THREADS", "1")); }
 
     /**
      * @brief Function to get the database host value from the
-     * environment variable `DatabaseCredentials__Host`. Default is `0.0.0.0`
+     * environment variable `POSTGRES_HOST`. Default is `0.0.0.0`
      * @return std::string
      */
-    static std::string databaseHost() { return getEnv("DatabaseCredentials__Host", "0.0.0.0"); }
+    static std::string databaseHost() { return getEnv("POSTGRES_HOST", "0.0.0.0"); }
 
     /**
      * @brief Function to get the database port value from the
-     * environment variable `DatabaseCredentials__Port`. Default is `5432`
+     * environment variable `POSTGRES_PORT`. Default is `5432`
      * @return std::string
      */
-    static std::string databasePort() { return getEnv("DatabaseCredentials__Port", "5432"); }
+    static std::string databasePort() { return getEnv("POSTGRES_PORT", "5432"); }
 
     /**
      * @brief Function to get the database name value from the
-     * environment variable `DatabaseCredentials__Name`. Default is
+     * environment variable `POSTGRES_DB`. Default is
      * `to-dos-api-cpp-db`
      * @return std::string
      */
-    static std::string databaseName() { return getEnv("DatabaseCredentials__Name", "to-dos-api-cpp-db"); }
+    static std::string databaseName() { return getEnv("POSTGRES_DB", "to-dos-api-cpp-db"); }
 
     /**
      * @brief Function to get the database user value from the
-     * environment variable `DatabaseCredentials__User`. Default is `postgres`
+     * environment variable `POSTGRES_USER`. Default is `postgres`
      * @return std::string
      */
-    static std::string databaseUser() { return getEnv("DatabaseCredentials__User", "postgres"); }
+    static std::string databaseUser() { return getEnv("POSTGRES_USER", "postgres"); }
 
     /**
      * @brief Function to get the database password value from the
-     * environment variable `DatabaseCredentials__Password`. Default is
+     * environment variable `POSTGRES_PASSWORD`. Default is
      * `password`
      * @return std::string
      */
-    static std::string databasePassword() { return getEnv("DatabaseCredentials__Password", "password"); }
+    static std::string databasePassword() { return getEnv("POSTGRES_PASSWORD", "password"); }
 };
 
 #endif  // APP_CONFIG_H
