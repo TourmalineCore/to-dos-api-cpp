@@ -64,7 +64,7 @@ service:
 ingress:
   enabled: true
   pathType: ImplementationSpecific
-  apiVersion: "1.0.0"
+  apiVersion: ""
   path: /api/to-dos-api(/|$)(.*)
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
