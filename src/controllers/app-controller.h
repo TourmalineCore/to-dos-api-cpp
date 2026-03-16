@@ -14,10 +14,10 @@ public:
     explicit AppController();
 
     METHOD_LIST_BEGIN
-    ADD_METHOD_TO(AppController::getToDos, "/api/to-dos", Get);                 // Getting a list of tasks
-    ADD_METHOD_TO(AppController::addToDo, "/api/to-dos", Post);                 // Adding a new task
-    ADD_METHOD_TO(AppController::completeToDos, "/api/to-dos/complete", Post);  // Executing (deleting) a task list
-    ADD_METHOD_TO(AppController::deleteToDo, "/api/to-dos", Delete);            // Deleting a specific task
+    ADD_METHOD_TO(AppController::getToDos, "/api", Get);                 // Getting a list of tasks
+    ADD_METHOD_TO(AppController::addToDo, "/api", Post);                 // Adding a new task
+    ADD_METHOD_TO(AppController::completeToDos, "/api/complete", Post);  // Executing (deleting) a task list
+    ADD_METHOD_TO(AppController::deleteToDo, "/api", Delete);            // Deleting a specific task
     METHOD_LIST_END
 
     HttpResponsePtr createInternalServerErrorResponse(const std::string& error) const;

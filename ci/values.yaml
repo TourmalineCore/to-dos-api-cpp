@@ -64,8 +64,8 @@ service:
 ingress:
   enabled: true
   pathType: ImplementationSpecific
-  apiVersion: ""
-  path: /api/cpp(/|$)(.*)
+  apiVersion: "1.0.0"
+  path: /api/to-dos-api(/|$)(.*)
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
