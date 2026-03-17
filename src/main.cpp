@@ -5,19 +5,10 @@
 
 int main()
 {
-    trantor::Logger::LogLevel level = trantor::Logger::kDebug;
-    auto logLevel = AppConfig::apiLogLevel();
-    if (logLevel == "INFO")
-        level = trantor::Logger::kInfo;
-    else if (logLevel == "WARN")
-        level = trantor::Logger::kWarn;
-    else if (logLevel == "TRACE")
-        level = trantor::Logger::kTrace;
-
-    // This is necessary to display API calls to endpoints in the logs
-    drogon::app().registerPreHandlingAdvice([](const drogon::HttpRequestPtr& req) { LOG_INFO << req->getMethodString() << " " << req->getPath(); });
-
-    drogon::app().addListener(AppConfig::apiHost(), AppConfig::apiPort()).setLogLevel(level).setThreadNum(AppConfig::apiNumThreads());
+    drogon::app()
+        .addListener(AppConfig::apiHost(), AppConfig::apiPort())
+        .setLogLevel(AppConfig::apiLogLevel())
+        .setThreadNum(AppConfig::apiNumThreads());
 
     drogon::app().run();
 
