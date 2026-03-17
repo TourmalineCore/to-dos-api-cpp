@@ -7,7 +7,7 @@
 #include "data/queries/todo-queries.h"
 #include "services/to-dos.service.h"
 
-const APP_CONTROLLER_BASE_PREFIX = AppConfig::apiGlobalPrefix() + "/to-dos";
+const std::string APP_CONTROLLER_BASE_PREFIX = AppConfig::apiGlobalPrefix() + "/to-dos";
 
 using namespace drogon;
 
