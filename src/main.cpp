@@ -1,3 +1,4 @@
+#include "controllers/app-controller.h"
 #include "utils/app-config/app-config.h"
 #include <cstdlib>
 #include <drogon/HttpAppFramework.h>

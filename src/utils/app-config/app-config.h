@@ -45,13 +45,6 @@ public:
     static int apiNumThreads();
 
     /**
-     * @brief Function to get the API global prefix value from the
-     * environment variable `API_GLOBAL_PREFIX`. Default is `/api`
-     * @return std::string
-     */
-    static std::string apiGlobalPrefix();
-
-    /**
      * @brief Function to get the database host value from the
      * environment variable `POSTGRES_HOST`. Default is `0.0.0.0`
      * @return std::string

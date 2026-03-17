@@ -41,11 +41,6 @@ int AppConfig::apiNumThreads()
     return std::stoi(getEnv("API_NUMBER_OF_THREADS", "1"));
 }
 
-std::string AppConfig::apiGlobalPrefix()
-{
-    return getEnv("API_GLOBAL_PREFIX", "/api");
-}
-
 std::string AppConfig::databaseHost()
 {
     return getEnv("POSTGRES_HOST", "0.0.0.0");
