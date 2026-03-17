@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <string>
+#include <trantor/utils/Logger.h>
 
 class AppConfig
 {

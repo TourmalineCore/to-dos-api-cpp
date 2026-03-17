@@ -1,5 +1,5 @@
 #include "db_connection.h"
-#include "app-config.h"
+#include "utils/app-config/app-config.h"
 
 #include <cstdlib>
 #include <stdexcept>

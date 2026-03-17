@@ -1,7 +1,6 @@
-#include "app-config.h"
+#include "utils/app-config/app-config.h"
 #include <cstdlib>
 #include <drogon/HttpAppFramework.h>
-#include <trantor/utils/Logger.h>
 
 int main()
 {
