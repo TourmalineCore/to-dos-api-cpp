@@ -5,10 +5,7 @@
 
 int main()
 {
-    drogon::app()
-        .addListener(AppConfig::apiHost(), AppConfig::apiPort())
-        .setLogLevel(AppConfig::apiLogLevel())
-        .setThreadNum(AppConfig::apiNumThreads());
+    drogon::app().addListener("127.0.0.1", 8080).setLogLevel(trantor::Logger::kInfo).setThreadNum(1);
 
     drogon::app().run();
 
