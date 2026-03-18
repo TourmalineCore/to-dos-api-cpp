@@ -3,6 +3,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 AS base
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
     build-essential clang lld make gdb cmake ninja-build \
+    crossbuild-essential-arm64 \
     git curl wget unzip sudo \
     pip \
     clang-format clang-tidy \
