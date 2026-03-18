@@ -24,14 +24,14 @@ trantor::Logger::LogLevel AppConfig::apiLogLevel()
 
     trantor::Logger::LogLevel level;
 
-    if (logLevel == "INFO")
-        level = trantor::Logger::kInfo;
-    else if (logLevel == "DEBUG")
+    if (logLevel == "DEBUG")
         level = trantor::Logger::kDebug;
     else if (logLevel == "WARN")
         level = trantor::Logger::kWarn;
     else if (logLevel == "TRACE")
         level = trantor::Logger::kTrace;
+    else
+        level = trantor::Logger::kInfo;
 
     return level;
 }
