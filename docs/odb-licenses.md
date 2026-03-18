@@ -1,13 +1,11 @@
 # ODB (Object-Relational Mapping) license
 
 We use several libraries in the project:
-| Library          | License* (which we are now experiencing)                                                       |
-| ---------------- | -------------------------------------------------------------- |
+| Library          | License* (which we are now experiencing)                             |
+| ---------------- | -------------------------------------------------------------------- |
 | odb              | [GNU GPLv3 only**](https://www.codesynthesis.com/licenses/gpl-3.txt) |
 | libodb           | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
-| libodb-dev       | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
 | libodb-pgsql     | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
-| libodb-pgsql-dev | [GNU GPLv2 only**](https://www.codesynthesis.com/licenses/gpl-2.txt) |
 
 We comply with the specified licenses because:
 1. The repository is public (open source)
