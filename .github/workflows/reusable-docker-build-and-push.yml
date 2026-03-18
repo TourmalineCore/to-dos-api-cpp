@@ -8,9 +8,10 @@ name: Publish Docker image
 on:
   # to allow to wait for a docker image to be published to proceed in another workflow
   # workflow_call:
-  push:
-    branches:
-        - feature/*
+  # PR-based activation has been added, as there are no workflows that trigger this. 
+  # After adding a workflow with tests, you must revert the change and leave only the `workflow_call`.
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   build-amd64:
