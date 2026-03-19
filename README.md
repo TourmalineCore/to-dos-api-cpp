@@ -39,7 +39,7 @@ When dependencies are built, use the command `conan build . -pr:h profiles/to-do
 
 #### Before launching web server:
 - Run the database container via docker compose command `docker compose up -d` from workspace.
-- Import environment variables declared in the `.env` file while in the dev container and using the command `export $(grep -v '^#' .env | xargs)`. If the file containing the environment variables is named something other than `.env`, you should modify the command to specify the correct name.
+- Import the environment variables defined in the .env file in the project root. The environment variables were automatically exported from .env when the container was built. If the contents of the .env file have been modified after the container was built, run the command `export $(grep -v ‘^#’ .env | xargs)`, but keep in mind that the environment variables will only be visible in the terminal session where the command was executed.
 
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
