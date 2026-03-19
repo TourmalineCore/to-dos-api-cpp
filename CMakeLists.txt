@@ -5,7 +5,6 @@ project(${PROJECT_NAME} CXX)
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS 
   ${CMAKE_SOURCE_DIR}/src/*/*.cpp
   ${CMAKE_SOURCE_DIR}/src/data/models/odb-gen/*.cxx
-  ${CMAKE_SOURCE_DIR}/src/utils/**/*.cpp
 )
 
 set(PROJECT_OBJECTS ${PROJECT_NAME}_lib)
