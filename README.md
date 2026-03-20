@@ -16,6 +16,7 @@ For development purposes use a devcontainer named `developing`.
 - Microsoft VS Code
   - VS Code should also have the "Dev Containers" extension installed. To check it, open "View: Extensions" with `Ctrl + Shift + X` or as shown in the screenshot below:
   <p style="text-align: center;"><img src="docs/images/vscodeExtensions.png" alt="vscodeExtensions" width="400"/></p>
+- Before running the container, create a .env file in the project root and specify the environment variables in it, just as you did in .env.example. Otherwise, running the devcontainer will result in an error.
 - Make sure Docker daemon is running before opening the dev container (`Ctrl + Shift + P` -> "Reopen in container" or click here + "Reopen in container")
  <p style="text-align: center;"><img src="docs/images/vscodeContainer.png" alt="vscodeContainer" width="400"/></p>
 
