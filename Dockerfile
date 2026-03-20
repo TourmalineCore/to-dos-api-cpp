@@ -1,15 +1,16 @@
 FROM ubuntu:22.04 AS base
 
+# use root to be able to use privilidged port 80
+# https://github.com/dotnet/aspnetcore/discussions/53015
 USER root
 WORKDIR /app
 EXPOSE 80
 
+# pip is installed here because it needs to be available in both the build and final stages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends pip
 
 FROM base AS build
-
-ARG TARGETARCH
 
 WORKDIR /src
 COPY . .
@@ -22,18 +23,22 @@ RUN apt-get -y install --no-install-recommends \
 
 RUN pip install conan
 
+# this is necessary so that Conan can see the local dependency recipes
 RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
 RUN conan build . --build=missing \
-    --profile:host=profiles/to-dos-conan-profile-${TARGETARCH}.conf \
-    --profile:build=profiles/to-dos-conan-profile-${TARGETARCH}.conf
+    --profile:all=.devcontainer/to-dos-conan-profile.conf \
+    # This is necessary because, by default, the `build_type` property in the profile is set to `Debug`
+    --settings:host="build_type=Release"
 
 FROM base AS final
 
+# psycopg2-binary and alembic packages are used for performing migrations
 RUN pip install alembic psycopg2-binary
 
 WORKDIR /app
 
+# alembic needs this to apply the migrations correctly
 COPY --from=build /src/src/data/create_db.py ./alembic/
 COPY --from=build /src/src/data/alembic.ini ./alembic/
 COPY --from=build /src/src/data/migrations/ ./alembic/migrations/
