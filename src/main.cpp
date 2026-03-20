@@ -1,11 +1,11 @@
+#include "utils/app-config/app-config.h"
 #include <drogon/HttpAppFramework.h>
 
 int main()
 {
-    drogon::app()
-        .addListener(AppConfig::apiHost(), AppConfig::apiPort())
-        .setLogLevel(AppConfig::apiLogLevel())
-        .setThreadNum(AppConfig::apiNumThreads());
+    auto& config = AppConfig::GetInstance();
+
+    drogon::app().addListener(config.apiHost(), config.apiPort()).setLogLevel(config.apiLogLevel()).setThreadNum(config.apiNumThreads());
 
     drogon::app().run();
 

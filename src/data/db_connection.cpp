@@ -1,4 +1,5 @@
 #include "db_connection.h"
+#include "../utils/app-config/app-config.h"
 
 #include <cstdlib>
 #include <stdexcept>
@@ -14,11 +15,13 @@ std::shared_ptr<odb::database> DbConnection::get()
         flag,
         []()
         {
-            const std::string host = AppConfig::databaseHost();
-            const std::string port = AppConfig::databasePort();
-            const std::string user = AppConfig::databaseUser();
-            const std::string password = AppConfig::databasePassword();
-            const std::string dbname = AppConfig::databaseName();
+            auto& config = AppConfig::GetInstance();
+
+            const std::string host = config.databaseHost();
+            const std::string port = config.databasePort();
+            const std::string user = config.databaseUser();
+            const std::string password = config.databasePassword();
+            const std::string dbname = config.databaseName();
 
             std::string conn = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
 

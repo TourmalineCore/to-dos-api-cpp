@@ -1,6 +1,22 @@
-#include <trantor/utils/Logger.h>
-
 #include "app-config.h"
+
+AppConfig::AppConfig()
+: apiHost_(getEnv("API_HOST", "0.0.0.0")),
+  apiPort_(getEnvInt("API_PORT", 80)),
+  apiNumThreads_(getEnvInt("API_NUMBER_OF_THREADS", 1)),
+  apiLogLevel_(parseLogLevel(getEnv("API_LOG_LEVEL", "INFO"))),
+  databaseHost_(getEnv("POSTGRES_HOST", "0.0.0.0")),
+  databasePort_(getEnv("POSTGRES_PORT", "5432")),
+  databaseName_(getEnv("POSTGRES_DB", "to-dos-api-cpp-db")),
+  databaseUser_(getEnv("POSTGRES_USER", "postgres")),
+  databasePassword_(getEnv("POSTGRES_PASSWORD", "password"))
+{}
+
+AppConfig& AppConfig::GetInstance()
+{
+    static AppConfig instance;
+    return instance;
+}
 
 std::string AppConfig::getEnv(std::string name, std::string defaultValue)
 {
@@ -8,60 +24,30 @@ std::string AppConfig::getEnv(std::string name, std::string defaultValue)
     return value ? std::string(value) : defaultValue;
 }
 
-std::string AppConfig::apiHost()
+int AppConfig::getEnvInt(std::string name, int defaultValue)
 {
-    return getEnv("API_HOST", "0.0.0.0");
+    char* value = std::getenv(name.c_str());
+
+    if (!value)
+        return defaultValue;
+
+    try
+    {
+        return std::stoi(value);
+    }
+    catch (const std::exception&)
+    {
+        return defaultValue;
+    }
 }
 
-int AppConfig::apiPort()
+trantor::Logger::LogLevel AppConfig::parseLogLevel(const std::string& level)
 {
-    return std::stoi(getEnv("API_PORT", "80"));
-}
-
-trantor::Logger::LogLevel AppConfig::apiLogLevel()
-{
-    auto logLevel = getEnv("API_LOG_LEVEL", "INFO");
-
-    trantor::Logger::LogLevel level;
-
-    if (logLevel == "DEBUG")
-        level = trantor::Logger::kDebug;
-    else if (logLevel == "WARN")
-        level = trantor::Logger::kWarn;
-    else if (logLevel == "TRACE")
-        level = trantor::Logger::kTrace;
-    else
-        level = trantor::Logger::kInfo;
-
-    return level;
-}
-
-int AppConfig::apiNumThreads()
-{
-    return std::stoi(getEnv("API_NUMBER_OF_THREADS", "1"));
-}
-
-std::string AppConfig::databaseHost()
-{
-    return getEnv("POSTGRES_HOST", "0.0.0.0");
-}
-
-std::string AppConfig::databasePort()
-{
-    return getEnv("POSTGRES_PORT", "5432");
-}
-
-std::string AppConfig::databaseName()
-{
-    return getEnv("POSTGRES_DB", "to-dos-api-cpp-db");
-}
-
-std::string AppConfig::databaseUser()
-{
-    return getEnv("POSTGRES_USER", "postgres");
-}
-
-std::string AppConfig::databasePassword()
-{
-    return getEnv("POSTGRES_PASSWORD", "password");
+    if (level == "DEBUG")
+        return trantor::Logger::kDebug;
+    if (level == "WARN")
+        return trantor::Logger::kWarn;
+    if (level == "TRACE")
+        return trantor::Logger::kTrace;
+    return trantor::Logger::kInfo;
 }
