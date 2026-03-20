@@ -1,5 +1,3 @@
-#include "controllers/app-controller.h"
-#include <cstdlib>
 #include <drogon/HttpAppFramework.h>
 
 int main()
