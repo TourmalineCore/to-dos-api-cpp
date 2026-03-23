@@ -24,15 +24,15 @@ jobs:
           build/Debug/generators
         key: ${{ env.cache-name }}-${{ hashFiles('conanfile.py') }}
     
-    - name: Prepare
-      # we need to create a .env file, because without it, the Dev Container won't be able to start
+    # we need to create a .env file, because without it, the Dev Container won't be able to start
+    - name: Creating a .env file
       run: touch .env
   
     - name: Install and build Conan dependencies
       if: steps.cache-conan-packages.outputs.cache-hit != 'true'
       uses: devcontainers/ci@v0.3
       with:
-        runCmd: |          
+        runCmd: |
           mkdir -p .conan2/profiles
           cp .devcontainer/to-dos-conan-profile.conf .conan2/profiles/default
 
