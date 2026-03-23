@@ -22,7 +22,6 @@ private:
     std::string apiHost_;
     uint32_t apiPort_ = 0;
     uint32_t apiNumThreads_ = 0;
-    trantor::Logger::LogLevel apiLogLevel_ = trantor::Logger::kInfo;
 
     std::string databaseHost_;
     std::string databasePort_;
