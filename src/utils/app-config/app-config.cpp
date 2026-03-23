@@ -92,8 +92,17 @@ const uint32_t& AppConfig::apiNumThreads()
     if (!apiNumThreads_)
     {
         uint32_t numberOfThreads = getEnvInt("API_NUMBER_OF_THREADS", 1);
-        apiNumThreads_ = numberOfThreads > 0 ? numberOfThreads : 1;
-        LOG_ERROR << "The number of allocated threads cannot be less than 1";
+
+        if (numberOfThreads > 0)
+        {
+            apiNumThreads_ = numberOfThreads;
+        }
+        else
+        {
+            apiNumThreads_ = 1;
+            LOG_ERROR << "The number of allocated threads cannot be less than 1";
+        }
+
         LOG_DEBUG << "Update value: apiNumThreads_=" << apiNumThreads_;
     }
 
