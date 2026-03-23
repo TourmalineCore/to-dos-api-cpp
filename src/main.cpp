@@ -3,7 +3,8 @@
 
 int main()
 {
-    // We need to set the logging level so that it is used instead of the default
+    // We need to set the logging level right away; otherwise, the default level
+    // will be used until .setLogLevel is called
     drogon::app().setLogLevel(AppConfig::apiLogLevel());
 
     auto& config = AppConfig::GetInstance();
