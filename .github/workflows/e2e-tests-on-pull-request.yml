@@ -1,8 +1,13 @@
 name: E2E Tests in PR
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  # The `push` event has been added for debugging purposes. After completing work 
+  # on the workflow, you must revert this change and keep only the `pull_request` event.
+  push:
+    branches:
+    - 'feature/*'
 
 jobs:
   # this is needed to wait for the new docker image to be build and published to the registry
