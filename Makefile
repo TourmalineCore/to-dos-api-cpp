@@ -40,3 +40,17 @@ apply-migrations: up-db
 # Build the project, apply migrations and start the application
 run: build apply-migrations
 	@./build/Debug/to-dos-api
+
+# Build the project and start the test application
+run-test: build
+	@./build/Debug/test/to-dos-api_unit_tests
+
+# Run clang-tidy static analysis
+run-tidy:
+	@run-clang-tidy -p build/Debug
+
+# Run clang-format analysis
+run-format:
+	@find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format
+
+
