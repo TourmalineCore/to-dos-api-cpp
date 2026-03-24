@@ -52,4 +52,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 
 # Tests
 enable_testing()
-add_subdirectory(test)
+add_subdirectory(tests/unit)
