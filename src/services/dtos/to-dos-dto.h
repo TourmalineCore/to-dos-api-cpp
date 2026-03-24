@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string>
 #include <json/json.h>
+#include <string>
 
 struct ToDoDTO
 {
-  int id;
-  std::string description;
+    int id;
+    std::string name;
 
-  Json::Value toJson() const;
+    Json::Value toJson() const;
 };

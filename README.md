@@ -29,28 +29,62 @@ In the configuration options, select the `'conan-debug' config`.
 When the project configuration is finished, click Build to build the project.
 <p style="text-align: center;"><img src="docs/images/cmakeBuild.png" alt="cmakeBuild" width="400"/></p>
 
+#### Build for ARMv8
+
+To compile dependencies this project to run to-dos-api in the **ARMv8** environment, use the command `conan install . -pr:h profiles/to-dos-conan-profile-arm64.conf --build=missing` instead of the one specified in the previous paragraph in the terminal.
+
+When dependencies are built, use the command `conan build . -pr:h profiles/to-dos-conan-profile-arm64.conf` to build to-dos-api for running in an **ARMv8** environment.
+
 ### Project run
 
 #### Before launching web server:
-- Run the database container via docker compose command `docker compose -f docker-compose.dev.yaml up -d` from workspace.
+- Run the database container via docker compose command `docker compose up -d` from workspace.
+- Import environment variables declared in the `.env` file while in the dev container and using the command `export $(grep -v '^#' .env | xargs)`. If the file containing the environment variables is named something other than `.env`, you should modify the command to specify the correct name.
 
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
 
-## How to run clang-tidy static code analyzer
+## Linters
 
-To run clang-tidy, run the following command:
-```
-find ./src -name "*.cpp" -not -path "*/build/*" -exec echo "Checking {}..." \; -exec clang-tidy --config-file=.clang-tidy {} -- -I./include -std=c++20 \;
-```
+The project includes the `clang-tidy` code analyzer and the `clang-format` formatter. Configuration files are located in the project root: `.clang-tidy` and `.clang-format`, respectively.
+
+To use linters you need to install:
+- [VSCode](https://code.visualstudio.com/)
+- [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+
+### Clang-format
+
+Clang-format code formatting occurs automatically when saving a file using the CodeAnalysis C/C++ extension.
+
+To start manually, you need to run the command `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format --dry-run`, while in the root of the project.
+
+To automatically fix errors, run `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format -i` from the project root.
+
+### Clang-tidy
+
+Clang-tidy code checking occurs in the background using the CodeAnalysis C/C++ extension.
+
+To start manually, you need to run the command `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-tidy -p ./build/Debug | grep "error:"`, while in the root of the project.
+
+## Tests run
+
+The project presents an example of test implementation using GTest tools. Test files are located in the `test` directory at the root of the project. Inside the `test` directory there is a `CMakeLists.txt` file created specifically for building a separate executable file for tests.
+
+### How to run tests
+
+To run tests, go to the `build/Debug` directory, and then run the `ctest` command in the terminal (`Ctrl + Shift + ~`).
+
+Alternatively, use the CMake Tools Extension in VS Code. To do this, open the CMake Tools Extension and click `Test`, after configuring and building the project.
+<p style="text-align: center;"><img src="docs/images/cmakeTests.png" alt="cmakeTests" width="400"/></p>
 
 ## Working with ORM+Migration.
 
 ### ORM:
 
-After creating the database or model, it is necessary to generate the auxiliary ODB files with the command `odb --std c++20 -d pgsql --generate-query -o odb-gen <model header file>` from the folder `src/data/models`.
+After creating the database or model, it is necessary to generate the auxiliary ODB files. 
+For generating these files use script `./scripts/generate_odb_files.sh`
 
-After executing the command, files will be created or updated in the folder `src/data/models/odb-gen'. Please do not modify or transfer these files for the correct operation of the application.
+After executing the script, files will be created or updated in the folder `src/data/models/odb-gen'. Please do not modify or transfer these files for the correct operation of the application.
 
 ### Migrations:
 

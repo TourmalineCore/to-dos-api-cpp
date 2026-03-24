@@ -113,7 +113,6 @@ At the time of research, the following versions were used:
 | Availability of a suitable ORM | -                          | (not studied due to exclusion) | -                                  |
 | Presence of migrations         | -                          | (not studied due to exclusion) | -                                  |
 
-
 #### Why Drogon - Chosen solution
 
 **Advantages:**
@@ -189,6 +188,5 @@ Final decision: manage migrations with SQLAlchemy/Alembic and use ODB for C++ da
 - Define models in SQLAlchemy; manage revisions and rollbacks with Alembic.
 - Implement and maintain C++ data access with ODB on PostgreSQL.
 - Coordination workflow: apply Alembic migrations first, then synchronize ODB mappings/models and the C++ data access code to reflect schema updates.
-
 
 ## E2E Tests
