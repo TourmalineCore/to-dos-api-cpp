@@ -12,7 +12,7 @@ build: install
 	@conan build .
 
 # Start postgresql container in the background
-run-db:
+up-db:
 	@docker compose up -d postgresql
 
 # Stop postgresql container without removing it
@@ -20,7 +20,7 @@ stop-db:
 	@docker compose stop postgresql
 
 # Stop postgresql container and remove its volumes
-drop-db:
+down-db:
 	@docker compose down -v postgresql
 
 # This is necessary so that if the `name` parameter is not provided, 
@@ -28,12 +28,12 @@ drop-db:
 name ?= $(shell date +%Y_%m_%d_%H_%M_%S)
 
 # Generate a new Alembic migration with autogenerate
-create-migration: docker-compose
+create-migration: up-db
 	@cd ./src/data && \
 	alembic revision --autogenerate -m $(name)
 
 # Apply all pending Alembic migrations
-apply-migrations: docker-compose
+apply-migrations: up-db
 	@cd ./src/data && \
 	alembic upgrade head
 
