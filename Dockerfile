@@ -39,7 +39,6 @@ RUN pip install alembic psycopg2-binary sqlalchemy-utils
 WORKDIR /app
 
 # alembic needs this to apply the migrations correctly
-COPY --from=build /src/src/data/create_db.py ./alembic/
 COPY --from=build /src/src/data/alembic.ini ./alembic/
 COPY --from=build /src/src/data/migrations/ ./alembic/migrations/
 COPY --from=build /src/src/data/models/ ./alembic/models/

@@ -79,7 +79,7 @@ void AppController::completeToDos(const HttpRequestPtr& req, std::function<void(
     {
         auto json = req->getJsonObject();
 
-        if (!json || !json->isMember("toDosIds"))
+        if (!json || !json->isMember("toDoIds"))
         {
             Json::Value result;
             result["status"] = "error";
@@ -92,7 +92,7 @@ void AppController::completeToDos(const HttpRequestPtr& req, std::function<void(
             return;
         }
 
-        auto toDosIds = json->get("toDosIds", Json::Value(Json::arrayValue));
+        auto toDosIds = json->get("toDoIds", Json::Value(Json::arrayValue));
 
         for (const auto& id : toDosIds)
         {

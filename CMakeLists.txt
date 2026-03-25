@@ -51,5 +51,10 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 )
 
 # Tests
-enable_testing()
-add_subdirectory(tests/unit)
+if (ENV{EXCLUDE_UNIT_TESTS_FROM_BUILD} STREQUAL "true")
+  message(STATUS "UNIT TEST DISABLED")
+else()
+  message(STATUS "UNIT TEST ENABLED")
+  enable_testing()
+  add_subdirectory(tests/unit)
+endif()
