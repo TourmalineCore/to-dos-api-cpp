@@ -22,7 +22,7 @@ services:
     profiles:
       - MockForPullRequest
     depends_on:
-      inner-circle-items-api-db:
+      to-dos-api-cpp-db:
         condition: service_healthy
     build:
       dockerfile: ./Dockerfile
@@ -44,7 +44,7 @@ services:
       dockerfile: ./KarateDockerfile
       context: ./tests/e2e
     depends_on:
-      inner-circle-items-api:
+      to-dos-api-cpp:
         condition: service_started
     # restart twice in case of not ready db or network failures
     restart: on-failure:2
