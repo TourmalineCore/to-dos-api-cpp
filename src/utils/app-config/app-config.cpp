@@ -21,7 +21,16 @@ AppConfig& AppConfig::GetInstance()
 std::string AppConfig::getEnv(std::string name, std::string defaultValue)
 {
     char* value = std::getenv(name.c_str());
-    return value ? std::string(value) : defaultValue;
+
+    if (value)
+    {
+        return std::string(value);
+    }
+    else
+    {
+        LOG_WARN << "Failed to get the value of the " << name << " environment variable; the default value will be used: " << defaultValue;
+        return defaultValue;
+    }
 }
 
 uint32_t AppConfig::getEnvInt(std::string name, uint32_t defaultValue)
