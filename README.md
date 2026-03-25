@@ -29,10 +29,6 @@ In the configuration options, select the `'conan-debug' config`.
 When the project configuration is finished, click Build to build the project.
 <p style="text-align: center;"><img src="docs/images/cmakeBuild.png" alt="cmakeBuild" width="400"/></p>
 
-Alternatively, you can use make targets.
-- To install dependencies, use the `make install` command.
-- To build the project and dependencies, use the `make build` command. When the command is executed, the project's dependencies will be checked and, if necessary, installed.
-
 #### Build for ARMv8
 
 To compile dependencies this project to run to-dos-api in the **ARMv8** environment, use the command `conan install . -pr:h profiles/to-dos-conan-profile-arm64.conf --build=missing` instead of the one specified in the previous paragraph in the terminal.
@@ -66,9 +62,6 @@ Clang-format code formatting occurs automatically when saving a file using the C
 To start manually, you need to run the command `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format`, while in the root of the project.
 
 To automatically fix errors, run `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format -i` from the project root.
-
-Alternatively, you can use make targets.
-- To run the code formatter without automatic corrections, use the `make run-format` command.
 
 ### Clang-tidy
 
