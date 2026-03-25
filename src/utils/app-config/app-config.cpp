@@ -2,14 +2,14 @@
 
 AppConfig::AppConfig()
 {
-    apiHost();
-    apiPort();
-    apiNumThreads();
-    databaseHost();
-    databasePort();
-    databaseName();
-    databaseUser();
-    databasePort();
+    setApiHost(getEnv("API_HOST", "0.0.0.0"));
+    setApiPort(getEnvInt("API_PORT", 80));
+    setApiNumThreads(getEnvInt("API_NUMBER_OF_THREADS", 1));
+    setDatabaseHost(getEnv("POSTGRES_HOST", "0.0.0.0"));
+    setDatabasePort(getEnv("POSTGRES_PORT", "5432"));
+    setDatabaseName(getEnv("POSTGRES_DB", "to-dos-api-cpp-db"));
+    setDatabaseUser(getEnv("POSTGRES_USER", "postgres"));
+    setDatabasePassword(getEnv("POSTGRES_PASSWORD", "password"));
 }
 
 AppConfig& AppConfig::GetInstance()
@@ -34,7 +34,7 @@ uint32_t AppConfig::getEnvInt(std::string name, uint32_t defaultValue)
     try
     {
         auto result = std::stoi(value);
-        auto limit = std::numeric_limits<uint8_t>::max();
+        auto limit = std::numeric_limits<uint32_t>::max();
 
         if (result < 0 || result > limit)
             throw std::overflow_error(
@@ -65,106 +65,88 @@ trantor::Logger::LogLevel AppConfig::parseLogLevel(const std::string& level)
         return trantor::Logger::kError;
 }
 
-const std::string& AppConfig::apiHost()
+void AppConfig::setApiHost(std::string apiHost)
 {
-    if (apiHost_.empty())
+    apiHost_ = apiHost;
+    LOG_DEBUG << "Update value: apiHost_=" << apiHost_;
+};
+
+void AppConfig::setApiPort(uint32_t apiPort)
+{
+    apiPort_ = apiPort;
+    LOG_DEBUG << "Update value: apiPort_=" << apiPort_;
+};
+
+void AppConfig::setApiNumThreads(uint32_t apiNumThreads)
+{
+    uint32_t numberOfThreads = apiNumThreads;
+
+    if (numberOfThreads > 0)
     {
-        apiHost_ = getEnv("API_HOST", "0.0.0.0");
-        LOG_DEBUG << "Update value: apiHost_=" << apiHost_;
+        apiNumThreads_ = numberOfThreads;
+    }
+    else
+    {
+        apiNumThreads_ = 1;
+        LOG_ERROR << "The number of allocated threads cannot be less than 1";
     }
 
-    return apiHost_;
-}
+    LOG_DEBUG << "Update value: apiNumThreads_=" << apiNumThreads_;
+};
 
-const uint32_t& AppConfig::apiPort()
+void AppConfig::setDatabaseHost(std::string databaseHost)
 {
-    if (!apiPort_)
-    {
-        apiPort_ = getEnvInt("API_PORT", 80);
-        LOG_DEBUG << "Update value: apiPort_=" << apiPort_;
-    }
+    databaseHost_ = databaseHost;
+    LOG_DEBUG << "Update value: databaseHost_=" << databaseHost_;
+};
 
-    return apiPort_;
-}
-
-const uint32_t& AppConfig::apiNumThreads()
+void AppConfig::setDatabasePort(std::string databasePort)
 {
-    if (!apiNumThreads_)
-    {
-        uint32_t numberOfThreads = getEnvInt("API_NUMBER_OF_THREADS", 1);
+    databasePort_ = databasePort;
+    LOG_DEBUG << "Update value: databasePort_=" << databasePort_;
+};
 
-        if (numberOfThreads > 0)
-        {
-            apiNumThreads_ = numberOfThreads;
-        }
-        else
-        {
-            apiNumThreads_ = 1;
-            LOG_ERROR << "The number of allocated threads cannot be less than 1";
-        }
-
-        LOG_DEBUG << "Update value: apiNumThreads_=" << apiNumThreads_;
-    }
-
-    return apiNumThreads_;
-}
-
-const trantor::Logger::LogLevel AppConfig::apiLogLevel()
+void AppConfig::setDatabaseName(std::string databaseName)
 {
-    return parseLogLevel(getEnv("API_LOG_LEVEL", "INFO"));
-}
+    databaseName_ = databaseName;
+    LOG_DEBUG << "Update value: databaseName_=" << databaseName_;
+};
 
-const std::string& AppConfig::databaseHost()
+void AppConfig::setDatabaseUser(std::string databaseUser)
 {
-    if (databaseHost_.empty())
-    {
-        databaseHost_ = getEnv("POSTGRES_HOST", "0.0.0.0");
-        LOG_DEBUG << "Update value: databaseHost_=" << databaseHost_;
-    }
+    databaseUser_ = databaseUser;
+    LOG_DEBUG << "Update value: databaseUser_=" << databaseUser_;
+};
 
-    return databaseHost_;
-}
-
-const std::string& AppConfig::databasePort()
+void AppConfig::setDatabasePassword(std::string databasePassword)
 {
-    if (databasePort_.empty())
-    {
-        databasePort_ = getEnv("POSTGRES_PORT", "5432");
-        LOG_DEBUG << "Update value: databasePort_=" << databasePort_;
-    }
+    databasePassword_ = databasePassword;
+    LOG_DEBUG << "Update value: databasePassword_=" << databasePassword_;
+};
 
-    return databasePort_;
-}
+const std::string& AppConfig::getApiHost() const
+{ return apiHost_; }
 
-const std::string& AppConfig::databaseName()
-{
-    if (databaseName_.empty())
-    {
-        databaseName_ = getEnv("POSTGRES_DB", "to-dos-api-cpp-db");
-        LOG_DEBUG << "Update value: databaseName_=" << databaseName_;
-    }
+const uint32_t& AppConfig::getApiPort() const
+{ return apiPort_; }
 
-    return databaseName_;
-}
+const uint32_t& AppConfig::getApiNumThreads() const
+{ return apiNumThreads_; }
 
-const std::string& AppConfig::databaseUser()
-{
-    if (databaseUser_.empty())
-    {
-        databaseUser_ = getEnv("POSTGRES_USER", "postgres");
-        LOG_DEBUG << "Update value: databaseUser_=" << databaseUser_;
-    }
+const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
+{ return parseLogLevel(getEnv("API_LOG_LEVEL", "INFO")); }
 
-    return databaseUser_;
-}
+const std::string& AppConfig::getDatabaseHost() const
+{ return databaseHost_; }
 
-const std::string& AppConfig::databasePassword()
-{
-    if (databasePassword_.empty())
-    {
-        databasePassword_ = getEnv("POSTGRES_PASSWORD", "password");
-        LOG_DEBUG << "Update value: databasePassword_=" << databasePassword_;
-    }
+const std::string& AppConfig::getDatabasePort() const
+{ return databasePort_; }
 
-    return databasePassword_;
-}
+const std::string& AppConfig::getDatabaseName() const
+{ return databaseName_; }
+
+const std::string& AppConfig::getDatabaseUser() const
+{ return databaseUser_; }
+
+const std::string& AppConfig::getDatabasePassword() const
+{ return databasePassword_; }

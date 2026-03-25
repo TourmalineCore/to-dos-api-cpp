@@ -20,14 +20,70 @@ private:
     AppConfig& operator=(const AppConfig&) = delete;
 
     std::string apiHost_;
-    uint32_t apiPort_ = 0;
-    uint32_t apiNumThreads_ = 0;
+    uint32_t apiPort_;
+    uint32_t apiNumThreads_;
 
     std::string databaseHost_;
     std::string databasePort_;
     std::string databaseName_;
     std::string databaseUser_;
     std::string databasePassword_;
+
+    /**
+     * @brief Setter for the `apiHost_` variable
+     * @param apiHost is host on which the API will be run
+     * @return void
+     */
+    void setApiHost(std::string apiHost);
+
+    /**
+     * @brief Setter for the `apiPort_` variable
+     * @param apiPort is port on which the API will be run
+     * @return void
+     */
+    void setApiPort(uint32_t apiPort);
+
+    /**
+     * @brief Setter for the `apiNumThreads_` variable
+     * @param apiNumThreads is number of threads on which the API will run
+     * @return void
+     */
+    void setApiNumThreads(uint32_t apiNumThreads);
+
+    /**
+     * @brief Setter for the `databaseHost_` variable
+     * @param databaseHost is the host that the API will use to connect to the database
+     * @return void
+     */
+    void setDatabaseHost(std::string databaseHost);
+
+    /**
+     * @brief Setter for the `databasePort_` variable
+     * @param databasePort is the port that the API will use to connect to the database
+     * @return void
+     */
+    void setDatabasePort(std::string databasePort);
+
+    /**
+     * @brief Setter for the `databaseName_` variable
+     * @param databaseName is the name that the API will use to connect to the database
+     * @return void
+     */
+    void setDatabaseName(std::string databaseName);
+
+    /**
+     * @brief Setter for the `databaseUser_` variable
+     * @param databaseUser is the user that the API will use to connect to the database
+     * @return void
+     */
+    void setDatabaseUser(std::string databaseUser);
+
+    /**
+     * @brief Setter for the `databasePassword_` variable
+     * @param databasePassword is the password that the API will use to connect to the database
+     * @return void
+     */
+    void setDatabasePassword(std::string databasePassword);
 
 public:
     /**
@@ -59,70 +115,58 @@ public:
     static trantor::Logger::LogLevel parseLogLevel(const std::string& level);
 
     /**
-     * @brief Getter for the host value from the environment
-     * variable `API_HOST`. Default is `0.0.0.0`
+     * @brief Getter for the `apiHost_` variable
      * @return const std::string
      */
-    const std::string& apiHost();
+    const std::string& getApiHost() const;
 
     /**
-     * @brief Getter for the port value from the environment
-     * variable `API_PORT`. Default is `80`
+     * @brief Getter for the `apiPort_` variable
      * @return const uint32_t
      */
-    const uint32_t& apiPort();
+    const uint32_t& getApiPort() const;
 
     /**
-     * @brief Getter for the numbers of threads value from the
-     * environment variable `API_NUMBER_OF_THREADS`. Default is `1`
+     * @brief Getter for the `apiNumThreads_` variable
      * @return const uint32_t
      */
-    const uint32_t& apiNumThreads();
+    const uint32_t& getApiNumThreads() const;
 
     /**
-     * @brief Function for getting the log level value from the environment
-     * variable `API_LOG_LEVEL`. Default is `INFO`
+     * @brief Getter for the `apiLogLevel_` variable
      * @note The method must be static so that the level can be set before the class is initialized;
-     * otherwise, logs from other levels will be displayed.
+     * otherwise, logs from other levels will be displayed
      * @return const trantor::Logger::LogLevel
      */
-    static const trantor::Logger::LogLevel apiLogLevel();
+    static const trantor::Logger::LogLevel getApiLogLevel();
 
     /**
-     * @brief Getter for the database host value from the
-     * environment variable `POSTGRES_HOST`. Default is `0.0.0.0`
+     * @brief Getter for the `databaseHost_` variable
      * @return const std::string
      */
-    const std::string& databaseHost();
+    const std::string& getDatabaseHost() const;
 
     /**
-     * @brief Getter for the database port value from the
-     * environment variable `POSTGRES_PORT`. Default is `5432`
-
+     * @brief Getter for the `databasePort_` variable
      * @return const std::string
      */
-    const std::string& databasePort();
+    const std::string& getDatabasePort() const;
 
     /**
-     * @brief Getter for the database name value from the
-     * environment variable `POSTGRES_DB`. Default is
-     * `to-dos-api-cpp-db`
+     * @brief Getter for the `databaseName_` variable
      * @return const std::string
      */
-    const std::string& databaseName();
+    const std::string& getDatabaseName() const;
 
     /**
-     * @brief Getter for the database user value from the
-     * environment variable `POSTGRES_USER`. Default is `postgres`
+     * @brief Getter for the `databaseUser_` variable
      * @return const std::string
      */
-    const std::string& databaseUser();
+    const std::string& getDatabaseUser() const;
 
     /**
-     * @brief Getter for the database password value from the
-     * environment variable `POSTGRES_PASSWORD`. Default is
-     * `password`
+     * @brief Getter for the `databasePassword_` variable
      * @return const std::string
      */
-    const std::string& databasePassword();
+    const std::string& getDatabasePassword() const;
 };

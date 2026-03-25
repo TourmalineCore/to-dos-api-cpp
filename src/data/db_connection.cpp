@@ -17,11 +17,11 @@ std::shared_ptr<odb::database> DbConnection::get()
         {
             auto& config = AppConfig::GetInstance();
 
-            const std::string host = config.databaseHost();
-            const std::string port = config.databasePort();
-            const std::string user = config.databaseUser();
-            const std::string password = config.databasePassword();
-            const std::string dbname = config.databaseName();
+            const std::string host = config.getDatabaseHost();
+            const std::string port = config.getDatabasePort();
+            const std::string user = config.getDatabaseUser();
+            const std::string password = config.getDatabasePassword();
+            const std::string dbname = config.getDatabaseName();
 
             std::string conn = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
 
