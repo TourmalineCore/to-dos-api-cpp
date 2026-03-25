@@ -67,7 +67,6 @@ jobs:
           java -jar karate.jar .
         env:
           "API_ROOT_URL": "http://localhost:30090/api/to-dos-api"
-          "SHOULD_USE_FAKE_EXTERNAL_DEPENDENCIES": "false"
 
   # e2e-karate-tests-in-docker-compose:
   #   runs-on: ubuntu-24.04

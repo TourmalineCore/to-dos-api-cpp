@@ -1,14 +1,61 @@
-version: '3.9'
 services:
-  postgresql:
-    container_name: postgresql
+  to-dos-api-cpp-db:
+    container_name: to-dos-api-cpp-db
     image: postgres:14-alpine
+    profiles:
+      - DbOnly
+      - MockForPullRequest
     env_file:
       - .env
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - to-dos-api-cpp-network
 
-volumes:
-  postgresql-data:
+  to-dos-api-cpp:
+    container_name: to-dos-api-cpp
+    profiles:
+      - MockForPullRequest
+    depends_on:
+      inner-circle-items-api-db:
+        condition: service_healthy
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+      args:
+        EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
+    env_file:
+      - .env
+    ports:
+      - 6501:80
+    networks:
+      - to-dos-api-cpp-network
+
+  to-dos-api-cpp-karate-tests:
+    container_name: 'to-dos-api-cpp-karate-tests'
+    profiles:
+      - MockForPullRequest
+    build:
+      dockerfile: ./KarateDockerfile
+      context: ./tests/e2e
+    depends_on:
+      inner-circle-items-api:
+        condition: service_started
+    # restart twice in case of not ready db or network failures
+    restart: on-failure:2
+    command: [ "karate", "/karate" ]
+    volumes:
+      # similar to mock-server volumes we need to support both runs: from Dev Container and from OS
+      - ${LOCAL_WORKSPACE_FOLDER:-.}:/karate
+    environment:
+      API_ROOT_URL: "http://to-dos-api-cpp/api"
+    networks:
+      - to-dos-api-cpp-network
+
+networks:
+  to-dos-api-cpp-network:
