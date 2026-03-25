@@ -45,6 +45,9 @@ When dependencies are built, use the command `conan build . -pr:h profiles/to-do
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
 
+Alternatively, you can use make targets.
+- To run the application, use the `make run` command. When the command is executed, the project's dependencies will be checked and, if necessary, installed and compiled.
+
 ## Linters
 
 The project includes the `clang-tidy` code analyzer and the `clang-format` formatter. Configuration files are located in the project root: `.clang-tidy` and `.clang-format`, respectively.
@@ -57,7 +60,7 @@ To use linters you need to install:
 
 Clang-format code formatting occurs automatically when saving a file using the CodeAnalysis C/C++ extension.
 
-To start manually, you need to run the command `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format --dry-run`, while in the root of the project.
+To start manually, you need to run the command `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format`, while in the root of the project.
 
 To automatically fix errors, run `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-format -i` from the project root.
 
@@ -66,6 +69,9 @@ To automatically fix errors, run `find ./src -name "*.cpp" -o -name "*.h" | xarg
 Clang-tidy code checking occurs in the background using the CodeAnalysis C/C++ extension.
 
 To start manually, you need to run the command `find ./src -name "*.cpp" -o -name "*.h" | xargs clang-tidy -p ./build/Debug | grep "error:"`, while in the root of the project.
+
+Alternatively, you can use make targets.
+- To run the code analyzer, use the `make run-tidy` command.
 
 ## Tests run
 
@@ -95,3 +101,7 @@ The alembic tool is used to work with migrations. To work with it, you need to m
 - Change terminal workspace to `src/data`.
 - Use the alembic command `alembic revision --autogenerate -m '<name of migration>'` for create new migration to database.
 - If its needed upgrade local database with latest migration with commnd `alembic upgrade head`.
+
+Alternatively, you can use make targets.
+- To create a migration, run the command `make create-migration name=<name-of-migration>`, where `name` is the name of the migration. You can also use `make create-migration`, in which case the migration will be named after the current date and time.
+- To apply the migrations, run the `make apply-migrations` command.
