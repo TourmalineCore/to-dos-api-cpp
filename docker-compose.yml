@@ -29,8 +29,6 @@ services:
       context: .
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
-    env_file:
-      - .env
     ports:
       - 6501:80
     networks:
