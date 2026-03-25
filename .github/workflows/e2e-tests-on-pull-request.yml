@@ -71,7 +71,17 @@ jobs:
   e2e-karate-tests-in-docker-compose:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout to repo
+      uses: actions/checkout@v4
+
+    - name: Create .env file
+      run: |
+        echo "POSTGES_HOST=0.0.0.0" >> .env
+        echo "POSTGRES_PORT=5432" >> .env
+        echo "POSTGRES_DB=to-dos-api-cpp-db" >> .env
+        echo "POSTGRES_USER=postgres" >> .env
+        echo "POSTGRES_PASSWORD=password" >> .env
+
     - name: Run service via docker-compose and run Karate-tests
       run: |
         # The option --exit-code-from ensures that the command's exit code exactly matches the exit code of the specified service.
