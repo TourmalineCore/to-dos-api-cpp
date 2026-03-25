@@ -16,6 +16,7 @@ For development purposes use a devcontainer named `developing`.
 - Microsoft VS Code
   - VS Code should also have the "Dev Containers" extension installed. To check it, open "View: Extensions" with `Ctrl + Shift + X` or as shown in the screenshot below:
   <p style="text-align: center;"><img src="docs/images/vscodeExtensions.png" alt="vscodeExtensions" width="400"/></p>
+- Before running the container, create a .env file in the project root and specify the environment variables in it, just as you did in .env.example. Otherwise, running the devcontainer will result in an error.
 - Make sure Docker daemon is running before opening the dev container (`Ctrl + Shift + P` -> "Reopen in container" or click here + "Reopen in container")
  <p style="text-align: center;"><img src="docs/images/vscodeContainer.png" alt="vscodeContainer" width="400"/></p>
 
@@ -39,7 +40,7 @@ When dependencies are built, use the command `conan build . -pr:h profiles/to-do
 
 #### Before launching web server:
 - Run the database container via docker compose command `docker compose up -d` from workspace.
-- Import environment variables declared in the `.env` file while in the dev container and using the command `export $(grep -v '^#' .env | xargs)`. If the file containing the environment variables is named something other than `.env`, you should modify the command to specify the correct name.
+- Import the environment variables defined in the .env file in the project root. The environment variables were automatically exported from .env when the container was built. If the contents of the .env file have been modified after the container was built, run the command `export $(grep -v '^#' .env | xargs)`, but keep in mind that the environment variables will only be visible in the terminal session where the command was executed.
 
 To launch the executable, click Launch in the CMake extension.
 <p style="text-align: center;"><img src="docs/images/cmakeLaunch.png" alt="cmakeLaunch" width="400"/></p>
