@@ -10,22 +10,22 @@ Feature: Item Types
     * def jsUtils = read('./js-utils.js')
     * def apiRootUrl = jsUtils().getEnvVariable('API_ROOT_URL')
     
-    // # Authentication
-    // Given url authApiRootUrl
-    // And path '/login'
-    // And request
-    // """
-    // {
-    //     "login": "#(authLogin)",
-    //     "password": "#(authPassword)"
-    // }
-    // """
-    // And method POST
-    // Then status 200
+    # # Authentication
+    # Given url authApiRootUrl
+    # And path '/login'
+    # And request
+    # """
+    # {
+    #     "login": "#(authLogin)",
+    #     "password": "#(authPassword)"
+    # }
+    # """
+    # And method POST
+    # Then status 200
 
-    // * def accessToken = karate.toMap(response.accessToken.value)
+    # * def accessToken = karate.toMap(response.accessToken.value)
 
-    // * configure headers = jsUtils().getAuthHeaders(accessToken)
+    # * configure headers = jsUtils().getAuthHeaders(accessToken)
 
     # Step 1: Create a new todo
     * def randomName = '[API-E2E]-test-todo-' + Math.random()
@@ -43,26 +43,26 @@ Feature: Item Types
 
     * def todoId = response.todoId
 
-    // # Step 2: Verify that item type is in the list with the id and generated name
-    // Given url apiRootUrl
-    // Given path 'item-types'
-    // When method GET
-    // And match response.itemTypes contains
-    // """
-    // {
-    //     "id": "#(newItemTypeId)",
-    //     "name": "#(randomName)"
-    // }
-    // """
+    # # Step 2: Verify that item type is in the list with the id and generated name
+    # Given url apiRootUrl
+    # Given path 'item-types'
+    # When method GET
+    # And match response.itemTypes contains
+    # """
+    # {
+    #     "id": "#(newItemTypeId)",
+    #     "name": "#(randomName)"
+    # }
+    # """
 
-    // # Cleanup: Delete the item type (hard delete)
-    // Given path 'item-types', newItemTypeId, 'hard-delete'
-    // When method DELETE
-    // Then status 200
-    // And match response == { isDeleted: true }
+    # # Cleanup: Delete the item type (hard delete)
+    # Given path 'item-types', newItemTypeId, 'hard-delete'
+    # When method DELETE
+    # Then status 200
+    # And match response == { isDeleted: true }
     
-    // # Cleanup Verification: Verify that item type was deleted
-    // Given url apiRootUrl
-    // Given path 'item-types'
-    // When method GET
-    // And assert response.itemTypes.filter(x => x.id == newItemTypeId).length == 0
+    # # Cleanup Verification: Verify that item type was deleted
+    # Given url apiRootUrl
+    # Given path 'item-types'
+    # When method GET
+    # And assert response.itemTypes.filter(x => x.id == newItemTypeId).length == 0
