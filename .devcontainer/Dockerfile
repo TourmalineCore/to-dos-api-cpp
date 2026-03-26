@@ -37,4 +37,5 @@ RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
 RUN conan install . --build=missing
 
-RUN rm -rf /tmp/conan
+RUN conan remote remove local-recipes && \
+    rm -rf /tmp/conan
