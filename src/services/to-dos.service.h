@@ -20,7 +20,7 @@ public:
       _commands(commands)
     {}
 
-    void addToDo(const std::string description);
+    std::uint64_t addToDo(const std::string description);
     bool completeToDo(int id);
     bool deleteToDo(int id);
     const Json::Value getToDos() const;

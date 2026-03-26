@@ -3,7 +3,7 @@
 #include <memory>
 #include <odb/transaction.hxx>
 
-uint64_t ToDoCommands::create_todo(const std::string& name, std::time_t createdAtUtc)
+std::uint64_t ToDoCommands::create_todo(const std::string& name, std::time_t createdAtUtc)
 {
     ToDo todo(name, createdAtUtc);
 

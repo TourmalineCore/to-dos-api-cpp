@@ -48,22 +48,23 @@ void AppController::addToDo(const HttpRequestPtr& req, std::function<void(const 
 
         if (!json || !json->isMember("name"))
         {
-            Json::Value result;
-            result["status"] = "error";
-            result["message"] = "Invalid JSON";
+            jsonResponse["status"] = "error";
+            jsonResponse["message"] = "Invalid JSON";
 
-            auto resp = HttpResponse::newHttpJsonResponse(result);
-            resp->setStatusCode(k400BadRequest);
-            callback(resp);
+            auto response = HttpResponse::newHttpJsonResponse(jsonResponse);
+            response->setStatusCode(k400BadRequest);
+            callback(response);
 
             return;
         }
 
-        todo_service_->addToDo(json->get("name", "").asString());
+        std::uint64_t todoId = todo_service_->addToDo(json->get("name", "").asString());
 
-        auto resp = HttpResponse::newHttpResponse();
-        resp->setStatusCode(k201Created);
-        callback(resp);
+        jsonResponse["todoId"] = todoId;
+
+        auto response = HttpResponse::newHttpJsonResponse(jsonResponse);
+        response->setStatusCode(k201Created);
+        callback(response);
     }
     catch (const std::exception& e)
     {

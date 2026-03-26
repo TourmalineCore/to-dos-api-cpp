@@ -22,10 +22,12 @@ static vector<ToDoDTO> mapToDTOs(const std::shared_ptr<std::vector<ToDo>>& todos
     return out;
 }
 
-void ToDoService::addToDo(const string name)
+std::uint64_t ToDoService::addToDo(const string name)
 {
     const std::time_t now_utc = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    (void) _commands.create_todo(name, now_utc);
+    std::uint64_t todoId = _commands.create_todo(name, now_utc);
+
+    return todoId;
 }
 
 // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todos
