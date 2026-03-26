@@ -6,9 +6,9 @@ on:
   push:
     branches:
     - "feature/*"
-    paths:
-    - 'conanfile.py'
-    - '.devcontainer/Dockerfile'
+    # paths:
+    # - 'conanfile.py'
+    # - '.devcontainer/Dockerfile'
 
 jobs:
   build-and-push:
