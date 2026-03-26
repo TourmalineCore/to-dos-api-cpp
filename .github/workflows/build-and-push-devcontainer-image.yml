@@ -44,7 +44,7 @@ jobs:
       with:
         platforms: linux/amd64
         file: .devcontainer/Dockerfile
-        context: .devcontainer/
+        context: ./.devcontainer
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
