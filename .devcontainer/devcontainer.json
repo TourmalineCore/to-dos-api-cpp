@@ -3,12 +3,14 @@
 {
 	"name": "developing",
 	"build": {
+		"context": "..",
 		"dockerfile": "Dockerfile",
 		"target": "base"
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "conan remote add local-recipes ./deps --type=local-recipes-index",
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
