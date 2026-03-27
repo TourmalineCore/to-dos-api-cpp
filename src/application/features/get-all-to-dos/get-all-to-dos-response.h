@@ -2,6 +2,7 @@
 #include "../../shared-dtos/to-do-dtos.h"
 #include <vector>
 
-struct GetAllToDosResponse {
+struct GetAllToDosResponse
+{
     std::vector<ToDoDTO> todos;
 };

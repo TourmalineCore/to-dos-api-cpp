@@ -3,9 +3,11 @@
 #include "soft-delete-to-do-response.h"
 #include <cstdint>
 
-class SoftDeleteToDoHandler {
+class SoftDeleteToDoHandler
+{
 private:
     SoftDeleteCommand& _softDeleteToDoCommand;
+
 public:
     explicit SoftDeleteToDoHandler(SoftDeleteCommand& softDeleteToDoCommand)
     : _softDeleteToDoCommand(softDeleteToDoCommand)

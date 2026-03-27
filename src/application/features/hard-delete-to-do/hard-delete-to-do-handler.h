@@ -2,9 +2,11 @@
 #include "hard-delete-to-do-command.h"
 #include <cstdint>
 
-class HardDeleteToDoHandler {
+class HardDeleteToDoHandler
+{
 private:
     HardDeleteToDoCommand& _hardDeleteToDoCommand;
+
 public:
     explicit HardDeleteToDoHandler(HardDeleteToDoCommand& hardDeleteToDoCommand)
     : _hardDeleteToDoCommand(hardDeleteToDoCommand)

@@ -3,9 +3,11 @@
 #include "get-to-do-by-id-response.h"
 #include <cstdint>
 
-class GetToDoByIdHandler {
+class GetToDoByIdHandler
+{
 private:
     GetToDoById& _getToDoByIdQuery;
+
 public:
     explicit GetToDoByIdHandler(GetToDoById& getToDoByIdQuery)
     : _getToDoByIdQuery(getToDoByIdQuery)

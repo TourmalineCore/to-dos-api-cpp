@@ -3,7 +3,7 @@
 static ToDoDTO mapToDTO(const ToDo& todo)
 {
     ToDoDTO dto;
-    dto.id   = static_cast<int>(todo.id());
+    dto.id = static_cast<int>(todo.id());
     dto.name = todo.name();
     return dto;
 }

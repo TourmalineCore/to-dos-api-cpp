@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 
-struct CreateToDoResponse {
+struct CreateToDoResponse
+{
     uint64_t id;
 };

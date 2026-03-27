@@ -2,6 +2,7 @@
 #include "../../shared-dtos/to-do-dtos.h"
 #include <optional>
 
-struct GetToDoByIdResponse {
+struct GetToDoByIdResponse
+{
     std::optional<ToDoDTO> todo;
 };

@@ -134,28 +134,46 @@ void AppConfig::setDatabasePassword(std::string databasePassword)
 };
 
 const std::string& AppConfig::getApiHost() const
-{ return apiHost_; }
+{
+    return apiHost_;
+}
 
 const uint32_t& AppConfig::getApiPort() const
-{ return apiPort_; }
+{
+    return apiPort_;
+}
 
 const uint32_t& AppConfig::getApiNumThreads() const
-{ return apiNumThreads_; }
+{
+    return apiNumThreads_;
+}
 
 const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
-{ return parseLogLevel(getEnv("API_LOG_LEVEL", "INFO")); }
+{
+    return parseLogLevel(getEnv("API_LOG_LEVEL", "INFO"));
+}
 
 const std::string& AppConfig::getDatabaseHost() const
-{ return databaseHost_; }
+{
+    return databaseHost_;
+}
 
 const std::string& AppConfig::getDatabasePort() const
-{ return databasePort_; }
+{
+    return databasePort_;
+}
 
 const std::string& AppConfig::getDatabaseName() const
-{ return databaseName_; }
+{
+    return databaseName_;
+}
 
 const std::string& AppConfig::getDatabaseUser() const
-{ return databaseUser_; }
+{
+    return databaseUser_;
+}
 
 const std::string& AppConfig::getDatabasePassword() const
-{ return databasePassword_; }
+{
+    return databasePassword_;
+}

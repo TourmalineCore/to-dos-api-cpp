@@ -3,9 +3,11 @@
 #include "create-to-do-request.h"
 #include "create-to-do-response.h"
 
-class CreateToDoHandler {
+class CreateToDoHandler
+{
 private:
     CreateToDoCommand& _createToDoCommand;
+
 public:
     explicit CreateToDoHandler(CreateToDoCommand& createToDoCommand)
     : _createToDoCommand(createToDoCommand)

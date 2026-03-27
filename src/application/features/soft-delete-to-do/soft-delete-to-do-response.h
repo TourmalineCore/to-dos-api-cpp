@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 
-struct SoftDeleteToDoResponse {
+struct SoftDeleteToDoResponse
+{
     uint64_t id;
 };
