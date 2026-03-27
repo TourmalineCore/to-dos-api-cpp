@@ -13,5 +13,7 @@ target_include_directories(${APPLICATION_LIB} PUBLIC
 target_link_libraries(${APPLICATION_LIB}
     PUBLIC  ${CORE_LIB}
             JsonCpp::JsonCpp
-    PRIVATE libodb-pgsql::libodb-pgsql
+    PRIVATE libodb::libodb
+            libodb-pgsql::libodb-pgsql
+            Drogon::Drogon
 )
