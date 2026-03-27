@@ -5,9 +5,9 @@
 HttpResponsePtr ToDosController::createInternalServerErrorResponse(const std::string& error) const
 {
     Json::Value jsonResponse;
-    jsonResponse["status"]  = "Error";
+    jsonResponse["status"] = "Error";
     jsonResponse["message"] = "Internal server error";
-    jsonResponse["error"]   = error;
+    jsonResponse["error"] = error;
 
     auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
     resp->setStatusCode(k500InternalServerError);
@@ -18,15 +18,15 @@ ToDosController::ToDosController()
 {
     db_ = std::move(DbConnection::get());
 
-    createToDoCommand_     = std::make_unique<CreateToDoCommand>(*db_);
-    getAllToDosQuery_       = std::make_unique<GetAllToDosQuery>(*db_);
-    getToDoByIdQuery_      = std::make_unique<GetToDoById>(*db_);
+    createToDoCommand_ = std::make_unique<CreateToDoCommand>(*db_);
+    getAllToDosQuery_ = std::make_unique<GetAllToDosQuery>(*db_);
+    getToDoByIdQuery_ = std::make_unique<GetToDoById>(*db_);
     hardDeleteToDoCommand_ = std::make_unique<HardDeleteToDoCommand>(*db_);
-    softDeleteCommand_     = std::make_unique<SoftDeleteCommand>(*db_);
+    softDeleteCommand_ = std::make_unique<SoftDeleteCommand>(*db_);
 
-    createToDoHandler_     = std::make_unique<CreateToDoHandler>(*createToDoCommand_);
-    getAllToDosHandler_     = std::make_unique<GetAllToDosHandler>(*getAllToDosQuery_);
-    getToDoByIdHandler_    = std::make_unique<GetToDoByIdHandler>(*getToDoByIdQuery_);
+    createToDoHandler_ = std::make_unique<CreateToDoHandler>(*createToDoCommand_);
+    getAllToDosHandler_ = std::make_unique<GetAllToDosHandler>(*getAllToDosQuery_);
+    getToDoByIdHandler_ = std::make_unique<GetToDoByIdHandler>(*getToDoByIdQuery_);
     hardDeleteToDoHandler_ = std::make_unique<HardDeleteToDoHandler>(*hardDeleteToDoCommand_);
     softDeleteToDoHandler_ = std::make_unique<SoftDeleteToDoHandler>(*softDeleteCommand_);
 }
@@ -63,7 +63,7 @@ void ToDosController::addToDo(const HttpRequestPtr& req, std::function<void(cons
         if (!json || !json->isMember("name"))
         {
             Json::Value result;
-            result["status"]  = "error";
+            result["status"] = "error";
             result["message"] = "Invalid JSON";
 
             auto resp = HttpResponse::newHttpJsonResponse(result);
@@ -72,7 +72,7 @@ void ToDosController::addToDo(const HttpRequestPtr& req, std::function<void(cons
             return;
         }
 
-        CreateToDoRequest request{ json->get("name", "").asString() };
+        CreateToDoRequest request { json->get("name", "").asString() };
         (void) createToDoHandler_->handle(request);
 
         auto resp = HttpResponse::newHttpResponse();
@@ -91,10 +91,10 @@ void ToDosController::completeToDos(const HttpRequestPtr& req, std::function<voi
     {
         auto json = req->getJsonObject();
 
-        if (!json || !json->isMember("toDosIds"))
+        if (!json || !json->isMember("toDoIds"))
         {
             Json::Value result;
-            result["status"]  = "error";
+            result["status"] = "error";
             result["message"] = "Invalid JSON";
 
             auto resp = HttpResponse::newHttpJsonResponse(result);
@@ -103,7 +103,7 @@ void ToDosController::completeToDos(const HttpRequestPtr& req, std::function<voi
             return;
         }
 
-        auto toDosIds = json->get("toDosIds", Json::Value(Json::arrayValue));
+        auto toDosIds = json->get("toDoIds", Json::Value(Json::arrayValue));
         for (const auto& id : toDosIds)
         {
             // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todos
