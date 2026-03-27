@@ -6,15 +6,17 @@ find_package(jsoncpp REQUIRED)
 find_package(libodb REQUIRED)
 find_package(libodb-pgsql REQUIRED)
 
+set(API_LIB         api)
+set(APPLICATION_LIB application)
+set(CORE_LIB        core)
+
 add_subdirectory(src/core)
 add_subdirectory(src/application)
 add_subdirectory(src/api)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-        api
-        Drogon::Drogon
+    PRIVATE -Wl,--whole-archive ${API_LIB} -Wl,--no-whole-archive
 )
 
 enable_testing()
