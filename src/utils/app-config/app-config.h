@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdlib>
-#include <drogon/drogon.h>
 #include <limits>
 #include <string>
 #include <trantor/utils/Logger.h>
