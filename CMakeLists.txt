@@ -19,5 +19,12 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE -Wl,--whole-archive ${API_LIB} -Wl,--no-whole-archive
 )
 
-enable_testing()
-add_subdirectory(test)
+
+# Tests
+if (ENV{EXCLUDE_UNIT_TESTS_FROM_BUILD} STREQUAL "true")
+  message(STATUS "UNIT TEST DISABLED")
+else()
+  message(STATUS "UNIT TEST ENABLED")
+  enable_testing()
+  add_subdirectory(test)
+endif()

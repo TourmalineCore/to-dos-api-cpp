@@ -1,4 +1,5 @@
 #include "db_connection.h"
+#include "../utils/app-config/app-config.h"
 
 #include <cstdlib>
 #include <stdexcept>
@@ -14,15 +15,17 @@ std::shared_ptr<odb::database> DbConnection::get()
         flag,
         []()
         {
-            const std::string user = std::getenv("POSTGRES_USER");
-            const std::string password = std::getenv("POSTGRES_PASSWORD");
-            const std::string db_name = std::getenv("POSTGRES_DB");
-            const std::string host = std::getenv("POSTGRES_HOST");
-            const std::string port = std::getenv("POSTGRES_PORT");
+            auto& config = AppConfig::GetInstance();
 
-            std::string conninfo = "host=" + host + " port=" + port + " dbname=" + db_name + " user=" + user + " password=" + password;
+            const std::string host = config.getDatabaseHost();
+            const std::string port = config.getDatabasePort();
+            const std::string user = config.getDatabaseUser();
+            const std::string password = config.getDatabasePassword();
+            const std::string dbname = config.getDatabaseName();
 
-            instance_ = std::shared_ptr<odb::database>(new odb::pgsql::database(conninfo));
+            std::string conn = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
+
+            instance_ = std::shared_ptr<odb::database>(new odb::pgsql::database(conn));
         }
     );
 

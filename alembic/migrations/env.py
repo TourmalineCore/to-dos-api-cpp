@@ -1,7 +1,7 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool, create_engine, text
+from sqlalchemy_utils import database_exists, create_database
 
 from alembic import context
 
@@ -31,16 +31,27 @@ target_metadata = Base.metadata
 
 def get_database_url():
     """Getting the Database URL from Environment Variables"""
-    user = os.getenv('POSTGRES_USER')
-    password = os.getenv('POSTGRES_PASSWORD')
-    host = os.getenv('POSTGRES_HOST')
-    port = os.getenv('POSTGRES_PORT')
-    name = os.getenv('POSTGRES_DB')
+    host = os.getenv("POSTGRES_HOST")
+    port = os.getenv("POSTGRES_PORT")
+    user = os.getenv("POSTGRES_USER")
+    password = os.getenv("POSTGRES_PASSWORD")
+    dbname = os.getenv("POSTGRES_DB")
     
-    return f"postgresql://{user}:{password}@{host}:{port}/{name}"
+    return f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
 
 url = get_database_url()
 
+def ensure_database_exists():
+    """Create database if it doesn't exist"""
+    if not database_exists(url):
+        create_database(url)
+        print(f"Database created: {url}")
+    else:
+        print(f"Database already exists: {url}")
+
+# In offline-mode, alembic will not connect to the database; 
+# instead, it will generate SQL script(s) that can be executed 
+# manually at a later time.
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -63,7 +74,8 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
-
+# In online mode, alembic will attempt to connect to the database 
+# and apply the migrations immediately.
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
 
@@ -91,4 +103,5 @@ def run_migrations_online() -> None:
 if context.is_offline_mode():
     run_migrations_offline()
 else:
+    ensure_database_exists()
     run_migrations_online()
