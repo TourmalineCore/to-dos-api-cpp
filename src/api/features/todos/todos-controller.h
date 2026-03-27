@@ -16,10 +16,10 @@ public:
     explicit ToDosController();
 
     METHOD_LIST_BEGIN
-    ADD_METHOD_TO(AppController::getToDos, "/api/to-dos", Get);                 // Getting a list of tasks
-    ADD_METHOD_TO(AppController::addToDo, "/api/to-dos", Post);                 // Adding a new task
-    ADD_METHOD_TO(AppController::completeToDos, "/api/to-dos/complete", Post);  // Executing (deleting) a task list
-    ADD_METHOD_TO(AppController::deleteToDo, "/api/to-dos", Delete);            // Deleting a specific task
+    ADD_METHOD_TO(ToDosController::getToDos, "/api/to-dos", Get);                 // Getting a list of tasks
+    ADD_METHOD_TO(ToDosController::addToDo, "/api/to-dos", Post);                 // Adding a new task
+    ADD_METHOD_TO(ToDosController::completeToDos, "/api/to-dos/complete", Post);  // Executing (deleting) a task list
+    ADD_METHOD_TO(ToDosController::deleteToDo, "/api/to-dos", Delete);            // Deleting a specific task
     METHOD_LIST_END
 
     HttpResponsePtr createInternalServerErrorResponse(const std::string& error) const;
