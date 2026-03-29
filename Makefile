@@ -19,5 +19,5 @@ run: apply-migrations
 	./build/Debug/to-dos-api
 
 # Run clang-tidy static analysis
-run-tidy:
+run-code-analysis:
 	@run-clang-tidy -p build/Debug
