@@ -1,6 +1,6 @@
 Feature: Item Types
-    # https://github.com/karatelabs/karate/issues/1191
-    # https://github.com/karatelabs/karate?tab=readme-ov-file#karate-fork
+  # https://github.com/karatelabs/karate/issues/1191
+  # https://github.com/karatelabs/karate?tab=readme-ov-file#karate-fork
 
   Background:
     * header Content-Type = 'application/json'
@@ -9,60 +9,56 @@ Feature: Item Types
 
     * def jsUtils = read('./js-utils.js')
     * def apiRootUrl = jsUtils().getEnvVariable('API_ROOT_URL')
-    
-    # # Authentication
-    # Given url authApiRootUrl
-    # And path '/login'
-    # And request
-    # """
-    # {
-    #     "login": "#(authLogin)",
-    #     "password": "#(authPassword)"
-    # }
-    # """
-    # And method POST
-    # Then status 200
-
-    # * def accessToken = karate.toMap(response.accessToken.value)
-
-    # * configure headers = jsUtils().getAuthHeaders(accessToken)
 
     # Step 1: Create a new todo
     * def randomName = '[API-E2E]-test-todo-' + Math.random()
-    
+
     Given url apiRootUrl
-    Given path 'to-dos'
+    And path 'to-dos'
     And request
-    """
-    {
+      """
+      {
         "name": "#(randomName)"
-    }
-    """
+      }
+      """
     When method POST
     Then status 201
 
     * def todoId = response.todoId
 
-    # # Step 2: Verify that item type is in the list with the id and generated name
-    # Given url apiRootUrl
-    # Given path 'item-types'
-    # When method GET
-    # And match response.itemTypes contains
-    # """
-    # {
-    #     "id": "#(newItemTypeId)",
-    #     "name": "#(randomName)"
-    # }
-    # """
+    # Step 2: Verify that todo is in the list with the id and generated name
+    Given url apiRootUrl
+    And path 'to-dos'
+    When method GET
+    Then match response.toDos contains
+      """
+      {
+        "id": "#(todoId)",
+        "name": "#(randomName)"
+      }
+      """
 
-    # # Cleanup: Delete the item type (hard delete)
-    # Given path 'item-types', newItemTypeId, 'hard-delete'
-    # When method DELETE
-    # Then status 200
-    # And match response == { isDeleted: true }
-    
-    # # Cleanup Verification: Verify that item type was deleted
-    # Given url apiRootUrl
-    # Given path 'item-types'
-    # When method GET
-    # And assert response.itemTypes.filter(x => x.id == newItemTypeId).length == 0
+    # Step 3: Complete the todo with the id (soft delete)
+    Given url apiRootUrl
+    And path 'to-dos/complete'
+    And request
+      """
+      {
+      "toDoIds": [#(todoId)]
+      }
+      """
+    When method POST
+    Then status 200
+
+    # Step 4: Delete the todo with the id (hard delete)
+    Given url apiRootUrl
+    And path 'to-dos'
+    And param toDo = todoId
+    When method DELETE
+    Then status 200
+
+    # Step 5: Verify that todo is in the list with the id and generated name has been deleted
+    Given url apiRootUrl
+    And path 'to-dos'
+    When method GET
+    Then match response.toDos !contains { "name": "#(randomName)" }
