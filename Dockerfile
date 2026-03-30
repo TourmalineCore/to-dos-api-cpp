@@ -24,6 +24,10 @@ RUN pip install conan
 
 COPY conanfile.py /src/
 COPY .devcontainer/to-dos-conan-profile.conf /src/.devcontainer/
+COPY deps/* /src/deps/
+
+# this is necessary so that Conan can see the local dependency recipes
+RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
 RUN conan install . --build=missing \
     --profile:all=.devcontainer/to-dos-conan-profile.conf \
@@ -31,9 +35,6 @@ RUN conan install . --build=missing \
     --settings:host="build_type=Release"
 
 COPY . .
-
-# this is necessary so that Conan can see the local dependency recipes
-RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
 RUN conan build . --build=missing \
     --profile:all=.devcontainer/to-dos-conan-profile.conf \
