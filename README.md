@@ -105,3 +105,5 @@ The alembic tool is used to work with migrations. To work with it, you need to m
 Alternatively, you can use make targets.
 - To create a migration, run the command `make create-migration name=<name-of-migration>`, where `name` is the name of the migration. You can also use `make create-migration`, in which case the migration will be named after the current date and time.
 - To apply the migrations, run the `make apply-migrations` command.
+
+[Test]
