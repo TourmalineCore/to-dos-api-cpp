@@ -11,7 +11,7 @@ static vector<ToDoDTO> mapToDTOs(const std::shared_ptr<vector<ToDo>>& todos)
         for (const auto& t : *todos)
         {
             ToDoDTO dto;
-            dto.id = static_cast<int>(t.id());
+            dto.id = static_cast<std::uint64_t>(t.id());
             dto.name = t.name();
             out.push_back(std::move(dto));
         }

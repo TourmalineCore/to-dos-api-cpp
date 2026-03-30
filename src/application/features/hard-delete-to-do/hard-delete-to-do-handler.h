@@ -12,5 +12,5 @@ public:
     : _hardDeleteToDoCommand(hardDeleteToDoCommand)
     {}
 
-    bool handle(uint64_t id);
+    bool handle(std::uint64_t id);
 };

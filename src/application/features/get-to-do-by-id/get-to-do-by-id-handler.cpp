@@ -8,7 +8,7 @@ static ToDoDTO mapToDTO(const ToDo& todo)
     return dto;
 }
 
-GetToDoByIdResponse GetToDoByIdHandler::handle(uint64_t id)
+GetToDoByIdResponse GetToDoByIdHandler::handle(std::uint64_t id)
 {
     auto todo = _getToDoByIdQuery.get(static_cast<int>(id));
 

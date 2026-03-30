@@ -2,7 +2,7 @@
 #include "odb-gen/to-do-odb.hxx"
 #include <odb/transaction.hxx>
 
-uint64_t HardDeleteToDoCommand::execute(int id)
+std::uint64_t HardDeleteToDoCommand::execute(int id)
 {
     odb::transaction t(db_.begin());
     const unsigned long long todo_id = db_.erase_query<ToDo>(odb::query<ToDo>::id == id);

@@ -13,5 +13,5 @@ public:
     : _softDeleteToDoCommand(softDeleteToDoCommand)
     {}
 
-    SoftDeleteToDoResponse handle(uint64_t id);
+    SoftDeleteToDoResponse handle(std::uint64_t id);
 };

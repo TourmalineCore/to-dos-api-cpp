@@ -11,7 +11,7 @@ public:
     : db_(db)
     {}
 
-    uint64_t execute(int id);
+    std::uint64_t execute(int id);
 
 private:
     odb::database& db_;

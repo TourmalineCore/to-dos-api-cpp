@@ -3,5 +3,5 @@
 
 struct SoftDeleteToDoResponse
 {
-    uint64_t id;
+    std::uint64_t id;
 };

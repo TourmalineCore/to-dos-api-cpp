@@ -107,7 +107,7 @@ void ToDosController::completeToDos(const HttpRequestPtr& req, std::function<voi
         for (const auto& id : toDosIds)
         {
             // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todos
-            (void) softDeleteToDoHandler_->handle(static_cast<uint64_t>(id.asInt()));
+            (void) softDeleteToDoHandler_->handle(static_cast<std::uint64_t>(id.asInt()));
         }
 
         auto resp = HttpResponse::newHttpResponse();
@@ -125,7 +125,7 @@ void ToDosController::deleteToDo(const HttpRequestPtr& req, std::function<void(c
     try
     {
         auto toDoIdStr = req->getParameter("toDoId");
-        const uint64_t toDoId = static_cast<uint64_t>(std::stoi(toDoIdStr));
+        const std::uint64_t toDoId = static_cast<std::uint64_t>(std::stoi(toDoIdStr));
 
         // TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/38): add here a check for not found todo
         (void) hardDeleteToDoHandler_->handle(toDoId);

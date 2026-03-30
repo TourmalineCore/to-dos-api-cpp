@@ -11,7 +11,7 @@ public:
     : db_(db)
     {}
 
-    uint64_t execute(const std::string& name, std::time_t createdAtUtc);
+    std::uint64_t execute(const std::string& name, std::time_t createdAtUtc);
 
 private:
     odb::database& db_;

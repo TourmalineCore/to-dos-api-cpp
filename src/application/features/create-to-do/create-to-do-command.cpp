@@ -2,7 +2,7 @@
 #include "odb-gen/to-do-odb.hxx"
 #include <odb/transaction.hxx>
 
-uint64_t CreateToDoCommand::execute(const std::string& name, std::time_t createdAtUtc)
+std::uint64_t CreateToDoCommand::execute(const std::string& name, std::time_t createdAtUtc)
 {
     ToDo todo(name, createdAtUtc);
 

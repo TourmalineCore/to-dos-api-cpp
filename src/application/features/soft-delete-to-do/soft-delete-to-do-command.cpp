@@ -4,7 +4,7 @@
 #include <memory>
 #include <odb/transaction.hxx>
 
-uint64_t SoftDeleteCommand::execute(int id)
+std::uint64_t SoftDeleteCommand::execute(int id)
 {
     odb::transaction t(db_.begin());
 

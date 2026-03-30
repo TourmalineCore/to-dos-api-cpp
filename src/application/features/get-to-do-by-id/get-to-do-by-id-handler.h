@@ -13,5 +13,5 @@ public:
     : _getToDoByIdQuery(getToDoByIdQuery)
     {}
 
-    GetToDoByIdResponse handle(uint64_t id);
+    GetToDoByIdResponse handle(std::uint64_t id);
 };
