@@ -13,7 +13,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 FROM base AS build
 
 WORKDIR /src
-COPY . .
 
 RUN apt-get -y install --no-install-recommends \
     build-essential clang lld cmake ninja-build gdb \
@@ -22,6 +21,16 @@ RUN apt-get -y install --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install conan
+
+COPY conanfile.py /src/
+COPY .devcontainer/to-dos-conan-profile.conf /src/.devcontainer/
+
+RUN conan install . --build=missing \
+    --profile:all=.devcontainer/to-dos-conan-profile.conf \
+    # This is necessary because, by default, the `build_type` property in the profile is set to `Debug`
+    --settings:host="build_type=Release"
+
+COPY . .
 
 # this is necessary so that Conan can see the local dependency recipes
 RUN conan remote add local-recipes ./deps --type=local-recipes-index
