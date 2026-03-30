@@ -24,6 +24,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: TourmalineCore/to-dos-local-env
+          ref: experiment/making-the-helmfile-more-universal
+
 
       - name: Deploy Local Env to Kind k8s
         uses: devcontainers/ci@v0.3
@@ -45,6 +47,8 @@ jobs:
             kind create cluster --name to-dos --config kind-local-config.yaml --kubeconfig ./.to-dos-cluster-kubeconfig
             # we need to properly expose KUBECONFIG as an absolute path, pwd prints current working directory path
             export KUBECONFIG=$(pwd)/.to-dos-cluster-kubeconfig
+
+            export TO_DOS_API_REPO=to-dos-api-cpp
 
             helmfile --environment local --namespace local -f deploy/helmfile.yaml apply
           push: never
