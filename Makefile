@@ -4,13 +4,13 @@ include .env
 export
 
 # Generate a new Alembic migration with autogenerate
-create-migration: up-db
-	@cd ./src/data && \
+create-migration:
+	@cd ./alembic && \
 	alembic revision --autogenerate -m $(name)
 
 # Apply all pending Alembic migrations
-apply-migrations: up-db
-	@cd ./src/data && \
+apply-migrations:
+	@cd ./alembic && \
 	alembic upgrade head
 
 # Build the project, apply migrations and start the application
