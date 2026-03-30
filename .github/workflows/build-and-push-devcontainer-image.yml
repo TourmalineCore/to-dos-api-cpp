@@ -3,13 +3,13 @@ name: Build and push devcontainer image
 on:
   # pull_request:
   #   types: [opened, synchronize, reopened]
+  #   paths:
+  #     - "deps/*"
+  #     - "conanfile.py"
+  #     - ".devcontainer/Dockerfile"
   push:
     branches:
     - "feature/*"
-    # paths:
-    # - "deps/*"
-    # - "conanfile.py"
-    # - "".devcontainer/Dockerfile"
 
 jobs:
   build-and-push:
@@ -18,12 +18,12 @@ jobs:
     - name: Check out the repo
       uses: actions/checkout@v4
 
-    - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Log in to GitHub Container Registry
+    #   uses: docker/login-action@v3
+    #   with:
+    #     registry: ghcr.io
+    #     username: ${{ github.actor }}
+    #     password: ${{ secrets.GITHUB_TOKEN }}
     
     # this is needed to address this issue according to the comment https://github.com/devcontainers/ci/issues/271#issuecomment-2301764487
     # otherwise our TourmalineCore org name cannot be used in docker image names, only tourmalinecore
