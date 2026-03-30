@@ -1,6 +1,6 @@
 # This is necessary so that environment variables from .env 
 # are visible when Makefile commands are executed
-include .env
+-include .env
 export
 
 # Development targets
