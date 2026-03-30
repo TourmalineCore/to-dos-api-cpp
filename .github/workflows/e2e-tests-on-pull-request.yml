@@ -74,6 +74,8 @@ jobs:
     - name: Checkout to repo
       uses: actions/checkout@v4
 
+    # If you don't create a .env file, the services in Docker Compose 
+    # won't be able to start because they use this file.
     - name: Create .env file
       run: |
         echo "POSTGES_HOST=0.0.0.0" >> .env
@@ -83,6 +85,4 @@ jobs:
         echo "POSTGRES_PASSWORD=password" >> .env
 
     - name: Run service via docker-compose and run Karate-tests
-      run: |
-        # The option --exit-code-from ensures that the command's exit code exactly matches the exit code of the specified service.
-        docker compose --profile MockForPullRequest up --exit-code-from to-dos-api-cpp-karate-tests
+      run: make ci-run-karate-test-within-docker-compose
