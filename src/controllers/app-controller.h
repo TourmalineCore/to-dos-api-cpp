@@ -18,6 +18,7 @@ public:
     ADD_METHOD_TO(AppController::addToDo, "/api/to-dos", Post);                 // Adding a new task
     ADD_METHOD_TO(AppController::completeToDos, "/api/to-dos/complete", Post);  // Executing (deleting) a task list
     ADD_METHOD_TO(AppController::deleteToDo, "/api/to-dos", Delete);            // Deleting a specific task
+    ADD_METHOD_TO(AppController::apiHealthCheck, "/health", Get);               // Health endpoint
     METHOD_LIST_END
 
     HttpResponsePtr createInternalServerErrorResponse(const std::string& error) const;
@@ -29,6 +30,8 @@ public:
     void completeToDos(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 
     void deleteToDo(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
+
+    void apiHealthCheck(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 
 private:
     std::shared_ptr<odb::database> db_;

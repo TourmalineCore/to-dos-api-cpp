@@ -130,3 +130,11 @@ void AppController::deleteToDo(const HttpRequestPtr& req, std::function<void(con
         callback(createInternalServerErrorResponse(e.what()));
     }
 }
+
+// TODO: Add a database connection check
+void AppController::apiHealthCheck(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+{
+    auto response = HttpResponse::newHttpResponse();
+    response->setStatusCode(k200OK);
+    callback(response);
+}
