@@ -4,7 +4,7 @@
 
 struct ToDoDTO
 {
-    int id;
+    std::uint64_t id;
     std::string name;
 
     Json::Value toJson() const;
