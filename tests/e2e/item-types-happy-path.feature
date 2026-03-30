@@ -33,7 +33,7 @@ Feature: Item Types
     Then match response.toDos contains
       """
       {
-        "id": "#(todoId)",
+        "id": #(todoId),
         "name": "#(randomName)"
       }
       """
