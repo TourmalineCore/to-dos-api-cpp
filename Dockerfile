@@ -43,7 +43,7 @@ COPY --from=build /src/src/data/alembic.ini ./alembic/
 COPY --from=build /src/src/data/migrations/ ./alembic/migrations/
 COPY --from=build /src/src/data/models/ ./alembic/models/
 
-COPY --from=build /src/Makefile .
+# COPY --from=build /src/Makefile .
 
 COPY --from=build /src/build/Release/to-dos-api .
 

@@ -65,7 +65,8 @@ services:
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
     entrypoint: [ "/bin/bash", "-c" ]
-    command: "make ci-apply-migrations && ./to-dos-api"
+    # command: "make ci-apply-migrations && ./to-dos-api"
+    command: "cd /app/alembic && alembic upgrade head && cd .. && ./to-dos-api"
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:80/health || exit 1" ]
       interval: 5s
