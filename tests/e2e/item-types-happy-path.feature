@@ -24,6 +24,7 @@ Feature: Item Types
     When method POST
     Then status 201
 
+    * print response
     * def todoId = response.todoId
 
     # Step 2: Verify that todo is in the list with the id and generated name
