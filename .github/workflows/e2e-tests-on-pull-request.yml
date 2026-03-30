@@ -50,7 +50,7 @@ jobs:
 
             export TO_DOS_API_REPO=to-dos-api-cpp
 
-            helmfile --environment local --namespace local -f deploy/helmfile.yaml apply
+            helmfile --environment local --namespace local -f deploy/helmfile.yaml.gotmpl apply
           push: never
 
       - name: Check out the repo
