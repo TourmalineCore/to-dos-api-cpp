@@ -26,7 +26,7 @@ COPY conanfile.py /src/
 COPY .devcontainer/to-dos-conan-profile.conf /src/.devcontainer/
 COPY deps/* /src/deps/
 
-RUN cd /src/deps && ls
+RUN echo "test" && cd /src/deps && ls
 
 # this is necessary so that Conan can see the local dependency recipes
 RUN conan remote add local-recipes ./deps --type=local-recipes-index
