@@ -54,7 +54,7 @@ Feature: Item Types
     # Step 4: Delete the todo with the id (hard delete)
     Given url apiRootUrl
     And path 'to-dos'
-    And param toDo = todoId
+    And param toDoId = todoId
     When method DELETE
     Then status 200
 

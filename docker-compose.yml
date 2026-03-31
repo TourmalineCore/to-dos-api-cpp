@@ -5,12 +5,16 @@ services:
     profiles:
       - DbOnly
       - MockForPullRequest
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_HOST=0.0.0.0
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=to-dos-api-cpp-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
     ports:
       - "7501:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD", "/bin/bash", "-c", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,7 +34,7 @@ services:
       # TODO: We need to think of a way to synchronize the .env file used for the database service. 
       #       Perhaps we could transfer the pgAdmin environment variables to the .env file.
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: to-dos-api-cpp-db
       PGADMIN_DEFAULT_EMAIL: admin@admin.org
       PGADMIN_DEFAULT_PASSWORD: postgres
@@ -58,26 +62,21 @@ services:
     depends_on:
       to-dos-api-cpp-db:
         condition: service_healthy
-    image: ghcr.io/tourmalinecore/to-dos-api-cpp:latest
-    build:
-      dockerfile: ./Dockerfile
-      context: .
-      args:
-        EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
-    entrypoint: [ "/bin/bash", "-c" ]
-    # command: "make ci-apply-migrations && ./to-dos-api"
-    command: "cd /app/alembic && alembic upgrade head && cd .. && ./to-dos-api"
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:80/health || exit 1" ]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+    image: ghcr.io/tourmalinecore/to-dos-api-cpp:sha-cf87c64af41a92fa5fc21bed4b6a074f6f5001df
+    # We need to override the entrypoint to apply the migrations to the database before the API starts
+    entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
+    # healthcheck:
+    #   test: [ "CMD", "/bin/bash", "-c", "curl -f http://localhost:80/health || exit 1" ]
+    #   interval: 1s
+    #   timeout: 3s
+    #   retries: 2
     env_file:
       - .env
     ports:
-      - 80:80
+      - 6501:80
     networks:
       - to-dos-api-cpp-network
+
   to-dos-api-cpp-karate-tests:
     container_name: 'to-dos-api-cpp-karate-tests'
     profiles:
@@ -87,7 +86,7 @@ services:
       context: ./tests/e2e
     depends_on:
       to-dos-api-cpp:
-        condition: service_healthy
+        condition: service_started
     command: [ "karate", "/karate" ]
     volumes:
       # similar to mock-server volumes we need to support both runs: from Dev Container and from OS

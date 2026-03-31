@@ -116,6 +116,7 @@ void AppController::deleteToDo(const HttpRequestPtr& req, std::function<void(con
 
     try
     {
+        // TODO: Add a check for an invalid value
         auto toDoIdStr = req->getParameter("toDoId");
         int toDoId = std::stoi(toDoIdStr);
 

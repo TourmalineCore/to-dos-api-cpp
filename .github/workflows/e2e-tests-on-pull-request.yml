@@ -65,6 +65,7 @@ jobs:
 
   e2e-karate-tests-in-docker-compose:
     runs-on: ubuntu-24.04
+    needs: [docker-build-and-push]
     steps:
     - name: Checkout to repo
       uses: actions/checkout@v4
@@ -73,12 +74,15 @@ jobs:
     # won't be able to start because they use this file.
     - name: Create .env file
       run: |
-        echo "POSTGES_HOST=0.0.0.0" >> .env
+        echo "API_HOST=0.0.0.0" >> .env
+        echo "API_PORT=80" >> .env
+        echo "API_LOG_LEVEL=INFO" >> .env
+        echo "API_NUMBER_OF_THREADS=1" >> .env
+        echo "POSTGRES_HOST=to-dos-api-cpp-db" >> .env
         echo "POSTGRES_PORT=5432" >> .env
         echo "POSTGRES_DB=to-dos-api-cpp-db" >> .env
         echo "POSTGRES_USER=postgres" >> .env
         echo "POSTGRES_PASSWORD=password" >> .env
 
     - name: Run service via docker-compose and run Karate-tests
-      # run: make ci-run-karate-test-within-docker-compose
-      run: docker compose --profile MockForPullRequest up --build --exit-code-from to-dos-api-cpp-karate-tests
+      run: docker compose --profile MockForPullRequest up --exit-code-from to-dos-api-cpp-karate-tests
