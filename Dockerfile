@@ -22,6 +22,7 @@ RUN apt-get -y install --no-install-recommends \
 
 RUN pip install conan
 
+# this is necessary so that Conan can install the dependencies
 COPY conanfile.py /src/
 COPY .devcontainer/to-dos-conan-profile.conf /src/.devcontainer/
 COPY deps/ /src/deps/
@@ -31,13 +32,16 @@ RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
 RUN conan install . --build=missing \
     --profile:all=.devcontainer/to-dos-conan-profile.conf \
+    # this is necessary because, by default, the `build_type` property in the profile is set to `Debug`
     --settings:host="build_type=Release"
 
+# We cannot copy all the content before running `conan install`, because 
+# otherwise the image layers cannot be cached in the pipeline
 COPY . .
 
 RUN conan build . --build=missing \
     --profile:all=.devcontainer/to-dos-conan-profile.conf \
-    # This is necessary because, by default, the `build_type` property in the profile is set to `Debug`
+    # this is necessary because, by default, the `build_type` property in the profile is set to `Debug`
     --settings:host="build_type=Release"
 
 FROM base AS final
