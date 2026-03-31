@@ -23,6 +23,11 @@ jobs:
       - name: Add Registry Image Env Var With Lowercase Organization and Repo Name
         run: |
           echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      
+      - name: Add branch name env var for image tag
+        run: |
+          BRANCH_NAME="${GITHUB_REF_NAME//[^a-zA-Z0-9._-]/-}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Prepare
         run: |
@@ -57,8 +62,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ env.REGISTRY_IMAGE }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-amd64
-          cache-to: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-amd64,mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-amd64-${{ env.BRANCH_NAME }}
+          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-amd64-${{ env.BRANCH_NAME }},mode=max
 
       - name: Export digest
         run: |
@@ -85,6 +90,11 @@ jobs:
       - name: Add Registry Image Env Var With Lowercase Organization and Repo Name
         run: |
           echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      
+      - name: Add branch name env var for image tag
+        run: |
+          BRANCH_NAME="${GITHUB_REF_NAME//[^a-zA-Z0-9._-]/-}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Prepare
         run: |
@@ -119,8 +129,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ env.REGISTRY_IMAGE }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-arm64
-          cache-to: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-arm64,mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-arm64-${{ env.BRANCH_NAME }}
+          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-arm64-${{ env.BRANCH_NAME }},mode=max
 
       - name: Export digest
         run: |
