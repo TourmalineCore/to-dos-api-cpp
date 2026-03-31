@@ -14,7 +14,7 @@ AppConfig::AppConfig()
 
 AppConfig& AppConfig::GetInstance()
 {
-    static AppConfig instance;
+        static AppConfig instance;
     return instance;
 }
 

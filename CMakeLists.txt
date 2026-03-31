@@ -14,13 +14,14 @@ add_subdirectory(src/core)
 add_subdirectory(src/application)
 add_subdirectory(src/api)
 
-add_executable(${PROJECT_NAME}
-    src/main.cpp
-    src/utils/app-config/app-config.cpp
+file(GLOB main_sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 )
 
+add_executable(${PROJECT_NAME} ${main_sources})
+
 target_include_directories(${PROJECT_NAME} PRIVATE
-    src/utils
+    src/
 )
 
 target_link_libraries(${PROJECT_NAME}
