@@ -24,14 +24,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: TourmalineCore/to-dos-local-env
-          ref: experiment/making-the-helmfile-more-universal
+          ref: feature/add-to-dos-api-cpp-release
 
 
       - name: Deploy Local Env to Kind k8s
         uses: devcontainers/ci@v0.3
         with:
-          # Replace with the necessary image when the image to-dos-api-cpp-devcontainer is created
-          # cacheFrom: ghcr.io/tourmalinecore/inner-circle-local-env-devcontainer
           runCmd: |
             # we need to override "latest" image tag of ui inside local-env to run e2e against the current commit api version and not against latest from master
             # We tried to use yq to change the image tag, but in the values files for helmfile we have non-yaml code that yq can`t parse or ignore
@@ -40,17 +38,15 @@ jobs:
             sed -i "0,/tag:.*/s//tag: \"sha-${{ github.event.pull_request.head.sha }}\"/" deploy/values-to-dos-api-cpp.yaml.gotmpl
 
             # we need to override "latest" ref of service chart inside local-env to run tests against the current commit service chart version and not against latest from master
-            sed -i "0,/git+https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git?ref=.*/s//git+https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git?ref=${{ github.event.pull_request.head.sha }}/" deploy/helmfile.yaml
+            sed -i "0,/git+https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git?ref=.*/s//git+https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git?ref=${{ github.event.pull_request.head.sha }}/" deploy/helmfile.yaml.gotmpl
             
-            sed -i "0,/git::https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git@\/ci\/values.yaml?ref=.*/s//git::https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git@\/ci\/values.yaml?ref=${{ github.event.pull_request.head.sha }}/" deploy/helmfile.yaml
+            sed -i "0,/git::https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git@\/ci\/values.yaml?ref=.*/s//git::https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git@\/ci\/values.yaml?ref=${{ github.event.pull_request.head.sha }}/" deploy/helmfile.yaml.gotmpl
 
             kind create cluster --name to-dos --config kind-local-config.yaml --kubeconfig ./.to-dos-cluster-kubeconfig
             # we need to properly expose KUBECONFIG as an absolute path, pwd prints current working directory path
             export KUBECONFIG=$(pwd)/.to-dos-cluster-kubeconfig
 
-            export TO_DOS_API_REPO=to-dos-api-cpp
-
-            helmfile --environment local --namespace local -f deploy/helmfile.yaml.gotmpl apply
+            make apply-releases-with-cpp-api
           push: never
 
       - name: Check out the repo
