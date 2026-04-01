@@ -62,7 +62,12 @@ services:
     depends_on:
       to-dos-api-cpp-db:
         condition: service_healthy
-    image: ghcr.io/tourmalinecore/to-dos-api-cpp:sha-cf87c64af41a92fa5fc21bed4b6a074f6f5001df
+    image: ghcr.io/tourmalinecore/to-dos-api-cpp:latest
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+      args:
+        EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
     # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     env_file:
