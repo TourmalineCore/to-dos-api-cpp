@@ -24,6 +24,13 @@
 		// This is necessary to ensure that Docker Compose containers are available inside the devcontainer
 		"--network=host"
 	],
+	"mounts": [
+		// This mounts increase future building on devcontainer in case any reseting of container volumes
+		// Mount caching of build folder
+        "source=dev-build-cache,target=${containerWorkspaceFolder}/build,type=volume",
+		// Mount caching of conan dependencies builds
+        "source=dev-conan-cache,target=~/.conan2,type=volume"
+    ],
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -35,7 +42,7 @@
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"version": "20.10",
+			"version": "29.3.0",
 			"dockerDashComposeVersion": "v2"
 		}
 	}

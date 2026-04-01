@@ -1,4 +1,4 @@
-#include "utils/app-config/app-config.h"
+#include "app-config.h"
 #include <drogon/HttpAppFramework.h>
 
 int main()

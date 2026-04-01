@@ -10,12 +10,12 @@ export
 
 # Generate a new Alembic migration with autogenerate
 create-migration:
-	@cd ./src/data && \
+	@cd ./alembic && \
 	alembic revision --autogenerate -m $(name)
 
 # Apply all pending Alembic migrations
 apply-migrations:
-	@cd ./src/data && \
+	@cd ./alembic && \
 	alembic upgrade head
 
 # Build the project, apply migrations and start the application
