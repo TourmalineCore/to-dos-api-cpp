@@ -67,9 +67,10 @@ services:
       context: .
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
-      cache-from: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-karate-${BRANCH_NAME:-local}
-      cache-to: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-karate-${BRANCH_NAME:-local},mode=max
-    # We need to override the entrypoint to apply the migrations to the database before the API starts
+      # cache-from: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-karate-${BRANCH_NAME:-local}
+      cache-from: type=gha
+      # cache-to: type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-karate-${BRANCH_NAME:-local},mode=max
+      # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     env_file:
       - .env
