@@ -65,11 +65,6 @@ services:
     image: ghcr.io/tourmalinecore/to-dos-api-cpp:sha-cf87c64af41a92fa5fc21bed4b6a074f6f5001df
     # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
-    # healthcheck:
-    #   test: [ "CMD", "/bin/bash", "-c", "curl -f http://localhost:80/health || exit 1" ]
-    #   interval: 1s
-    #   timeout: 3s
-    #   retries: 2
     env_file:
       - .env
     ports:
