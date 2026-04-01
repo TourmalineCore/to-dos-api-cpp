@@ -4,9 +4,9 @@
 
 std::uint64_t HardDeleteToDoCommand::execute(int id)
 {
-    odb::transaction t(db_.begin());
+    odb::transaction transaction(db_.begin());
     const unsigned long long todo_id = db_.erase_query<ToDo>(odb::query<ToDo>::id == id);
-    t.commit();
+    transaction.commit();
 
     // TODO: return exactly deleted todo id
     return id;

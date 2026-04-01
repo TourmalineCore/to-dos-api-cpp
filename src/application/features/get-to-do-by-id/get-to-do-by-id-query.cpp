@@ -5,14 +5,14 @@
 
 std::shared_ptr<ToDo> GetToDoById::get(int id)
 {
-    odb::transaction t(db_.begin());
+    odb::transaction transaction(db_.begin());
 
-    odb::result<ToDo> r = db_.query<ToDo>(odb::query<ToDo>::id == id);
+    odb::result<ToDo> query_result = db_.query<ToDo>(odb::query<ToDo>::id == id);
 
     std::shared_ptr<ToDo> todo;
-    if (!r.empty())
-        todo = std::make_shared<ToDo>(*r.begin());
+    if (!query_result.empty())
+        todo = std::make_shared<ToDo>(*query_result.begin());
 
-    t.commit();
+    transaction.commit();
     return todo;
 }

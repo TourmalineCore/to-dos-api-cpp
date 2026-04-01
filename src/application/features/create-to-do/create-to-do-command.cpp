@@ -6,9 +6,9 @@ std::uint64_t CreateToDoCommand::execute(const std::string& name, std::time_t cr
 {
     ToDo todo(name, createdAtUtc);
 
-    odb::transaction t(db_.begin());
+    odb::transaction transaction(db_.begin());
     db_.persist(todo);
-    t.commit();
+    transaction.commit();
 
     return todo.id();
 }
