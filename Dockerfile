@@ -52,7 +52,7 @@ RUN pip install alembic psycopg2-binary sqlalchemy-utils
 WORKDIR /app
 
 # alembic needs this to apply the migrations correctly
-COPY --from=build /src/alembic/* ./alembic/
+COPY --from=build /src/alembic/ ./alembic/
 
 COPY --from=build /src/build/Release/to-dos-api .
 

@@ -67,8 +67,8 @@ services:
       context: .
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
-      cache_from:
-        - type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-amd64-${BRANCH_NAME:-default}
+      # cache_from:
+      #   - type=registry,ref=ghcr.io/tourmalinecore/to-dos-api-cpp:cache-amd64-${BRANCH_NAME:-default}
       # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     env_file:

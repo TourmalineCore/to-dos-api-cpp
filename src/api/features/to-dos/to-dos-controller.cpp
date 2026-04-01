@@ -75,7 +75,7 @@ void ToDosController::addToDo(const HttpRequestPtr& req, std::function<void(cons
         CreateToDoRequest request { json->get("name", "").asString() };
         auto handlerResponse = createToDoHandler_->handle(request);
 
-        jsonResponse["id"] = handlerResponse.id;
+        jsonResponse["todoId"] = handlerResponse.id;
 
         auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
         resp->setStatusCode(k201Created);
