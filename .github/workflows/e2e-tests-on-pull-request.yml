@@ -21,7 +21,6 @@ jobs:
           repository: TourmalineCore/to-dos-local-env
           ref: feature/add-to-dos-api-cpp-release
 
-
       - name: Deploy Local Env to Kind k8s
         uses: devcontainers/ci@v0.3
         with:
@@ -82,6 +81,9 @@ jobs:
         echo "POSTGRES_DB=to-dos-api-cpp-db" >> .env
         echo "POSTGRES_USER=postgres" >> .env
         echo "POSTGRES_PASSWORD=password" >> .env
+    
+    - name: Check compose version
+      run: docker compose version
 
     - name: Run service via docker-compose and run Karate-tests
       run:  BRANCH_NAME=${GITHUB_REF_NAME} docker compose --profile MockForPullRequest up --exit-code-from to-dos-api-cpp-karate-tests

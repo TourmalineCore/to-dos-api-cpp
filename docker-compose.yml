@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   to-dos-api-cpp-db:
     container_name: to-dos-api-cpp-db
