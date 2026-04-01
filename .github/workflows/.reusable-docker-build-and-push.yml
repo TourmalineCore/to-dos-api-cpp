@@ -8,6 +8,11 @@ name: Publish Docker image
 on:
   # to allow to wait for a docker image to be published to proceed in another workflow
   workflow_call:
+  # This event has been added for debugging purposes; there is currently no workflow 
+  # that triggers when changes are made to the master branch.
+  push:
+    branches:
+      - master
 
 jobs:
   build-amd64:
@@ -193,7 +198,8 @@ jobs:
             type=raw,value=${{ env.SEMVER_VERSION }}
             # set latest tag for default branch
             # https://github.com/docker/metadata-action/issues/171 explains how to tag latest only on default branch
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+            # type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+            type=raw,value=latest,enable=true
         env:
           # https://github.com/docker/metadata-action/issues/283
           # without this flag it won't tag the image using the commit SHA 
