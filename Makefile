@@ -26,11 +26,3 @@ run: apply-migrations
 # Run clang-tidy static analysis
 run-code-analysis:
 	@run-clang-tidy -p build/Debug
-
-# Running Karate tests using Docker Compose
-run-e2e-tests-within-docker-compose:
-	@if docker pull ghcr.io/tourmalinecore/to-dos-api-cpp:latest 2>/dev/null; then \
-		docker compose --profile MockForPullRequest up --no-build --exit-code-from to-dos-api-cpp-karate-tests; \
-	else \
-		docker compose --profile MockForPullRequest up --build --exit-code-from to-dos-api-cpp-karate-tests; \
-	fi

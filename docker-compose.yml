@@ -62,7 +62,6 @@ services:
     depends_on:
       to-dos-api-cpp-db:
         condition: service_healthy
-    image: ghcr.io/tourmalinecore/to-dos-api-cpp:latest
     build:
       dockerfile: ./Dockerfile
       context: .

@@ -65,7 +65,6 @@ jobs:
 
   e2e-karate-tests-in-docker-compose:
     runs-on: ubuntu-24.04
-    needs: [docker-build-and-push]
     steps:
     - name: Checkout to repo
       uses: actions/checkout@v4
@@ -85,4 +84,4 @@ jobs:
         echo "POSTGRES_PASSWORD=password" >> .env
 
     - name: Run service via docker-compose and run Karate-tests
-      run: make run-e2e-tests-within-docker-compose
+      run: docker compose --profile MockForPullRequest up --exit-code-from to-dos-api-cpp-karate-tests
