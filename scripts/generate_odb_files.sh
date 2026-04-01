@@ -3,8 +3,9 @@ set -euo pipefail
 
 ODB_DEB_URL="https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/odb_2.5.0-0~ubuntu22.04_amd64.deb"
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="$ROOT_DIR/src/data/models"
-ODB_OUT_DIR="$MODELS_DIR/odb-gen"
+MODELS_DIR="$ROOT_DIR/src/core"
+APPLICATION_DIR="$ROOT_DIR/src/application"
+ODB_OUT_DIR="$APPLICATION_DIR/odb-gen"
 
 # ── Resolve Conan include paths ───────────────────────────────
 echo "[0/3] Resolving Conan include paths..."
