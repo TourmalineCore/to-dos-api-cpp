@@ -14,12 +14,8 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-# If the local recipes are not specified in Conan, Conan will not be able 
-# to find them when installing and building dependencies.
 RUN pip install conan alembic psycopg2-binary sqlalchemy-utils
-
-RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
 # If this profile is not copied, the profile must be specified via an argument 
 # when calling `conan`. 
-COPY .devcontainer/to-dos-conan-profile.conf /root/.conan2/profiles/default
+COPY ./to-dos-conan-profile.conf /root/.conan2/profiles/default
