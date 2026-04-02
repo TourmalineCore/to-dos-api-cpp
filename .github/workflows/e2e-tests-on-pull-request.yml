@@ -76,7 +76,7 @@ jobs:
         echo "API_PORT=80" >> .env
         echo "API_LOG_LEVEL=INFO" >> .env
         echo "API_NUMBER_OF_THREADS=1" >> .env
-        echo "POSTGRES_HOST=to-dos-api-cpp-db" >> .env
+        echo "POSTGRES_HOST=0.0.0.0" >> .env
         echo "POSTGRES_PORT=5432" >> .env
         echo "POSTGRES_DB=to-dos-api-cpp-db" >> .env
         echo "POSTGRES_USER=postgres" >> .env
