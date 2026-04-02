@@ -21,13 +21,15 @@ jobs:
           repository: TourmalineCore/to-dos-local-env
           ref: feature/add-to-dos-api-cpp-release
       
+      # We need to make sure that the values-to-dos-api-cpp.yaml.gotmpl file hasn't been modified 
+      # in the `to-dos-local-env` repository, to ensure that the test runs as expected.
       - name: Verify values file checksum
         run: |
-          ACTUAL=$(sha256sum deploy/values-to-dos-api-cpp.yaml.gotmpl | awk '{ print $1 }')
-          if [ "$ACTUAL" != "${{ vars.LOCAL_ENV_REPO_VALUES_TO_DOS_API_CPP_SHA256 }}" ]; then
+          VALUES_HASH=$(sha256sum deploy/values-to-dos-api-cpp.yaml.gotmpl | awk '{ print $1 }')
+          if [ "$VALUES_HASH" != "88d14f527d1c39d9af93ddbe2f41462f01b523bdc340b4c62cb72c31a4c46d1f" ]; then
             echo "ERROR: checksum mismatch"
-            echo "Expected: ${{ vars.LOCAL_ENV_REPO_VALUES_TO_DOS_API_CPP_SHA256 }}"
-            echo "Actual:   $ACTUAL"
+            echo "Expected: 88d14f527d1c39d9af93ddbe2f41462f01b523bdc340b4c62cb72c31a4c46d1f"
+            echo "Actual:   $VALUES_HASH"
             exit 1
           fi
 
