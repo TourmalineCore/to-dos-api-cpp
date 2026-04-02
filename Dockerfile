@@ -8,14 +8,14 @@ EXPOSE 80
 
 # pip is installed here because it needs to be available in both the build and final stages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends pip make
+    && apt-get -y install --no-install-recommends pip
 
 FROM base AS build
 
 WORKDIR /src
 
 RUN apt-get -y install --no-install-recommends \
-    build-essential clang lld cmake ninja-build gdb \
+    build-essential clang lld make cmake ninja-build gdb \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
