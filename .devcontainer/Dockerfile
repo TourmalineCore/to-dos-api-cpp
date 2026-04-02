@@ -1,13 +1,9 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
 
-# This is necessary to ensure that the installation proceeds in the non-interactive mode. 
-# If this option is not specified, apt may request confirmation during the installation.
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apt-get update && apt-get -y install --no-install-recommends \
-    build-essential clang lld gdb cmake ninja-build \
+    build-essential clang lld gdb make cmake ninja-build \
     crossbuild-essential-arm64 \
-    git curl wget unzip \
+    git curl wget unzip sudo \
     pip \
     clang-format clang-tidy \
     && apt-get autoremove -y \
