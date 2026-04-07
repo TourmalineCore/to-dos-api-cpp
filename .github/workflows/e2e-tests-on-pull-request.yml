@@ -19,7 +19,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: TourmalineCore/to-dos-local-env
-          ref: feature/add-to-dos-api-cpp-release
       
       # we need to make sure that the values-to-dos-api-cpp.yaml.gotmpl file hasn't been modified 
       # in the `to-dos-local-env` repository, to ensure that the test runs as expected.
