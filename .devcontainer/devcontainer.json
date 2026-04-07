@@ -6,7 +6,26 @@
 		"dockerfile": "Dockerfile"
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [
+		4501,
+		7501,
+		9501
+	],
+	// More information about 'portsAttributes' here: https://containers.dev/implementors/json_reference/#port-attributes
+	"portsAttributes": {
+		"4501": {
+			"label": "VSCode Dev Container API Running Port",
+			"requireLocalPort": true
+		},
+		"7501": {
+			"label": "VSCode Dev Container DB Running Port",
+			"requireLocalPort": true
+		},
+		"9501": {
+			"label": "VSCode Dev Container PgAdmin Running Port",
+			"requireLocalPort": true
+		}
+	},
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "conan remote add local-recipes ./deps --type=local-recipes-index --force", // Add a local recipes store for odb libraries. Need force flag for redefine while second time container is up
 	// Configure tool-specific properties.
