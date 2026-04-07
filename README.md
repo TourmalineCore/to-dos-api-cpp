@@ -48,6 +48,18 @@ To launch the executable, click Launch in the CMake extension.
 Alternatively, you can use make targets.
 - To run the application, use the `make run` command. When the command is executed, the project's dependencies will be checked and, if necessary, installed and compiled.
 
+## Allocated Ports & Services
+
+| Service Name               | Api in Dev Container/Codespaces | Api in IDE | Api in Docker Compose |  Db in Docker Compose | Reserved for MockServer in Docker Compose | PgAdmin in Docker Compose |
+| :------------------------- | :-----------------------------: | :--------: | :-------------------: | :-------------------: | :-------------------------: | :-------------------------: |
+| to-dos-api-cpp     |               4501              |    5501    |          6501         |          7501         |             8501            |             9501            |
+
+Full docs about the allocated ports, reasoning, and the other services bindings in this infrastructre setup are available [here](https://github.com/TourmalineCore/inner-circle-documentation/blob/master/code-style/api-code-style.md#ports).
+
+You can go to `Ports` tab in the `Terminal` parent panel to find available services.
+
+The most useful is `PgAdmin` http://localhost:9501 (password is `postgres`).
+
 ## Linters
 
 The project includes the `clang-tidy` code analyzer and the `clang-format` formatter. Configuration files are located in the project root: `.clang-tidy` and `.clang-format`, respectively.
