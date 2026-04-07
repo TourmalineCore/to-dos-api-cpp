@@ -56,7 +56,9 @@ jobs:
             # we need to properly expose KUBECONFIG as an absolute path, pwd prints current working directory path
             export KUBECONFIG=$(pwd)/.to-dos-cluster-kubeconfig
 
-            make apply-releases-with-cpp-api
+            # When called, Makefile targets execute a sequence of commands. 
+            # The targets are defined in the Makefile located in the root of the to-dos-local-env repository.
+            make deploy-with-cpp-api
           push: never
 
       - name: Check out the repo
