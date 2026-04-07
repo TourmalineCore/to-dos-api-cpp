@@ -2,61 +2,54 @@
 
 AppConfig::AppConfig()
 {
-    setApiHost(getEnv("API_HOST", "0.0.0.0"));
-    setApiPort(getEnvInt("API_PORT", 80));
-    setApiNumThreads(getEnvInt("API_NUMBER_OF_THREADS", 1));
-    setDatabaseHost(getEnv("POSTGRES_HOST", "0.0.0.0"));
-    setDatabasePort(getEnv("POSTGRES_PORT", "5432"));
-    setDatabaseName(getEnv("POSTGRES_DB", "to-dos-api-cpp-db"));
-    setDatabaseUser(getEnv("POSTGRES_USER", "postgres"));
-    setDatabasePassword(getEnv("POSTGRES_PASSWORD", "password"));
+    setApiHost(getEnv("API_HOST"));
+    setApiPort(getEnvInt("API_PORT"));
+    setApiNumThreads(getEnvInt("API_NUMBER_OF_THREADS"));
+    setDatabaseHost(getEnv("POSTGRES_HOST"));
+    setDatabasePort(getEnv("POSTGRES_PORT"));
+    setDatabaseName(getEnv("POSTGRES_DB"));
+    setDatabaseUser(getEnv("POSTGRES_USER"));
+    setDatabasePassword(getEnv("POSTGRES_PASSWORD"));
 }
 
 AppConfig& AppConfig::GetInstance()
 {
-        static AppConfig instance;
+    static AppConfig instance;
     return instance;
 }
 
-std::string AppConfig::getEnv(std::string name, std::string defaultValue)
+std::string AppConfig::getEnv(std::string name)
 {
     char* value = std::getenv(name.c_str());
 
-    if (value)
-    {
-        return std::string(value);
+    if (!value) {
+        throw std::invalid_argument(
+            "error: failed to extract the " + name + " environment variable value"
+        );
     }
-    else
-    {
-        LOG_WARN << "Failed to get the value of the " << name << " environment variable; the default value will be used: " << defaultValue;
-        return defaultValue;
-    }
+
+    return std::string(value);
 }
 
-uint32_t AppConfig::getEnvInt(std::string name, uint32_t defaultValue)
+std::uint32_t AppConfig::getEnvInt(std::string name)
 {
     char* value = std::getenv(name.c_str());
 
-    if (!value)
-        return defaultValue;
-
-    try
-    {
-        auto result = std::stoi(value);
-        auto limit = std::numeric_limits<uint32_t>::max();
-
-        if (result < 0 || result > limit)
-            throw std::overflow_error(
-                "error: an attempt to write a " + name + " value which is larger than what can be stored in a " + std::to_string(limit)
-            );
-
-        return static_cast<uint32_t>(result);
+    if (!value) {
+        throw std::invalid_argument(
+            "error: failed to extract the " + name + " environment variable value"
+        );
     }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR << e.what();
-        return defaultValue;
-    }
+
+    auto result = std::stoi(value);
+    auto limit = std::numeric_limits<std::uint32_t>::max();
+
+    if (result < 0 || result > limit)
+        throw std::overflow_error(
+            "error: an attempt to write a " + name + " value which is larger than what can be stored in a " + std::to_string(limit)
+        );
+
+    return static_cast<std::uint32_t>(result);
 }
 
 trantor::Logger::LogLevel AppConfig::parseLogLevel(const std::string& level)
@@ -80,15 +73,15 @@ void AppConfig::setApiHost(std::string apiHost)
     LOG_DEBUG << "Update value: apiHost_=" << apiHost_;
 };
 
-void AppConfig::setApiPort(uint32_t apiPort)
+void AppConfig::setApiPort(std::uint32_t apiPort)
 {
     apiPort_ = apiPort;
     LOG_DEBUG << "Update value: apiPort_=" << apiPort_;
 };
 
-void AppConfig::setApiNumThreads(uint32_t apiNumThreads)
+void AppConfig::setApiNumThreads(std::uint32_t apiNumThreads)
 {
-    uint32_t numberOfThreads = apiNumThreads;
+    std::uint32_t numberOfThreads = apiNumThreads;
 
     if (numberOfThreads > 0)
     {
@@ -136,14 +129,14 @@ void AppConfig::setDatabasePassword(std::string databasePassword)
 const std::string& AppConfig::getApiHost() const
 { return apiHost_; }
 
-const uint32_t& AppConfig::getApiPort() const
+const std::uint32_t& AppConfig::getApiPort() const
 { return apiPort_; }
 
-const uint32_t& AppConfig::getApiNumThreads() const
+const std::uint32_t& AppConfig::getApiNumThreads() const
 { return apiNumThreads_; }
 
 const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
-{ return parseLogLevel(getEnv("API_LOG_LEVEL", "INFO")); }
+{ return parseLogLevel(getEnv("API_LOG_LEVEL")); }
 
 const std::string& AppConfig::getDatabaseHost() const
 { return databaseHost_; }

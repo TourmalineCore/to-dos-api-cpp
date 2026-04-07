@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <stdexcept>
 #include <limits>
 #include <string>
 #include <trantor/utils/Logger.h>
@@ -19,8 +20,8 @@ private:
     AppConfig& operator=(const AppConfig&) = delete;
 
     std::string apiHost_;
-    uint32_t apiPort_;
-    uint32_t apiNumThreads_;
+    std::uint32_t apiPort_;
+    std::uint32_t apiNumThreads_;
 
     std::string databaseHost_;
     std::string databasePort_;
@@ -40,14 +41,14 @@ private:
      * @param apiPort is port on which the API will be run
      * @return void
      */
-    void setApiPort(uint32_t apiPort);
+    void setApiPort(std::uint32_t apiPort);
 
     /**
      * @brief Setter for the `apiNumThreads_` variable
      * @param apiNumThreads is number of threads on which the API will run
      * @return void
      */
-    void setApiNumThreads(uint32_t apiNumThreads);
+    void setApiNumThreads(std::uint32_t apiNumThreads);
 
     /**
      * @brief Setter for the `databaseHost_` variable
@@ -94,18 +95,16 @@ public:
     /**
      * @brief Function for retrieving the value of an environment variable
      * @param name is the name of the environment variable
-     * @param defaultValue is the value that will be used if the environment variable doesn't exist
      * @return std::string
      */
-    static std::string getEnv(std::string name, std::string defaultValue);
+    static std::string getEnv(std::string name);
 
     /**
      * @brief Function that retrieves a value from an environment variable and converts it to an integer type
      * @param name is the name of the environment variable
-     * @param defaultValue is the value that will be used if the environment variable doesn't exist
-     * @return uint32_t
+     * @return std::uint32_t
      */
-    static uint32_t getEnvInt(std::string name, uint32_t defaultValue);
+    static std::uint32_t getEnvInt(std::string name);
 
     /**
      * @brief Function for converting a string representing a logging level to the `trantor` type. Default is `trantor::Logger::kError`
@@ -121,15 +120,15 @@ public:
 
     /**
      * @brief Getter for the `apiPort_` variable
-     * @return const uint32_t
+     * @return const std::uint32_t
      */
-    const uint32_t& getApiPort() const;
+    const std::uint32_t& getApiPort() const;
 
     /**
      * @brief Getter for the `apiNumThreads_` variable
-     * @return const uint32_t
+     * @return const std::uint32_t
      */
-    const uint32_t& getApiNumThreads() const;
+    const std::uint32_t& getApiNumThreads() const;
 
     /**
      * @brief Getter for the `apiLogLevel_` variable
