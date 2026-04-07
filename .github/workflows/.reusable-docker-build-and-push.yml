@@ -64,6 +64,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ env.REGISTRY_IMAGE }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          # The `cache-from` and `cache-to` instructions allow you to load and unload the image cache on ghcr.io, 
+          # respectively. The `mode=max` option allows each instruction in the Dockerfile to be cached separately, 
+          # regardless of the build stage (in the case of a multi-stage build), which speeds up image builds 
+          # significantly if there have been no changes to the instruction.
+          # More info: 
+          #  - https://github.com/docker/build-push-action/
+          #  - https://docs.docker.com/build/cache/backends/#cache-mode
           cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-amd64-${{ env.BRANCH_NAME }}
           cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-amd64-${{ env.BRANCH_NAME }},mode=max
 
