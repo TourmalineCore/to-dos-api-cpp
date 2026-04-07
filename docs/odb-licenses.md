@@ -1,4 +1,7 @@
 # ODB (Object-Relational Mapping) license
+# ODB ORM license
+
+The reasons for choosing ODB as the ORM system are described in the [document](./technologies.md).
 
 We use several libraries in the project:
 | Library          | License* (which we are now experiencing)                             |
