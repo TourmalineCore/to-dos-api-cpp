@@ -1,4 +1,3 @@
-# ODB (Object-Relational Mapping) license
 # ODB ORM license
 
 The reasons for choosing ODB as the ORM system are described in the [document](./technologies.md).
@@ -100,7 +99,7 @@ Additional benefits of the CPL include:
 
 ## Free Proprietary License (FPL)
 
-This is a free version of the Commercial Proprietary License (CPL). It allows you to use ODB in a closed application free of charge and without any GPL restrictions, provided that the amount of generated database support code in any individual release of the application does not exceed 10,000 lines.
+This is a free version of the Commercial Proprietary License (CPL). It allows you to use ODB in a closed application free of charge and without any GPL restrictions, provided that the amount of generated database support code in any individual release of the application does not exceed 10,000 lines that is approximately 10 models.
 
 Quote:
 ```
