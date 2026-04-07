@@ -22,10 +22,9 @@ std::string AppConfig::getEnv(std::string name)
 {
     char* value = std::getenv(name.c_str());
 
-    if (!value) {
-        throw std::invalid_argument(
-            "error: failed to extract the " + name + " environment variable value"
-        );
+    if (!value)
+    {
+        throw std::invalid_argument("error: failed to extract the " + name + " environment variable value");
     }
 
     return std::string(value);
@@ -35,19 +34,18 @@ std::uint32_t AppConfig::getEnvInt(std::string name)
 {
     char* value = std::getenv(name.c_str());
 
-    if (!value) {
-        throw std::invalid_argument(
-            "error: failed to extract the " + name + " environment variable value"
-        );
+    if (!value)
+    {
+        throw std::invalid_argument("error: failed to extract the " + name + " environment variable value");
     }
 
     auto result = std::stoi(value);
     auto limit = std::numeric_limits<std::uint32_t>::max();
 
     if (result < 0 || result > limit)
-        throw std::overflow_error(
-            "error: an attempt to write a " + name + " value which is larger than what can be stored in a " + std::to_string(limit)
-        );
+    {
+        throw std::overflow_error("error: an attempt to write a " + name + " value which is less than 0 or larger than " + std::to_string(limit));
+    }
 
     return static_cast<std::uint32_t>(result);
 }
