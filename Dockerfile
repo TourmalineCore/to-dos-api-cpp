@@ -7,13 +7,11 @@ WORKDIR /app
 EXPOSE 80
 
 # pip is installed here because it needs to be available in both the build and final stages
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends pip
+RUN apt-get update && apt-get -y install --no-install-recommends pip
 
 FROM base AS build
 
 WORKDIR /src
-COPY . .
 
 RUN apt-get -y install --no-install-recommends \
     build-essential clang lld make cmake ninja-build gdb \
@@ -23,12 +21,26 @@ RUN apt-get -y install --no-install-recommends \
 
 RUN pip install conan
 
+# this is necessary so that Conan can install the dependencies
+COPY conanfile.py /src/
+COPY .devcontainer/to-dos-conan-profile.conf /src/.devcontainer/
+COPY deps/ /src/deps/
+
 # this is necessary so that Conan can see the local dependency recipes
 RUN conan remote add local-recipes ./deps --type=local-recipes-index
 
+RUN conan install . --build=missing \
+    --profile:all=.devcontainer/to-dos-conan-profile.conf \
+    # this is necessary because, by default, the `build_type` property in the profile is set to `Debug`
+    --settings:host="build_type=Release"
+
+# We cannot copy all the content before running `conan install`, because 
+# otherwise the image layers cannot be cached in the pipeline
+COPY . .
+
 RUN conan build . --build=missing \
     --profile:all=.devcontainer/to-dos-conan-profile.conf \
-    # This is necessary because, by default, the `build_type` property in the profile is set to `Debug`
+    # this is necessary because, by default, the `build_type` property in the profile is set to `Debug`
     --settings:host="build_type=Release"
 
 FROM base AS final
@@ -39,7 +51,7 @@ RUN pip install alembic psycopg2-binary sqlalchemy-utils
 WORKDIR /app
 
 # alembic needs this to apply the migrations correctly
-COPY --from=build /src/alembic/* ./alembic/
+COPY --from=build /src/alembic/ ./alembic/
 
 COPY --from=build /src/build/Release/to-dos-api .
 

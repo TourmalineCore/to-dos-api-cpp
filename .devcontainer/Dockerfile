@@ -1,8 +1,7 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 AS base
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
 
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
-    build-essential clang lld make gdb cmake ninja-build \
+RUN apt-get update && apt-get -y install --no-install-recommends \
+    build-essential clang lld gdb make cmake ninja-build \
     crossbuild-essential-arm64 \
     git curl wget unzip sudo \
     pip \
@@ -13,4 +12,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 RUN pip install conan alembic psycopg2-binary sqlalchemy-utils
 
-COPY to-dos-conan-profile.conf /root/.conan2/profiles/default
+# If this profile is not copied, the profile must be specified via an argument 
+# when calling `conan`. 
+COPY ./to-dos-conan-profile.conf /root/.conan2/profiles/default

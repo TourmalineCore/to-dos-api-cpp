@@ -7,17 +7,18 @@ name: Publish Docker image
 # if you build => deploy => run e2e against prod it will build the image 3 times!
 on:
   # to allow to wait for a docker image to be published to proceed in another workflow
-  # workflow_call:
-  # PR-based activation has been added, as there are no workflows that trigger this. 
-  # After adding a workflow with tests, you must revert the change and leave only the `workflow_call`.
-  pull_request:
-    types: [opened, synchronize]
+  workflow_call:
+  # This event has been added for debugging purposes; there is currently no workflow 
+  # that triggers when changes are made to the master branch.
+  push:
+    branches:
+      - master
 
 jobs:
   build-amd64:
     runs-on: ubuntu-24.04
     steps:
-      - name: Check out the repo
+      - name: Checkout the repo
         uses: actions/checkout@v4
 
       # this is needed to address this issue according to the comment https://github.com/devcontainers/ci/issues/271#issuecomment-2301764487
@@ -26,10 +27,14 @@ jobs:
         run: |
           echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
+      # we need to remove the / characters from the branch name, 
+      # as they will cause an error when saving the cache
       - name: Prepare
         run: |
           platform=linux/amd64
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          BRANCH_NAME="${GITHUB_REF_NAME//[^a-zA-Z0-9._-]/-}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Docker meta
         id: meta
@@ -59,6 +64,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ env.REGISTRY_IMAGE }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          # The `cache-from` and `cache-to` instructions allow you to load and unload the image cache on ghcr.io, 
+          # respectively. The `mode=max` option allows each instruction in the Dockerfile to be cached separately, 
+          # regardless of the build stage (in the case of a multi-stage build), which speeds up image builds 
+          # significantly if there have been no changes to the instruction.
+          # More info: 
+          #  - https://github.com/docker/build-push-action/
+          #  - https://docs.docker.com/build/cache/backends/#cache-mode
+          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-amd64-${{ env.BRANCH_NAME }}
+          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-amd64-${{ env.BRANCH_NAME }},mode=max
 
       - name: Export digest
         run: |
@@ -86,10 +100,14 @@ jobs:
         run: |
           echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
+      # we need to remove the / characters from the branch name, 
+      # as they will cause an error when saving the cache
       - name: Prepare
         run: |
           platform=linux/arm64
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          BRANCH_NAME="${GITHUB_REF_NAME//[^a-zA-Z0-9._-]/-}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Docker meta
         id: meta
@@ -119,6 +137,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ env.REGISTRY_IMAGE }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-arm64-${{ env.BRANCH_NAME }}
+          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:cache-arm64-${{ env.BRANCH_NAME }},mode=max
 
       - name: Export digest
         run: |
@@ -165,9 +185,10 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Add SEMVER_VERSION Env Var with Value from __version File
-        run: |
-          echo "SEMVER_VERSION=$(cat __version)" >>${GITHUB_ENV}
+      # TODO: This needs to be reverted once the semantic versioning workflow is added
+      # - name: Add SEMVER_VERSION Env Var with Value from __version File
+      #   run: |
+      #     echo "SEMVER_VERSION=$(cat __version)" >>${GITHUB_ENV}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -180,7 +201,8 @@ jobs:
             # full length sha
             type=sha,format=long
             # SemVer human readable version
-            type=raw,value=${{ env.SEMVER_VERSION }}
+            # TODO: This needs to be reverted once the semantic versioning workflow is added
+            # type=raw,value=${{ env.SEMVER_VERSION }}
             # set latest tag for default branch
             # https://github.com/docker/metadata-action/issues/171 explains how to tag latest only on default branch
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}

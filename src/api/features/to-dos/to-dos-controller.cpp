@@ -58,24 +58,26 @@ void ToDosController::addToDo(const HttpRequestPtr& req, std::function<void(cons
 {
     try
     {
+        Json::Value jsonResponse;
         auto json = req->getJsonObject();
 
         if (!json || !json->isMember("name"))
         {
-            Json::Value result;
-            result["status"] = "error";
-            result["message"] = "Invalid JSON";
+            jsonResponse["status"] = "error";
+            jsonResponse["message"] = "Invalid JSON";
 
-            auto resp = HttpResponse::newHttpJsonResponse(result);
+            auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
             resp->setStatusCode(k400BadRequest);
             callback(resp);
             return;
         }
 
         CreateToDoRequest request { json->get("name", "").asString() };
-        (void) createToDoHandler_->handle(request);
+        auto handlerResponse = createToDoHandler_->handle(request);
 
-        auto resp = HttpResponse::newHttpResponse();
+        jsonResponse["todoId"] = handlerResponse.id;
+
+        auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
         resp->setStatusCode(k201Created);
         callback(resp);
     }

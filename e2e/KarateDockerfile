@@ -1,0 +1,9 @@
+FROM eclipse-temurin:17-jre-noble
+
+RUN apt-get update && apt-get install -y curl unzip && apt-get autoremove -y \
+  && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -o /karate.jar -L 'https://github.com/intuit/karate/releases/download/v1.5.1/karate-1.5.1.jar'
+
+ENTRYPOINT ["java", "-jar", "karate.jar"]

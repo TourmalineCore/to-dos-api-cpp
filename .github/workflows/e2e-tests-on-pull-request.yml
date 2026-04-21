@@ -1,0 +1,103 @@
+name: E2E Tests in PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # this is needed to wait for the new docker image to be build and published to the registry
+  # so that we can use the image to run the service of the needed commit related version as part of local-env
+  # the idea is taken from here https://stackoverflow.com/a/71489231
+  docker-build-and-push:
+    uses: ./.github/workflows/.reusable-docker-build-and-push.yml
+
+  e2e-test-against-local-env:
+    runs-on: ubuntu-24.04
+    needs: [docker-build-and-push]
+    steps:
+      - name: Checkout local-env
+        uses: actions/checkout@v4
+        with:
+          repository: TourmalineCore/to-dos-local-env
+      
+      # we need to make sure that the values-to-dos-api-cpp.yaml.gotmpl file hasn't been modified 
+      # in the `to-dos-local-env` repository, to ensure that the test runs as expected.
+      - name: Verify values file checksum
+        run: |
+          # the awk command is required to extract the target hash from the output of the sha256sum command
+          VALUES_HASH=$(sha256sum deploy/values-to-dos-api-cpp.yaml.gotmpl | awk '{ print $1 }')
+          if [ "$VALUES_HASH" != "88d14f527d1c39d9af93ddbe2f41462f01b523bdc340b4c62cb72c31a4c46d1f" ]; then
+            echo "ERROR: checksum mismatch"
+            echo "Expected: 88d14f527d1c39d9af93ddbe2f41462f01b523bdc340b4c62cb72c31a4c46d1f"
+            echo "Actual:   $VALUES_HASH"
+            exit 1
+          fi
+
+      - name: Deploy Local Env to Kind k8s
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: |
+            # we need to override "latest" image tag of ui inside local-env to run e2e against the current commit api version and not against latest from master
+            # We tried to use yq to change the image tag, but in the values files for helmfile we have non-yaml code that yq can`t parse or ignore
+            # so for that reason we use Stream EDitor which can find needed string using regular expressions and change it to a new value
+            # The -i flag is needed to write new image tag directly to values file
+            sed -i "0,/tag:.*/s//tag: \"sha-${{ github.event.pull_request.head.sha }}\"/" deploy/values-to-dos-api-cpp.yaml.gotmpl
+            
+            # we also need to update the commit sha in the initContainer so that the latest image is used inside it
+            sed -i "0,/image:.*/s//image: \"ghcr.io/tourmalinecore/to-dos-api-cpp:sha-${{ github.event.pull_request.head.sha }}\"/" deploy/values-to-dos-api-cpp.yaml.gotmpl
+
+            # we need to override "latest" ref of service chart inside local-env to run tests against the current commit service chart version and not against latest from master
+            sed -i "0,/git+https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git?ref=.*/s//git+https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git?ref=${{ github.event.pull_request.head.sha }}/" deploy/helmfile.yaml.gotmpl
+            
+            sed -i "0,/git::https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git@\/ci\/values.yaml?ref=.*/s//git::https:\/\/github.com\/TourmalineCore\/${{ github.event.repository.name }}.git@\/ci\/values.yaml?ref=${{ github.event.pull_request.head.sha }}/" deploy/helmfile.yaml.gotmpl
+
+            kind create cluster --name to-dos --config kind-local-config.yaml --kubeconfig ./.to-dos-cluster-kubeconfig
+            # we need to properly expose KUBECONFIG as an absolute path, pwd prints current working directory path
+            export KUBECONFIG=$(pwd)/.to-dos-cluster-kubeconfig
+
+            # When called, Makefile targets execute a sequence of commands. 
+            # The targets are defined in the Makefile located in the root of the to-dos-local-env repository.
+            make deploy-with-cpp-api
+          push: never
+
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+        
+      - name: Download Karate JAR
+        run: |
+          curl -L https://github.com/karatelabs/karate/releases/download/v1.5.1/karate-1.5.1.jar -o karate.jar
+
+      - name: Run E2E Tests Against Local Env
+        run: |
+          java -jar karate.jar .
+        env:
+          "API_ROOT_URL": "http://localhost:30080/api/to-dos-api"
+
+  e2e-karate-tests-in-docker-compose:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout to repo
+      uses: actions/checkout@v4
+
+    # If you don't create a .env file, the services in Docker Compose 
+    # won't be able to start because they use this file.
+    - name: Create .env file
+      run: |
+        echo "API_HOST=0.0.0.0" >> .env
+        echo "API_PORT=80" >> .env
+        echo "API_LOG_LEVEL=INFO" >> .env
+        echo "API_NUMBER_OF_THREADS=1" >> .env
+        echo "POSTGRES_HOST=0.0.0.0" >> .env
+        echo "POSTGRES_PORT=5432" >> .env
+        echo "POSTGRES_DB=to-dos-api-cpp-db" >> .env
+        echo "POSTGRES_USER=postgres" >> .env
+        echo "POSTGRES_PASSWORD=password" >> .env
+
+    - name: Run service via docker-compose and run Karate-tests
+      run:  docker compose --profile MockForPullRequest up --exit-code-from to-dos-api-cpp-karate-tests

@@ -1,14 +1,99 @@
-version: '3.9'
 services:
-  postgresql:
-    container_name: postgresql
+  to-dos-api-cpp-db:
+    container_name: to-dos-api-cpp-db
     image: postgres:14-alpine
+    profiles:
+      - DbOnly
+      - MockForPullRequest
     env_file:
       - .env
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "7501:5432"
+    healthcheck:
+      test: [ "CMD", "/bin/bash", "-c", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - to-dos-api-cpp-network
 
-volumes:
-  postgresql-data:
+  # https://event-driven.io/en/automatically_connect_pgadmin_to_database/
+  to-dos-api-cpp-pgadmin:
+    image: dpage/pgadmin4
+    container_name: to-dos-api-cpp-pgadmin
+    profiles:
+      - DbOnly
+    depends_on:
+      to-dos-api-cpp-db:
+        condition: service_healthy
+    environment:
+      # TODO: We need to think of a way to synchronize the .env file used for the database service. 
+      #       Perhaps we could transfer the pgAdmin environment variables to the .env file.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: to-dos-api-cpp-db
+      PGADMIN_DEFAULT_EMAIL: admin@admin.org
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+      # these 2 variables PGADMIN_CONFIG_PROXY_X_HOST_COUNT and PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT
+      # are needed to enable PgAdmin in Codespaces scenario when it is behind a reverse proxy
+      # https://github.com/orgs/community/discussions/17918
+      PGADMIN_CONFIG_PROXY_X_HOST_COUNT: 1
+      PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT: 1
+    ports:
+      - 9501:80
+    networks:
+      - to-dos-api-cpp-network
+    volumes:
+      # this is needed so that we can spin it up from within Dev Container where LOCAL_WORKSPACE_FOLDER is defined and from a simple OS terminal of the repo root
+      # list of available config properties can be found here in the source code https://github.com/pgadmin-org/pgadmin4/blob/00dbe58125f0304186f1af5374c9c43bc22d0410/web/pgadmin/utils/__init__.py#L505
+      # Password is no longer a part of this list as it seems to be when the linked article was written
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/pgAdmin.json:/pgadmin4/servers.json
+
+  to-dos-api-cpp:
+    container_name: to-dos-api-cpp
+    profiles:
+      - MockForPullRequest
+    depends_on:
+      to-dos-api-cpp-db:
+        condition: service_healthy
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+      args:
+        EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
+      # We need to override the entrypoint to apply the migrations to the database before the API starts
+    entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
+    env_file:
+      - .env
+    # Unless you override the host to the service name, the API will 
+    # not be able to locate the database container on the network
+    environment:
+      - POSTGRES_HOST=to-dos-api-cpp-db
+    ports:
+      - 6501:80
+    networks:
+      - to-dos-api-cpp-network
+
+  to-dos-api-cpp-karate-tests:
+    container_name: 'to-dos-api-cpp-karate-tests'
+    profiles:
+      - MockForPullRequest
+    build:
+      dockerfile: ./KarateDockerfile
+      context: ./e2e
+    depends_on:
+      to-dos-api-cpp:
+        condition: service_started
+    command: [ "karate", "/karate" ]
+    volumes:
+      # similar to mock-server volumes we need to support both runs: from Dev Container and from OS
+      - ${LOCAL_WORKSPACE_FOLDER:-.}:/karate
+    environment:
+      API_ROOT_URL: "http://to-dos-api-cpp/api"
+    networks:
+      - to-dos-api-cpp-network
+
+networks:
+  to-dos-api-cpp-network:

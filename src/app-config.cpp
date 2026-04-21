@@ -2,76 +2,86 @@
 
 AppConfig::AppConfig()
 {
-    setApiHost(getEnv("API_HOST", "0.0.0.0"));
-    setApiPort(getEnvInt("API_PORT", 80));
-    setApiNumThreads(getEnvInt("API_NUMBER_OF_THREADS", 1));
-    setDatabaseHost(getEnv("POSTGRES_HOST", "0.0.0.0"));
-    setDatabasePort(getEnv("POSTGRES_PORT", "5432"));
-    setDatabaseName(getEnv("POSTGRES_DB", "to-dos-api-cpp-db"));
-    setDatabaseUser(getEnv("POSTGRES_USER", "postgres"));
-    setDatabasePassword(getEnv("POSTGRES_PASSWORD", "password"));
+    setApiHost(getEnv("API_HOST"));
+    setApiPort(getEnvInt("API_PORT"));
+    setApiNumThreads(getEnvInt("API_NUMBER_OF_THREADS"));
+    setDatabaseHost(getEnv("POSTGRES_HOST"));
+    setDatabasePort(getEnv("POSTGRES_PORT"));
+    setDatabaseName(getEnv("POSTGRES_DB"));
+    setDatabaseUser(getEnv("POSTGRES_USER"));
+    setDatabasePassword(getEnv("POSTGRES_PASSWORD"));
 }
 
 AppConfig& AppConfig::GetInstance()
 {
-        static AppConfig instance;
+    static AppConfig instance;
     return instance;
 }
 
-std::string AppConfig::getEnv(std::string name, std::string defaultValue)
-{
-    char* value = std::getenv(name.c_str());
-
-    if (value)
-    {
-        return std::string(value);
-    }
-    else
-    {
-        LOG_WARN << "Failed to get the value of the " << name << " environment variable; the default value will be used: " << defaultValue;
-        return defaultValue;
-    }
-}
-
-uint32_t AppConfig::getEnvInt(std::string name, uint32_t defaultValue)
+std::string AppConfig::getEnv(std::string& name)
 {
     char* value = std::getenv(name.c_str());
 
     if (!value)
-        return defaultValue;
+    {
+        throw std::invalid_argument("error: failed to extract the " + name + " environment variable value");
+    }
+
+    return std::string(value);
+}
+
+std::uint64_t AppConfig::getEnvInt(std::string& name)
+{
+    char* value = std::getenv(name.c_str());
+
+    if (!value)
+    {
+        throw std::invalid_argument("error: failed to extract the " + name + " environment variable value");
+    }
+
+    int result;
 
     try
     {
-        auto result = std::stoi(value);
-        auto limit = std::numeric_limits<uint32_t>::max();
-
-        if (result < 0 || result > limit)
-            throw std::overflow_error(
-                "error: an attempt to write a " + name + " value which is larger than what can be stored in a " + std::to_string(limit)
-            );
-
-        return static_cast<uint32_t>(result);
+        result = static_cast<std::uint64_t>(std::stoul(value));
     }
     catch (const std::exception& e)
     {
-        LOG_ERROR << e.what();
-        return defaultValue;
+        throw std::invalid_argument("error: failed to parse " + name + ": " + e.what());
     }
+
+    if (result < 0)
+    {
+        throw std::overflow_error("error: an attempt to write a " + name + " value which is less than 0");
+    }
+
+    return result;
 }
 
 trantor::Logger::LogLevel AppConfig::parseLogLevel(const std::string& level)
 {
     // kTrace < kDebug < kInfo < kWarn < kError
     if (level == "TRACE")
+    {
         return trantor::Logger::kTrace;
+    }
     else if (level == "DEBUG")
+    {
         return trantor::Logger::kDebug;
+    }
     else if (level == "INFO")
+    {
         return trantor::Logger::kInfo;
+    }
     else if (level == "WARN")
+    {
         return trantor::Logger::kWarn;
+    }
     else
+    {
+        LOG_WARN << "Unknown log level value: " << level << ", defaulting to kError";
         return trantor::Logger::kError;
+    }
 }
 
 void AppConfig::setApiHost(std::string apiHost)
@@ -80,15 +90,15 @@ void AppConfig::setApiHost(std::string apiHost)
     LOG_DEBUG << "Update value: apiHost_=" << apiHost_;
 };
 
-void AppConfig::setApiPort(uint32_t apiPort)
+void AppConfig::setApiPort(std::uint32_t apiPort)
 {
     apiPort_ = apiPort;
     LOG_DEBUG << "Update value: apiPort_=" << apiPort_;
 };
 
-void AppConfig::setApiNumThreads(uint32_t apiNumThreads)
+void AppConfig::setApiNumThreads(std::uint32_t apiNumThreads)
 {
-    uint32_t numberOfThreads = apiNumThreads;
+    std::uint32_t numberOfThreads = apiNumThreads;
 
     if (numberOfThreads > 0)
     {
@@ -134,28 +144,47 @@ void AppConfig::setDatabasePassword(std::string databasePassword)
 };
 
 const std::string& AppConfig::getApiHost() const
-{ return apiHost_; }
+{
+    return apiHost_;
+}
 
-const uint32_t& AppConfig::getApiPort() const
-{ return apiPort_; }
+const std::uint64_t& AppConfig::getApiPort() const
+{
+    return apiPort_;
+}
 
-const uint32_t& AppConfig::getApiNumThreads() const
-{ return apiNumThreads_; }
+const std::uint64_t& AppConfig::getApiNumThreads() const
+{
+    return apiNumThreads_;
+}
 
 const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
-{ return parseLogLevel(getEnv("API_LOG_LEVEL", "INFO")); }
+{
+    // The log level may change at runtime, so caching during initialization is not recommended
+    return parseLogLevel(getEnv("API_LOG_LEVEL"));
+}
 
 const std::string& AppConfig::getDatabaseHost() const
-{ return databaseHost_; }
+{
+    return databaseHost_;
+}
 
 const std::string& AppConfig::getDatabasePort() const
-{ return databasePort_; }
+{
+    return databasePort_;
+}
 
 const std::string& AppConfig::getDatabaseName() const
-{ return databaseName_; }
+{
+    return databaseName_;
+}
 
 const std::string& AppConfig::getDatabaseUser() const
-{ return databaseUser_; }
+{
+    return databaseUser_;
+}
 
 const std::string& AppConfig::getDatabasePassword() const
-{ return databasePassword_; }
+{
+    return databasePassword_;
+}
