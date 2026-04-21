@@ -18,7 +18,7 @@ AppConfig& AppConfig::GetInstance()
     return instance;
 }
 
-std::string AppConfig::getEnv(std::string name)
+std::string AppConfig::getEnv(std::string& name)
 {
     char* value = std::getenv(name.c_str());
 
@@ -30,7 +30,7 @@ std::string AppConfig::getEnv(std::string name)
     return std::string(value);
 }
 
-std::uint32_t AppConfig::getEnvInt(std::string name)
+std::uint64_t AppConfig::getEnvInt(std::string& name)
 {
     char* value = std::getenv(name.c_str());
 
@@ -39,30 +39,49 @@ std::uint32_t AppConfig::getEnvInt(std::string name)
         throw std::invalid_argument("error: failed to extract the " + name + " environment variable value");
     }
 
-    auto result = std::stoi(value);
-    auto limit = std::numeric_limits<std::uint32_t>::max();
+    int result;
 
-    if (result < 0 || result > limit)
+    try
     {
-        throw std::overflow_error("error: an attempt to write a " + name + " value which is less than 0 or larger than " + std::to_string(limit));
+        result = static_cast<std::uint64_t>(std::stoul(value));
+    }
+    catch (const std::exception& e)
+    {
+        throw std::invalid_argument("error: failed to parse " + name + ": " + e.what());
     }
 
-    return static_cast<std::uint32_t>(result);
+    if (result < 0)
+    {
+        throw std::overflow_error("error: an attempt to write a " + name + " value which is less than 0");
+    }
+
+    return result;
 }
 
 trantor::Logger::LogLevel AppConfig::parseLogLevel(const std::string& level)
 {
     // kTrace < kDebug < kInfo < kWarn < kError
     if (level == "TRACE")
+    {
         return trantor::Logger::kTrace;
+    }
     else if (level == "DEBUG")
+    {
         return trantor::Logger::kDebug;
+    }
     else if (level == "INFO")
+    {
         return trantor::Logger::kInfo;
+    }
     else if (level == "WARN")
+    {
         return trantor::Logger::kWarn;
+    }
     else
+    {
+        LOG_WARN << "Unknown log level value: " << level << ", defaulting to kError";
         return trantor::Logger::kError;
+    }
 }
 
 void AppConfig::setApiHost(std::string apiHost)
@@ -125,28 +144,47 @@ void AppConfig::setDatabasePassword(std::string databasePassword)
 };
 
 const std::string& AppConfig::getApiHost() const
-{ return apiHost_; }
+{
+    return apiHost_;
+}
 
-const std::uint32_t& AppConfig::getApiPort() const
-{ return apiPort_; }
+const std::uint64_t& AppConfig::getApiPort() const
+{
+    return apiPort_;
+}
 
-const std::uint32_t& AppConfig::getApiNumThreads() const
-{ return apiNumThreads_; }
+const std::uint64_t& AppConfig::getApiNumThreads() const
+{
+    return apiNumThreads_;
+}
 
 const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
-{ return parseLogLevel(getEnv("API_LOG_LEVEL")); }
+{
+    // The log level may change at runtime, so caching during initialization is not recommended
+    return parseLogLevel(getEnv("API_LOG_LEVEL"));
+}
 
 const std::string& AppConfig::getDatabaseHost() const
-{ return databaseHost_; }
+{
+    return databaseHost_;
+}
 
 const std::string& AppConfig::getDatabasePort() const
-{ return databasePort_; }
+{
+    return databasePort_;
+}
 
 const std::string& AppConfig::getDatabaseName() const
-{ return databaseName_; }
+{
+    return databaseName_;
+}
 
 const std::string& AppConfig::getDatabaseUser() const
-{ return databaseUser_; }
+{
+    return databaseUser_;
+}
 
 const std::string& AppConfig::getDatabasePassword() const
-{ return databasePassword_; }
+{
+    return databasePassword_;
+}

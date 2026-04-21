@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdlib>
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <trantor/utils/Logger.h>
 
@@ -20,8 +20,8 @@ private:
     AppConfig& operator=(const AppConfig&) = delete;
 
     std::string apiHost_;
-    std::uint32_t apiPort_;
-    std::uint32_t apiNumThreads_;
+    std::uint64_t apiPort_;
+    std::uint64_t apiNumThreads_;
 
     std::string databaseHost_;
     std::string databasePort_;
@@ -102,9 +102,9 @@ public:
     /**
      * @brief Function that retrieves a value from an environment variable and converts it to an integer type
      * @param name is the name of the environment variable
-     * @return std::uint32_t
+     * @return std::uint64_t
      */
-    static std::uint32_t getEnvInt(std::string name);
+    static std::uint64_t getEnvInt(std::string name);
 
     /**
      * @brief Function for converting a string representing a logging level to the `trantor` type. Default is `trantor::Logger::kError`
@@ -120,15 +120,15 @@ public:
 
     /**
      * @brief Getter for the `apiPort_` variable
-     * @return const std::uint32_t
+     * @return const std::uint64_t
      */
-    const std::uint32_t& getApiPort() const;
+    const std::uint64_t& getApiPort() const;
 
     /**
      * @brief Getter for the `apiNumThreads_` variable
-     * @return const std::uint32_t
+     * @return const std::uint64_t
      */
-    const std::uint32_t& getApiNumThreads() const;
+    const std::uint64_t& getApiNumThreads() const;
 
     /**
      * @brief Getter for the `apiLogLevel_` variable
