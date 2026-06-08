@@ -63,8 +63,8 @@ services:
       context: .
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
-      # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
+    # We need to override the entrypoint to apply the migrations to the database before the API starts
     env_file:
       - .env
     # Unless you override the host to the service name, the API will 

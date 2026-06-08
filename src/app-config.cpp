@@ -18,7 +18,7 @@ AppConfig& AppConfig::GetInstance()
     return instance;
 }
 
-std::string AppConfig::getEnv(std::string& name)
+std::string AppConfig::getEnv(std::string name)
 {
     char* value = std::getenv(name.c_str());
 
@@ -30,7 +30,7 @@ std::string AppConfig::getEnv(std::string& name)
     return std::string(value);
 }
 
-std::uint64_t AppConfig::getEnvInt(std::string& name)
+std::uint64_t AppConfig::getEnvInt(std::string name)
 {
     char* value = std::getenv(name.c_str());
 
@@ -144,19 +144,13 @@ void AppConfig::setDatabasePassword(std::string databasePassword)
 };
 
 const std::string& AppConfig::getApiHost() const
-{
-    return apiHost_;
-}
+{ return apiHost_; }
 
 const std::uint64_t& AppConfig::getApiPort() const
-{
-    return apiPort_;
-}
+{ return apiPort_; }
 
 const std::uint64_t& AppConfig::getApiNumThreads() const
-{
-    return apiNumThreads_;
-}
+{ return apiNumThreads_; }
 
 const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
 {
@@ -165,26 +159,16 @@ const trantor::Logger::LogLevel AppConfig::getApiLogLevel()
 }
 
 const std::string& AppConfig::getDatabaseHost() const
-{
-    return databaseHost_;
-}
+{ return databaseHost_; }
 
 const std::string& AppConfig::getDatabasePort() const
-{
-    return databasePort_;
-}
+{ return databasePort_; }
 
 const std::string& AppConfig::getDatabaseName() const
-{
-    return databaseName_;
-}
+{ return databaseName_; }
 
 const std::string& AppConfig::getDatabaseUser() const
-{
-    return databaseUser_;
-}
+{ return databaseUser_; }
 
 const std::string& AppConfig::getDatabasePassword() const
-{
-    return databasePassword_;
-}
+{ return databasePassword_; }
