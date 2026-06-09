@@ -63,14 +63,20 @@ services:
       context: .
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
-    entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     # We need to override the entrypoint to apply the migrations to the database before the API starts
+    entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     env_file:
       - .env
-    # Unless you override the host to the service name, the API will 
+    # Unless you override the host to the service name, the API will
     # not be able to locate the database container on the network
     environment:
+      # Without redefining the host to 0.0.0.0 (all network interfaces),
+      # connections from outside the container will not be possible
+      - API_HOST=0.0.0.0
+      # To connect to the database service on the internal network, 
+      # the internal network database credentials must be used.
       - POSTGRES_HOST=to-dos-api-cpp-db
+      - POSTGRES_PORT=5432
     ports:
       - 6501:80
     networks:
