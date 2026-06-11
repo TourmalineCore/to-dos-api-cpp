@@ -26,7 +26,7 @@ jobs:
         run: |
           # the awk command is required to extract the target hash from the output of the sha256sum command
           VALUES_HASH=$(sha256sum deploy/values-to-dos-api-cpp.yaml.gotmpl | awk '{ print $1 }')
-          if [ "$VALUES_HASH" != "88d14f527d1c39d9af93ddbe2f41462f01b523bdc340b4c62cb72c31a4c46d1f" ]; then
+          if [ "$VALUES_HASH" != ${{ vars.TO_DOS_API_CPP_LOCAL_ENV_HELMFILE_HASH }} ]; then
             echo "ERROR: checksum mismatch"
             echo "Expected: 88d14f527d1c39d9af93ddbe2f41462f01b523bdc340b4c62cb72c31a4c46d1f"
             echo "Actual:   $VALUES_HASH"
