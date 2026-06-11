@@ -91,7 +91,7 @@ services:
       context: ./e2e
     depends_on:
       to-dos-api-cpp:
-        condition: service_started
+        condition: service_healthy
     command: [ "karate", "/karate" ]
     volumes:
       # similar to mock-server volumes we need to support both runs: from Dev Container and from OS
