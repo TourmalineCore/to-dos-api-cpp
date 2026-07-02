@@ -99,7 +99,7 @@ Alembic показался нам хорошим выбором, посколь�
 
 ### Структура проекта
 
-```toml
+```ini
 .devcontainer/          # Конфигурация VSCode DevContainer
 .github/                # Конфигурация пайплайна GitHub Actions
 .vscode/                # Настройки редактора и сниппеты кода для VSCode
