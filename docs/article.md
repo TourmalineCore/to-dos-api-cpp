@@ -233,6 +233,37 @@ E2E-тесты реализованны с использованием библ
 
 ### Makefile
 
+Для упрощения запуска миграций как в локальной разработке так и в CI был создан Makefile. 
+
+Вообще базово Makefile это файл с правилами, по которым утилита make автоматически собирает и работает проектом. Главное его преимущество в targets, если описать проще, то каждый target это вызов отдельного блока с командами, которые выполняют необходимые действия. А так же утилита make, которая читает этот Makefile предустановлена почти во все UNIX системы.
+
+Если возвращаться к проекту, то итоговы Makefile у нас выглядит так:
+```makefile
+# This is necessary so that environment variables from .env 
+# are visible when Makefile commands are executed
+include .env
+export
+
+# Generate a new Alembic migration with autogenerate
+create-migration:
+	@cd ./alembic && \
+	alembic revision --autogenerate -m $(name)
+
+# Apply all pending Alembic migrations
+apply-migrations:
+	@cd ./alembic && \
+	alembic upgrade head
+
+# Build the project, apply migrations and start the application
+run: apply-migrations
+	@conan build . --build=missig && \
+	./build/Debug/to-dos-api
+
+# Run clang-tidy static analysis
+run-tidy:
+	@run-clang-tidy -p build/Debug
+```
+
 ### Профили и скрипты
 
 Хочется обратить внимание на некоторые тонкости, которые были внутри шаблона.
