@@ -20,29 +20,50 @@ on:
       - feature/* # Added for debugging; Must be remove before merging it to master
 
 env:
-  ODB_COMPILER_VERSION: 2.5.0
-  ODB_COMPILER_OS: ubuntu24.04
-  ODB_COMPILER_DOWNLOAD_PATH: "https://www.codesynthesis.com/download/odb/$ODB_COMPILER_VERSION/ubuntu/$ODB_COMPILER_OS/x86_64/odb_-0~ubuntu24.04_amd64.deb"
-  ODB_COMPILER_SETUP_PACKAGE_NAME: "odb-$ODB_COMPILER_VERSION-$ODB_COMPILER_OS.deb"
+  ODB_VERSION: 2.5.0
+  ODB_OS_BUILD: ubuntu24.04
+  ODB_COMPILER_DOWNLOAD_PATH: "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/odb_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
+  LIBODB_DOWNLOAD_PATH: "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/libodb-dev_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
+  LIBODB-PGSQL_DOWNLOAD_PATH: "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/libodb-pgsql-dev_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
+  ODB_COMPILER_SETUP_PACKAGE_NAME: "odb-${ODB_VERSION}-${ODB_OS_BUILD}.deb"
+  LIBODB_SETUP_PACKAGE_NAME: "libodb-dev-${ODB_VERSION}-${ODB_OS_BUILD}.deb"
+  LIBODB-PGSQL_SETUP_PACKAGE_NAME: "libodb-pgsql-dev-${ODB_VERSION}-${ODB_OS_BUILD}.deb"
 
 jobs:
   docker-build-and-push:
     uses: ./.github/workflows/.reusable-docker-build-and-push.yml
 
-  check-odb-support-database-code-limit:
+  verify-that-database-support-code-limit-has-not-been-exceeded:
     runs-on: ubuntu-24.04
     needs: docker-build-and-push
 
     steps:
-      - name: Download odb compiler
+      - name: Download and install odb compiler
         run: |
-          curl -fsSL -o "$ODB_COMPILER_SETUP_PACKAGE_NAME" \
-            "https://www.codesynthesis.com/download/odb/$ODB_COMPILER_VERSION/ubuntu/$ODB_COMPILER_OS/x86_64/odb_$ODB_COMPILER_VERSION-0~$ODB_COMPILER_OS_amd64.deb"
+          curl -fsSL -o "${ODB_COMPILER_SETUP_PACKAGE_NAME}" "${ODB_COMPILER_DOWNLOAD_PATH}"
+          apt install -y "./${ODB_COMPILER_SETUP_PACKAGE_NAME}"
       
-      - name: Install odb compiler
+      - name: Check that odb compiler has been installed
         run: |
-          apt install -y "./$ODB_COMPILER_SETUP_PACKAGE_NAME"
+          odb --version | grep -q "No such file or directory" && exit 1
       
-      - name: Check that odb has been installed
+      - name: Download and install libodb package
         run: |
-          odb --version | grep -q "No such file or directory" && exit 1 || exit 0
+          curl -fsSL -o "${LIBODB_SETUP_PACKAGE_NAME}" "${LIBODB_DOWNLOAD_PATH}"
+          apt install -y "./${LIBODB_SETUP_PACKAGE_NAME}"
+          apt policy libodb-dev | grep -q "Installed: ${ODB_VERSION}-0~${ODB_OS_BUILD}" && exit 0 || exit 1
+      
+      - name: Download and install libodb-pgsql package
+        run: |
+          curl -fsSL -o "${LIBODB-PGSQL_SETUP_PACKAGE_NAME}" "${LIBODB-PGSQL_DOWNLOAD_PATH}"
+          apt install -y "./${LIBODB-PGSQL_SETUP_PACKAGE_NAME}"
+          apt policy libodb-pgsql-dev | grep -q "Installed: ${ODB_VERSION}-0~${ODB_OS_BUILD}" && exit 0 || exit 1
+      
+      # - name: Verify that database support code limit has not been exceeded
+      #   run: |
+      #     odb \
+      #       --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
+      #       -I /usr/lib/x86_64-linux-gnu/libodb-2.5.so \
+      #       -I /usr/lib/x86_64-linux-gnu/libodb-pgsql-2.5.so \
+      #       ./src/core/to-do.h 2>&1 | grep "total:" | sed 's/[^0-9]*//g'
+      
