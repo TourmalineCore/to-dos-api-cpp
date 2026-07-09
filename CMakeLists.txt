@@ -33,12 +33,12 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 # Tests
-if (ENV{EXCLUDE_UNIT_TESTS_FROM_BUILD} STREQUAL "true")
+if ("$ENV{EXCLUDE_UNIT_TESTS_FROM_BUILD}" STREQUAL "true")
   # Disable test here needed for uncompatible builds, bc `enable_testing` is run executable tests file for collecting tests.
   # E.g. if executable tests are builded for another OS or CPU arch. 
   message(STATUS "UNIT TEST DISABLED")
 else()
   message(STATUS "UNIT TEST ENABLED")
   enable_testing()
-  add_subdirectory(test)
+  add_subdirectory(unit)
 endif()

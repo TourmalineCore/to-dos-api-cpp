@@ -37,11 +37,13 @@
 *.out
 *.app
 
-# debug information files
+# Debug information files
 *.dwo
 
 # Build files
-
 /build
 __pycache__
 .env
+
+# Service files
+.DS_Store

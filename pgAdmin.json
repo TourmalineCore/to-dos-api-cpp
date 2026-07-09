@@ -1,0 +1,22 @@
+{
+    "Servers": {
+        "1": {
+            "Group": "Servers",
+            "Name": "to-dos-api-cpp-db (Windows, macOS)",
+            "Host": "host.docker.internal",
+            "Port": 7501,
+            "MaintenanceDB": "to-dos-api-cpp-db",
+            "Username": "postgres",
+            "SSLMode": "prefer"
+        },
+        "2": {
+            "Group": "Servers",
+            "Name": "to-dos-api-cpp-db (Ubuntu, Codespaces)",
+            "Host": "172.17.0.1",
+            "Port": 7501,
+            "MaintenanceDB": "to-dos-api-cpp-db",
+            "Username": "postgres",
+            "SSLMode": "prefer"
+        }
+    }
+}
