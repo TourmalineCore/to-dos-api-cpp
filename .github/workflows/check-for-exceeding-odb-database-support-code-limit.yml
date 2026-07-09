@@ -29,8 +29,9 @@ jobs:
   docker-build-and-push:
     uses: ./.github/workflows/.reusable-docker-build-and-push.yml
 
-  check-limit:
+  check-odb-support-database-code-limit:
     runs-on: ubuntu-24.04
+    needs: docker-build-and-push
 
     steps:
       - name: Download odb compiler
