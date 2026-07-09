@@ -64,10 +64,10 @@ services:
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:$${API_PORT:-80}/api/health" ]
-      interval: 10s
+      test: [ "CMD-SHELL", "curl -f http://localhost:80/api/health" ]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 3
     # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     env_file:
@@ -78,8 +78,9 @@ services:
       # Without redefining the host to 0.0.0.0 (all network interfaces),
       # connections from outside the container will not be possible
       - API_HOST=0.0.0.0
+      - API_PORT=80
       # To connect to the database service on the internal network, 
-      # the internal network database credentials must be used.
+      # the internal network database credentials must be used
       - POSTGRES_HOST=to-dos-api-cpp-db
       - POSTGRES_PORT=5432
     ports:
