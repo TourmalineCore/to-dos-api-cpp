@@ -7,7 +7,7 @@ WORKDIR /app
 EXPOSE 80
 
 # pip is installed here because it needs to be available in both the build and final stages
-RUN apt-get update && apt-get -y install --no-install-recommends pip
+RUN apt-get update && apt-get -y install --no-install-recommends pip curl
 
 FROM base AS build
 
