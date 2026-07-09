@@ -7,7 +7,7 @@ name: Publish Docker image
 # if you build => deploy => run e2e against prod it will build the image 3 times!
 on:
   # to allow to wait for a docker image to be published to proceed in another workflow
-  # workflow_call:
+  workflow_call:
   # PR-based activation has been added, as there are no workflows that trigger this. 
   # After adding a workflow with tests, you must revert the change and leave only the `workflow_call`.
   pull_request:
