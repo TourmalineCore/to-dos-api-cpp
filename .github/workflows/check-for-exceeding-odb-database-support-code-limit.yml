@@ -22,8 +22,8 @@ on:
 env:
   ODB_COMPILER_VERSION: 2.5.0
   ODB_COMPILER_OS: ubuntu24.04
-  ODB_COMPILER_DOWNLOAD_PATH: https://www.codesynthesis.com/download/odb/$ODB_COMPILER_VERSION/ubuntu/$ODB_COMPILER_OS/x86_64/odb_-0~ubuntu24.04_amd64.deb
-  ODB_COMPILER_SETUP_PACKAGE_NAME: odb-$ODB_COMPILER_VERSION-$ODB_COMPILER_OS.deb
+  ODB_COMPILER_DOWNLOAD_PATH: "https://www.codesynthesis.com/download/odb/$ODB_COMPILER_VERSION/ubuntu/$ODB_COMPILER_OS/x86_64/odb_-0~ubuntu24.04_amd64.deb"
+  ODB_COMPILER_SETUP_PACKAGE_NAME: "odb-$ODB_COMPILER_VERSION-$ODB_COMPILER_OS.deb"
 
 jobs:
   docker-build-and-push:
@@ -36,12 +36,12 @@ jobs:
     steps:
       - name: Download odb compiler
         run: |
-          curl -fsSL -o $ODB_COMPILER_SETUP_PACKAGE_NAME \
+          curl -fsSL -o "$ODB_COMPILER_SETUP_PACKAGE_NAME" \
             "https://www.codesynthesis.com/download/odb/$ODB_COMPILER_VERSION/ubuntu/$ODB_COMPILER_OS/x86_64/odb_$ODB_COMPILER_VERSION-0~$ODB_COMPILER_OS_amd64.deb"
       
       - name: Install odb compiler
         run: |
-          apt install -y ./$ODB_COMPILER_SETUP_PACKAGE_NAME
+          apt install -y "./$ODB_COMPILER_SETUP_PACKAGE_NAME"
       
       - name: Check that odb has been installed
         run: |
