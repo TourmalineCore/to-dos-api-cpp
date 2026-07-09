@@ -63,6 +63,11 @@ services:
       context: .
       args:
         EXCLUDE_UNIT_TESTS_FROM_BUILD: "true"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl", "-f", "http://localhost:$${API_PORT:-80}/api/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     # We need to override the entrypoint to apply the migrations to the database before the API starts
     entrypoint: [ "/bin/bash", "-c", "alembic -c ./alembic/alembic.ini upgrade head && ./to-dos-api" ]
     env_file:
