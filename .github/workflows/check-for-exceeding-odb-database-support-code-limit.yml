@@ -1,0 +1,47 @@
+# In cases where a project’s source code is closed, the ODB library 
+# license affects the project’s license. If the limit of 10,000 lines 
+# of database support code is exceeded, it is no longer possible to use 
+# the FPL license; in that case, you must either purchase the CPL 
+# or make the project’s source code open source.
+
+# More details here: https://www.codesynthesis.com/products/odb/license.xhtml
+
+# This workflow will succeed if the ODB database support code 
+# (.ixx, .cxx, .hxx) has not reached the limit, and will fail otherwise.
+
+name: Check for exceeding the odb database support code limit
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branch:
+      - master
+      - feature/* # Added for debugging; Must be remove before merging it to master
+
+env:
+  ODB_COMPILER_VERSION: 2.5.0
+  ODB_COMPILER_OS: ubuntu24.04
+  ODB_COMPILER_DOWNLOAD_PATH: https://www.codesynthesis.com/download/odb/${{ env.ODB_COMPILER_VERSION }}/ubuntu/${{ env.ODB_COMPILER_OS }}/x86_64/odb_-0~ubuntu24.04_amd64.deb
+  ODB_COMPILER_SETUP_PACKAGE_NAME: odb-${{ env.ODB_COMPILER_VERSION }}-${{ env.ODB_COMPILER_OS }}.deb
+
+jobs:
+  docker-build-and-push:
+    uses: ./.github/workflows/.reusable-docker-build-and-push.yml
+
+  check-limit:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Download odb compiler
+        run: |
+          curl -fsSL -o ${{ ODB_COMPILER_SETUP_PACKAGE_NAME }} \
+            "https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu24.04/x86_64/odb_2.5.0-0~ubuntu24.04_amd64.deb"
+      
+      - name: Install odb compiler
+        run: |
+          apt install -y ./${{ ODB_COMPILER_SETUP_PACKAGE_NAME }}
+      
+      - name: Check that odb has been installed
+        run: |
+          odb --version | grep -q "No such file or directory" && exit 1 || exit 0
