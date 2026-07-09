@@ -50,9 +50,9 @@ Alternatively, you can use make targets.
 
 ## Allocated Ports & Services
 
-| Service Name               | Api in Dev Container/Codespaces | Api in IDE | Api in Docker Compose |  Db in Docker Compose | Reserved for MockServer in Docker Compose | PgAdmin in Docker Compose |
-| :------------------------- | :-----------------------------: | :--------: | :-------------------: | :-------------------: | :-------------------------: | :-------------------------: |
-| to-dos-api-cpp     |               4501              |    5501    |          6501         |          7501         |             8501            |             9501            |
+| Service Name | Api in Dev Container/Codespaces | Api in IDE | Api in Docker Compose |  Db in Docker Compose | Reserved for MockServer in Docker Compose | PgAdmin in Docker Compose |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| to-dos-api-cpp | 4501 | 5501 | 6501 | 7501 | 8501 | 9501 |
 
 Full docs about the allocated ports, reasoning, and the other services bindings in this infrastructre setup are available [here](https://github.com/TourmalineCore/inner-circle-documentation/blob/master/code-style/api-code-style.md#ports).
 
