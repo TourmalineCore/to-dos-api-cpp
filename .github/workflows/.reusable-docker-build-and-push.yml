@@ -8,11 +8,6 @@ name: Publish Docker image
 on:
   # to allow to wait for a docker image to be published to proceed in another workflow
   workflow_call:
-  # This event has been added for debugging purposes; there is currently no workflow 
-  # that triggers when changes are made to the master branch.
-  push:
-    branches:
-      - master
 
 jobs:
   build-amd64:
