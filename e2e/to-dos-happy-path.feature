@@ -9,8 +9,15 @@ Feature: To-Dos
 
     * def jsUtils = read('./js-utils.js')
     * def apiRootUrl = jsUtils().getEnvVariable('API_ROOT_URL')
-
-    # Step 1: Create a new todo
+    
+    # Check health endpoint
+    Given url apiRootUrl
+    And path 'health'
+    When method GET
+    Then status 200
+    Then match response == { status: "ok" }
+    
+    # Create a new todo
     * def randomName = '[API-E2E]-test-todo-' + Math.random()
 
     Given url apiRootUrl
@@ -27,10 +34,11 @@ Feature: To-Dos
     * print response
     * def todoId = response.todoId
 
-    # Step 2: Verify that todo is in the list with the id and generated name
+    # Verify that todo is in the list with the id and generated name
     Given url apiRootUrl
     And path 'to-dos'
     When method GET
+    Then status 200
     Then match response.toDos contains
       """
       {
@@ -39,7 +47,7 @@ Feature: To-Dos
       }
       """
 
-    # Step 3: Complete the todo with the id (soft delete)
+    # Complete the todo with the id (soft delete)
     Given url apiRootUrl
     And path 'to-dos/complete'
     And request
@@ -51,15 +59,16 @@ Feature: To-Dos
     When method POST
     Then status 200
 
-    # Step 4: Delete the todo with the id (hard delete)
+    # Delete the todo with the id (hard delete)
     Given url apiRootUrl
     And path 'to-dos'
     And param toDoId = todoId
     When method DELETE
     Then status 200
 
-    # Step 5: Verify that todo is in the list with the id and generated name has been deleted
+    # Verify that todo is in the list with the id and generated name has been deleted
     Given url apiRootUrl
     And path 'to-dos'
     When method GET
+    Then status 200
     Then match response.toDos !contains { "name": "#(randomName)" }
