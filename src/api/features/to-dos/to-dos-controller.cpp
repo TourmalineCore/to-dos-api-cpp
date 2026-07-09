@@ -141,3 +141,19 @@ void ToDosController::deleteToDo(const HttpRequestPtr& req, std::function<void(c
         callback(createInternalServerErrorResponse(e.what()));
     }
 }
+
+template<typename T>
+HttpResponsePtr makeResponse(T responseBody, drogon::HttpStatusCode statusCode)
+{
+    const HttpResponsePtr& response = HttpResponse::newCustomHttpResponse(std::move(responseBody));
+    response->setStatusCode(statusCode);
+
+    return response;
+}
+
+void ToDosController::healthcheck(const HttpRequestPtr&, std::function<void(const HttpResponsePtr&)>&& callback)
+{
+    HealthcheckResponse healthcheckResponse = healthcheckHandler_->handle();
+    HttpResponsePtr response = makeResponse(healthcheckResponse, k200OK);
+    callback(response);
+}

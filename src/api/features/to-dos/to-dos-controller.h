@@ -6,6 +6,7 @@
 #include "features/get-all-to-dos/get-all-to-dos-handler.h"
 #include "features/get-to-do-by-id/get-to-do-by-id-handler.h"
 #include "features/hard-delete-to-do/hard-delete-to-do-handler.h"
+#include "features/healthcheck/healthcheck-handler.h"
 #include "features/soft-delete-to-do/soft-delete-to-do-handler.h"
 
 using namespace drogon;
@@ -20,17 +21,16 @@ public:
     ADD_METHOD_TO(ToDosController::addToDo, "/api/to-dos", Post);                 // Adding a new task
     ADD_METHOD_TO(ToDosController::completeToDos, "/api/to-dos/complete", Post);  // Executing (deleting) a task list
     ADD_METHOD_TO(ToDosController::deleteToDo, "/api/to-dos", Delete);            // Deleting a specific task
+    ADD_METHOD_TO(ToDosController::healthcheck, "/api/health", Get);
     METHOD_LIST_END
 
     HttpResponsePtr createInternalServerErrorResponse(const std::string& error) const;
 
     void getToDos(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
-
     void addToDo(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
-
     void completeToDos(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
-
     void deleteToDo(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
+    void healthcheck(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 
 private:
     std::shared_ptr<odb::database> db_;
@@ -46,4 +46,5 @@ private:
     std::unique_ptr<GetToDoByIdHandler> getToDoByIdHandler_;
     std::unique_ptr<HardDeleteToDoHandler> hardDeleteToDoHandler_;
     std::unique_ptr<SoftDeleteToDoHandler> softDeleteToDoHandler_;
+    std::unique_ptr<HealthcheckHandler> healthcheckHandler_;
 };
