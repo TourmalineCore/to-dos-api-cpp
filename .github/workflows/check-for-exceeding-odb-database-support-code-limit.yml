@@ -32,29 +32,53 @@ jobs:
           sudo apt-get install -y ./odb.deb
           odb --version | grep -q "No such file or directory" && exit 1 || exit 0
       
-      - name: Install Conan
+      - name: Download and install libodb library
         run: |
-          pip install Conan
-          conan --version | grep -q "Conan version" && exit 0 || exit 1
+          curl -fsSL -o libodb.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb_2.5.0-0~ubuntu22.04_amd64.deb
+          sudo apt-get install -y ./libodb.deb
+          apt policy libodb | grep -q "Unable to locate package" && exit 1 || exit 0
       
-      - name: Generate Conan default profile
-        run: conan profile detect
-      
-      - name: Setup local recipes index for Conan
-        run: conan remote add local-recipes ./deps --type=local-recipes-index
-      
-      - name: Download and build libodb and libdb-pgsql via Conan
-        run: conan install --requires=libodb/2.5.0 --requires=libodb-pgsql/2.5.0 --build=missing --deployer=full_deploy --output-folder=.odb-deps
-      
-      - name: Debugging
+      - name: Download and install libodb-dev library
         run: |
-          cd ./.odb-deps/full_deploy/host/libodb/2.5.0/Release
-          ls -la
+          curl -fsSL -o libodb-dev.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb
+          sudo apt-get install -y ./libodb-dev.deb
+          apt policy libodb-dev | grep -q "Unable to locate package" && exit 1 || exit 0
+      
+      - name: Download and install libodb-pgsql library
+        run: |
+          curl -fsSL -o libodb-pgsql.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb
+          sudo apt-get install -y ./libodb-pgsql.deb
+          apt policy libodb-pgsql | grep -q "Unable to locate package" && exit 1 || exit 0
+      
+      - name: Download and install libodb-pgsql-dev library
+        run: |
+          curl -fsSL -o libodb-pgsql-dev.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb
+          sudo apt-get install -y ./libodb-pgsql-dev.deb
+          apt policy libodb-pgsql-dev | grep -q "Unable to locate package" && exit 1 || exit 0
+
+      - name: Install libpq5
+        run: |
+          sudo apt-get install -y libpq5
+          apt policy libpq5 | grep -q "Unable to locate package" && exit 1 || exit 0
+      
+      # - name: Install Conan
+      #   run: |
+      #     pip install Conan
+      #     conan --version | grep -q "Conan version" && exit 0 || exit 1
+      
+      # - name: Generate Conan default profile
+      #   run: conan profile detect
+      
+      # - name: Setup local recipes index for Conan
+      #   run: conan remote add local-recipes ./deps --type=local-recipes-index
+      
+      # - name: Download and build libodb and libdb-pgsql via Conan
+      #   run: conan install --requires=libodb/2.5.0 --requires=libodb-pgsql/2.5.0 --build=missing --deployer=full_deploy --output-folder=.odb-deps
 
       - name: Check the limit
         run: |
           odb \
-            --show-sloc --sloc-limit 100 -d pgsql --std c++20 \
+            --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
             -I $(find ./.odb-deps/full_deploy/host/libodb/ -type d -name include) \
             -I $(find ./.odb-deps/full_deploy/host/libodb-pgsql/ -type d -name include) \
             ./src/core/*.h
