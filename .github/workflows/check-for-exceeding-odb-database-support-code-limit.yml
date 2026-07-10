@@ -49,24 +49,12 @@ jobs:
       
       - name: Download and build libodb and libdb-pgsql via Conan
         run: conan install --requires=libodb/2.5.0 --requires=libodb-pgsql/2.5.0 --build=missing --deployer=full_deploy --output-folder=.odb-deps
-  
-      # - name: Download and install libodb package
-      #   run: |
-      #     curl -fsSL -o libodb-dev.deb "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/libodb-dev_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
-      #     sudo apt-get install -y ./libodb-dev.deb
-      #     sudo apt-get policy libodb-dev | grep -q "Installed: ${ODB_VERSION}-0~${ODB_OS_BUILD}" && exit 0 || exit 1
       
-      # - name: Download and install libodb-pgsql package
-      #   run: |
-      #     curl -fsSL -o libodb-pgsql-dev.deb "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/libodb-pgsql-dev_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
-      #     sudo apt-get install -y ./libodb-pgsql-dev.deb
-      #     sudo apt-get policy libodb-pgsql-dev | grep -q "Installed: ${ODB_VERSION}-0~${ODB_OS_BUILD}" && exit 0 || exit 1
-      
-      # - name: Check the limit
-      #   run: |
-      #     odb \
-      #       --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
-      #       -I /usr/lib/x86_64-linux-gnu/libodb-2.5.so \
-      #       -I /usr/lib/x86_64-linux-gnu/libodb-pgsql-2.5.so \
-      #       ./src/core/to-do.h 2>&1 | grep "total:" | sed 's/[^0-9]*//g'
+      - name: Check the limit
+        run: |
+          odb \
+            --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
+            -I ./.odb-deps/host/libodb/2.5.0/Debug/x86_64/include \
+            -I ./.odb-deps/host/libodb-pgsql/2.5.0/Debug/x86_64/include \
+            ./src/core/to-do.h 2>&1 | grep "total:" | sed 's/[^0-9]*//g'
       
