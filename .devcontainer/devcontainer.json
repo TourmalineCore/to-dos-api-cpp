@@ -24,10 +24,10 @@
 	"mounts": [
 		// This mounts increase future building on devcontainer in case any reseting of container volumes
 		// Mount caching of build folder
-        "source=dev-build-cache,target=${containerWorkspaceFolder}/build,type=volume",
+		"source=dev-build-cache,target=${containerWorkspaceFolder}/build,type=volume",
 		// Mount caching of conan dependencies builds
-        "source=dev-conan-cache,target=~/.conan2,type=volume"
-    ],
+		"source=dev-conan-cache,target=~/.conan2,type=volume"
+	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
