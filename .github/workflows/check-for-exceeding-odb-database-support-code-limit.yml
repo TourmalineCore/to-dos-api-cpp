@@ -44,9 +44,7 @@ jobs:
         run: conan remote add local-recipes ./deps --type=local-recipes-index
       
       - name: Download and build libodb and libdb-pgsql via Conan
-        run: conan install \
-          --requires=libodb/2.5.0 \
-          --requires=libodb-pgsql/2.5.0 \
+        run: conan install --requires=libodb/2.5.0 --requires=libodb-pgsql/2.5.0 \
           --build=missing \
           --deployer=full_deploy \
           --output-folder=.odb-deps
