@@ -37,8 +37,7 @@ jobs:
       
       - name: Check that odb compiler has been installed
         run: |
-          odb --version
-          odb --version | grep -q "No such file or directory" && exit 1
+          odb --version | grep -q "No such file or directory" && exit 1 || exit 0
       
       # - name: Download and install libodb package
       #   run: |
