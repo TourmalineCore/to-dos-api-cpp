@@ -13,3 +13,10 @@ drogon::HttpResponsePtr ExceptionResponseHandler::handle(const std::string& stat
 
     return response;
 }
+
+drogon::HttpResponsePtr ExceptionResponseHandler::handle(const std::exception& exception)
+{
+    LOG_ERROR << "Exception occured: " << exception.what();
+
+    return ExceptionResponseHandler::handle("error", "Internal server error", drogon::k500InternalServerError);
+}
