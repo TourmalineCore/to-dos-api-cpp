@@ -50,7 +50,7 @@ jobs:
         run: |
           odb \
             --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
-            -I ./.odb-deps/host/libodb/2.5.0/Debug/x86_64/include \
-            -I ./.odb-deps/host/libodb-pgsql/2.5.0/Debug/x86_64/include \
+            -I ./.odb-deps/full_deploy/host/libodb/2.5.0/Debug/x86_64/include \
+            -I ./.odb-deps/full_deploy/host/libodb-pgsql/2.5.0/Debug/x86_64/include \
             ./src/core/to-do.h
       
