@@ -39,7 +39,7 @@ jobs:
       - name: Install Conan
         run: |
           pip install Conan
-          conan --version | grep -q "Conan version" && exit 1 || exit 0
+          conan --version | grep -q "Conan version" && exit 0 || exit 1
       
       - name: Download and build libodb and libdb-pgsql via Conan
         run: |
