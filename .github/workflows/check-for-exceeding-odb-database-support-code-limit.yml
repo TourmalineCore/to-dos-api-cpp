@@ -56,10 +56,10 @@ jobs:
           sudo apt-get install -y ./libodb-pgsql-dev.deb
           apt policy libodb-pgsql-dev | grep -q "Unable to locate package" && exit 1 || exit 0
 
-      - name: Install libpq5
-        run: |
-          sudo apt-get install -y libpq5
-          apt policy libpq5 | grep -q "Unable to locate package" && exit 1 || exit 0
+      # - name: Install libpq5
+      #   run: |
+      #     sudo apt-get install -y libpq5
+      #     apt policy libpq5 | grep -q "Unable to locate package" && exit 1 || exit 0
 
       - name: Check the limit
         run: |
