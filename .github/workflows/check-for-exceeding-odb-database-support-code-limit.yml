@@ -41,14 +41,16 @@ jobs:
           pip install Conan
           conan --version | grep -q "Conan version" && exit 0 || exit 1
       
+      - name: Generate Conan default profile
+        run: conan profile detect
+      
       - name: Download and build libodb and libdb-pgsql via Conan
-        run: |
-          conan install \
-            --requires=libodb/2.5.0 \
-            --requires=libodb-pgsql/2.5.0 \
-            --build=missing \
-            --deployer=full_deploy \
-            --output-folder=.odb-deps
+        run: conan install \
+              --requires=libodb/2.5.0 \
+              --requires=libodb-pgsql/2.5.0 \
+              --build=missing \
+              --deployer=full_deploy \
+              --output-folder=.odb-deps
   
       # - name: Download and install libodb package
       #   run: |
