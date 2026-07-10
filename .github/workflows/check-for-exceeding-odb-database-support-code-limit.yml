@@ -34,11 +34,22 @@ jobs:
         run: |
           curl -fsSL -o odb.deb "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/odb_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
           sudo apt-get install -y ./odb.deb
-      
-      - name: Check that odb compiler has been installed
-        run: |
           odb --version | grep -q "No such file or directory" && exit 1 || exit 0
       
+      - name: Install Conan
+        run: |
+          pip install Conan
+          conan --version | grep -q "Conan version" && exit 1 || exit 0
+      
+      - name: Download and build libodb and libdb-pgsql via Conan
+        run: |
+          conan install \
+            --requires=libodb/2.5.0 \
+            --requires=libodb-pgsql/2.5.0 \
+            --build=missing \
+            --deployer=full_deploy \
+            --output-folder=.odb-deps
+  
       # - name: Download and install libodb package
       #   run: |
       #     curl -fsSL -o libodb-dev.deb "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/libodb-dev_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
