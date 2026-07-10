@@ -44,17 +44,17 @@ jobs:
           sudo apt-get install -y ./libodb-dev.deb
           apt policy libodb-dev | grep -q "Unable to locate package" && exit 1 || exit 0
       
-      - name: Download and install libodb-pgsql library
-        run: |
-          curl -fsSL -o libodb-pgsql.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb
-          sudo apt-get install -y ./libodb-pgsql.deb
-          apt policy libodb-pgsql | grep -q "Unable to locate package" && exit 1 || exit 0
+      # - name: Download and install libodb-pgsql library
+      #   run: |
+      #     curl -fsSL -o libodb-pgsql.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb
+      #     sudo apt-get install -y ./libodb-pgsql.deb
+      #     apt policy libodb-pgsql | grep -q "Unable to locate package" && exit 1 || exit 0
       
-      - name: Download and install libodb-pgsql-dev library
-        run: |
-          curl -fsSL -o libodb-pgsql-dev.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb
-          sudo apt-get install -y ./libodb-pgsql-dev.deb
-          apt policy libodb-pgsql-dev | grep -q "Unable to locate package" && exit 1 || exit 0
+      # - name: Download and install libodb-pgsql-dev library
+      #   run: |
+      #     curl -fsSL -o libodb-pgsql-dev.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb
+      #     sudo apt-get install -y ./libodb-pgsql-dev.deb
+      #     apt policy libodb-pgsql-dev | grep -q "Unable to locate package" && exit 1 || exit 0
 
       # - name: Install libpq5
       #   run: |
