@@ -46,6 +46,8 @@ jobs:
 
       - name: Check the limit
         run: |
+          # If this is not enabled, bash will not be able to process '**'
+          shopt -s globstar nullglob
           odb \
             --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
             ./src/core/**/*.h
