@@ -24,7 +24,7 @@ env:
   ODB_OS_BUILD: ubuntu24.04
 jobs:
   verify-that-database-support-code-limit-has-not-been-exceeded:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout the repo
