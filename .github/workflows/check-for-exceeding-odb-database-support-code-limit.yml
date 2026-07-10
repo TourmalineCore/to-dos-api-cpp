@@ -48,14 +48,14 @@ jobs:
       
       - name: Debugging
         run: |
-          cd ./.odb-deps/full_deploy/host/libodb/2.5.0
+          cd ./.odb-deps/full_deploy/host/libodb/2.5.0/Release
           ls -la
 
       - name: Check the limit
         run: |
           odb \
             --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
-            -I ./.odb-deps/full_deploy/host/libodb/2.5.0/Debug/x86_64/include \
-            -I ./.odb-deps/full_deploy/host/libodb-pgsql/2.5.0/Debug/x86_64/include \
+            -I ./.odb-deps/full_deploy/host/libodb/2.5.0/Release/x86_64/include \
+            -I ./.odb-deps/full_deploy/host/libodb-pgsql/2.5.0/Release/x86_64/include \
             ./src/core/to-do.h
       
