@@ -17,11 +17,7 @@ on:
   push:
     branch:
       - master
-      - feature/* # Added for debugging; Must be remove before merging it to master
 
-env:
-  ODB_VERSION: 2.5.0
-  ODB_OS_BUILD: ubuntu24.04
 jobs:
   verify-that-database-support-code-limit-has-not-been-exceeded:
     runs-on: ubuntu-22.04
@@ -32,8 +28,8 @@ jobs:
         
       - name: Download and install odb compiler
         run: |
-          curl -fsSL -o odb.deb "https://www.codesynthesis.com/download/odb/${ODB_VERSION}/ubuntu/${ODB_OS_BUILD}/x86_64/odb_${ODB_VERSION}-0~${ODB_OS_BUILD}_amd64.deb"
-          sudo apt-get install -y ./odb.deb
+          curl -fsSL -o odb.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/odb_2.5.0-0~ubuntu22.04_amd64.deb
+          apt-get install -y ./odb.deb
           odb --version | grep -q "No such file or directory" && exit 1 || exit 0
       
       - name: Install Conan
@@ -53,8 +49,11 @@ jobs:
       - name: Check the limit
         run: |
           odb \
-            --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
+            --show-sloc \
+            --sloc-limit 10000 \
+            -d pgsql \
+            --std c++20 \
             -I ./.odb-deps/host/libodb/2.5.0/Debug/x86_64/include \
             -I ./.odb-deps/host/libodb-pgsql/2.5.0/Debug/x86_64/include \
-            ./src/core/to-do.h 2>&1 | grep "total:" | sed 's/[^0-9]*//g'
+            ./src/core/to-do.h
       
