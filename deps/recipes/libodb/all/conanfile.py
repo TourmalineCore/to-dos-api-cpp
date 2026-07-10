@@ -3,7 +3,6 @@ import textwrap
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, save, rmdir
-from conan.errors import ConanInvalidConfiguration
 
 
 class LibOdbConan(ConanFile):
