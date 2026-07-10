@@ -15,6 +15,9 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+env:
+  ODB_PACKAGE_INDEX_LINK: https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64
+
 jobs:
   verify-that-database-support-code-limit-has-not-been-exceeded:
     runs-on: ubuntu-22.04
@@ -25,19 +28,19 @@ jobs:
         
       - name: Download and install odb compiler
         run: |
-          curl -fsSL -o odb.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/odb_2.5.0-0~ubuntu22.04_amd64.deb
+          curl -fsSL -o odb.deb "${ODB_PACKAGE_INDEX_LINK}/odb_2.5.0-0~ubuntu22.04_amd64.deb"
           sudo apt-get install -y ./odb.deb
           odb --version | grep -q "No such file or directory" && exit 1 || exit 0
       
       - name: Download and install libodb library
         run: |
-          curl -fsSL -o libodb.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb_2.5.0-0~ubuntu22.04_amd64.deb
+          curl -fsSL -o libodb.deb "${ODB_PACKAGE_INDEX_LINK}/libodb_2.5.0-0~ubuntu22.04_amd64.deb"
           sudo apt-get install -y ./libodb.deb
           apt policy libodb | grep -q "Unable to locate package" && exit 1 || exit 0
       
       - name: Download and install libodb-dev library
         run: |
-          curl -fsSL -o libodb-dev.deb https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb
+          curl -fsSL -o libodb-dev.deb "${ODB_PACKAGE_INDEX_LINK}/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb"
           sudo apt-get install -y ./libodb-dev.deb
           apt policy libodb-dev | grep -q "Unable to locate package" && exit 1 || exit 0
 
