@@ -1,18 +1,7 @@
 #include "to-dos-controller.h"
 #include "db_connection.h"
+#include <exception-response-handler.h>
 
-// TODO(https://github.com/TourmalineCore/to-dos-api-cpp/issues/25): Create http exception handler or generic class for handling that type of errors
-HttpResponsePtr ToDosController::createInternalServerErrorResponse(const std::string& error) const
-{
-    Json::Value jsonResponse;
-    jsonResponse["status"] = "Error";
-    jsonResponse["message"] = "Internal server error";
-    jsonResponse["error"] = error;
-
-    auto resp = HttpResponse::newHttpJsonResponse(jsonResponse);
-    resp->setStatusCode(k500InternalServerError);
-    return resp;
-}
 
 ToDosController::ToDosController()
 {
@@ -48,9 +37,9 @@ void ToDosController::getToDos(const HttpRequestPtr& req, std::function<void(con
         resp->setStatusCode(k200OK);
         callback(resp);
     }
-    catch (const std::exception& e)
+    catch (const std::exception& exception)
     {
-        callback(createInternalServerErrorResponse(e.what()));
+        callback(ExceptionResponseHandler::handle(exception));
     }
 }
 
@@ -79,9 +68,9 @@ void ToDosController::addToDo(const HttpRequestPtr& req, std::function<void(cons
         resp->setStatusCode(k201Created);
         callback(resp);
     }
-    catch (const std::exception& e)
+    catch (const std::exception& exception)
     {
-        callback(createInternalServerErrorResponse(e.what()));
+        callback(ExceptionResponseHandler::handle(exception));
     }
 }
 
@@ -114,9 +103,9 @@ void ToDosController::completeToDos(const HttpRequestPtr& req, std::function<voi
         resp->setStatusCode(k200OK);
         callback(resp);
     }
-    catch (const std::exception& e)
+    catch (const std::exception& exception)
     {
-        callback(createInternalServerErrorResponse(e.what()));
+        callback(ExceptionResponseHandler::handle(exception));
     }
 }
 
@@ -134,8 +123,8 @@ void ToDosController::deleteToDo(const HttpRequestPtr& req, std::function<void(c
         resp->setStatusCode(k200OK);
         callback(resp);
     }
-    catch (const std::exception& e)
+    catch (const std::exception& exception)
     {
-        callback(createInternalServerErrorResponse(e.what()));
+        callback(ExceptionResponseHandler::handle(exception));
     }
 }
