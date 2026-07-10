@@ -14,9 +14,6 @@ name: Check for exceeding the odb database support code limit
 on:
   pull_request:
     types: [opened, synchronize]
-  push:
-    branch:
-      - master
 
 jobs:
   verify-that-database-support-code-limit-has-not-been-exceeded:
