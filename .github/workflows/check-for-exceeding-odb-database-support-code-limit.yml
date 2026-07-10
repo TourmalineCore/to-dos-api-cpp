@@ -54,7 +54,7 @@ jobs:
       - name: Check the limit
         run: |
           odb \
-            --show-sloc --sloc-limit 10000 -d pgsql --std c++20 \
+            --show-sloc --sloc-limit 100 -d pgsql --std c++20 \
             -I $(find ./.odb-deps/full_deploy/host/libodb/ -type d -name include) \
             -I $(find ./.odb-deps/full_deploy/host/libodb-pgsql/ -type d -name include) \
             ./src/core/*.h
