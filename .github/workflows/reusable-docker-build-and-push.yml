@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v7
+        with:
+          submodules: true
 
       # this is needed to address this issue according to the comment https://github.com/devcontainers/ci/issues/271#issuecomment-2301764487
       # otherwise our TourmalineCore org name cannot be used in docker image names, only tourmalinecore
@@ -79,6 +81,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       # this is needed to address this issue according to the comment https://github.com/devcontainers/ci/issues/271#issuecomment-2301764487
       # otherwise our TourmalineCore org name cannot be used in docker image names, only tourmalinecore
