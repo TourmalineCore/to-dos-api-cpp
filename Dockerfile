@@ -24,7 +24,7 @@ RUN apt-get -y install --no-install-recommends \
 RUN pip install conan
 
 # this is necessary so that Conan can see the local dependency recipes
-RUN conan remote add local-recipes ./deps --type=local-recipes-index
+RUN conan remote add local-recipes ./deps/conan-tourmalinecore-index --type=local-recipes-index
 
 RUN conan build . --build=missing \
     --profile:all=.devcontainer/to-dos-conan-profile.conf \
