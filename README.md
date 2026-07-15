@@ -22,6 +22,12 @@ For development purposes use a devcontainer named `developing`.
 
 ### Project building
 
+First, you need to update the `conan-tourmalinecore-index` submodule, which contains Conan recipes for project dependencies not included in `conan-center-index`. Without this step, the project build will fail.
+
+> If you're working inside a VSCode devcontainer, the submodules were pulled automatically; check the `deps/` directory.
+
+To do this, run the command `git submodule update --init`. After running this command, the submodules will be pulled locally based on the state of the submodule’s fixed commit. If you need to update a fixed commit in the submodule, run the command `git submodule update --init --remote`.
+
 To build this project, open the VS Code terminal (`Ctrl + Shift + ~`) and run `conan install . --build=missing`.
 After the Conan install process, open the CMake extension and click Configure. 
 <p style="text-align: center;"><img src="docs/images/cmakeConfigure.png" alt="cmakeConfigure" width="400"/></p>
