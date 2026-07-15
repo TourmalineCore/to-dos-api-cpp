@@ -97,9 +97,38 @@ These are latency percentiles describing the distribution of response time, not 
 
 ## Tool Comparison
 
-| Tool                 | Scripting approach                                                  | Strengths                                                                                      | Weaknesses                                                                                      |
-| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Karate (+ Gatling)   | Gherkin .feature files, reused for functional and performance tests | Reuses existing API tests; full response assertions, not just status codes; readable scenarios | Heavier setup (Java/Gatling); local load-generator throughput is limited by default thread pool |
-| k6                   | JavaScript-based scripts                                            | CLI-first, lightweight, high generator throughput, strong CI/threshold support                 | No reuse of existing Karate tests; requires separate scripts                                    |
-| Gatling (standalone) | Scala DSL                                                           | High performance, detailed HTML reports, precise load-injection control                        | Steeper learning curve; scripts are separate from functional tests                              |
-| JMeter               | GUI-built or XML .jmx plans                                         | Mature, large plugin ecosystem, visual test design                                             | XML format complicates code review; GUI unsuitable for real high load; no reuse of Karate tests |
+**Karate (+ Gatling)**
+Scripting via Gherkin .feature files reused for both functional and performance tests. 
+Strengths: reuses existing API tests, full response assertions rather than just status codes, readable scenarios. 
+Weaknesses: heavier setup (Java/Gatling), local load-generator throughput limited by the default thread pool.
+
+**k6**
+Scripting via JavaScript-based scripts. 
+Strengths: CLI-first, lightweight, high generator throughput, strong CI/threshold support. 
+Weaknesses: requires writing separate scripts. Weaker support for complex multi-step business flows compared to Gherkin-style scenarios. Large scripts can get harder to structure and read. Native reporting is minimal out of the box.
+
+**JMeter**
+Scripting via GUI-built or XML .jmx plans. 
+Strengths: mature, large plugin ecosystem, visual test design. 
+Weaknesses: XML format complicates code review, GUI unsuitable for real high load.
+
+## Selection Criteria and Decision
+
+The team already maintains functional API tests written in Karate for C++ API. Karate-Gatling can execute this same set of feature tests under concurrent load.
+
+Given this existing investment, the decisive selection criterion is reuse of existing test scenarios: k6 and JMeter would each require writing new request flows from scratch, duplicating logic already implemented and maintained in Karate. Only Karate with Gatling integration allows the same .feature files to serve both functional and performance testing, which minimizes duplicated effort and keeps functional and performance checks in sync.
+
+## Scope
+
+* Use Karate with Gatling integration to run performance experiments against the C++ API and NestJS API.
+* Load testing: validate API behavior under a stable, expected workload.
+* Stress testing: increase load gradually to find the first degradation or failure point.
+* Reuse existing Karate scenarios where they are safe for parallel execution.
+* Add performance-specific scenarios only where existing tests are unsuitable, for example when they share mutable test data.
+* Run APIs manually outside the load-testing environment.
+* Execute tests locally and collect Gatling reports.
+
+## Out of Scope
+* Soak / endurance testing: excluded, since it requires long-running tests to detect memory leaks, connection leaks, and gradual degradation, which does not fit the task time.
+* Scalability testing: excluded, since tests run on one laptop. Multiple local API instances would share the same CPU, memory, disk, and network resources, so results would not represent real horizontal scalability. It can be done with CI/CD integration but its not fit the task time.
+* Spike testing: excluded from this iteration. Not required for the immediate goal of finding the failure point via gradual load increase.
