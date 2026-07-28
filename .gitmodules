@@ -1,0 +1,4 @@
+[submodule "deps/conan-tourmalinecore-index"]
+	path = deps/conan-tourmalinecore-index
+	url = https://github.com/TourmalineCore/conan-tourmalinecore-recipes.git
+	branch = "feature/#70-preparing-prs-for-the-libodb-and-libodb-pgsql-packages-in-the-conan-center-index"
